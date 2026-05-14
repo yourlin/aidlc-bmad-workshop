@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIDLC Workshop × BMAD — AI 驱动的全生命周期开发实战</title>
+    <style>
+        :root {
+            --aws-orange: #FF9900;
+            --aws-dark: #232F3E;
+            --kiro-purple: #7B61FF;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        
+        /* Slide Container */
+        .slides-wrapper { height: 100vh; overflow: hidden; position: relative; }
+        .slide {
+            position: absolute; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 40px 60px;
+            opacity: 0; transform: translateX(100%);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            overflow-y: auto;
+        }
+        .slide.active { opacity: 1; transform: translateX(0); z-index: 10; }
+        .slide.prev { opacity: 0; transform: translateX(-100%); }
+
+        /* Navigation */
+        .slide-nav {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 8px; z-index: 100; background: rgba(0,0,0,0.6);
+            padding: 8px 16px; border-radius: 20px;
+        }
+        .slide-nav .dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.3s;
+        }
+        .slide-nav .dot.active { background: var(--aws-orange); transform: scale(1.3); }
+        .slide-counter {
+            position: fixed; bottom: 20px; right: 30px; z-index: 100;
+            color: rgba(255,255,255,0.6); font-size: 14px; font-family: monospace;
+        }
+        .slide-hint {
+            position: fixed; bottom: 20px; left: 30px; z-index: 100;
+            color: rgba(255,255,255,0.4); font-size: 12px;
+        }
+
+        /* Slide Themes */
+        .slide-dark { background: linear-gradient(135deg, #232F3E 0%, #37475A 50%, #1a1a2e 100%); color: white; }
+        .slide-light { background: #f8f9fa; color: #232F3E; }
+        .slide-white { background: white; color: #232F3E; }
+        .slide-accent { background: linear-gradient(135deg, #1a1a2e 0%, #2d1b69 100%); color: white; }
+
+        /* Typography */
+        h1 { font-size: 3rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+        h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 24px; }
+        h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 12px; }
+        .subtitle { font-size: 1.2rem; opacity: 0.8; max-width: 700px; line-height: 1.6; }
+        .tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .tag-orange { background: rgba(255,153,0,0.2); color: #FF9900; }
+        .tag-purple { background: rgba(123,97,255,0.2); color: #7B61FF; }
+
+        /* Agenda Table */
+        .agenda-table { width: 100%; max-width: 1000px; border-collapse: collapse; font-size: 0.85rem; }
+        .agenda-table th { text-align: left; padding: 6px 12px; background: rgba(0,0,0,0.05); font-weight: 600; border-bottom: 2px solid #e5e7eb; }
+        .agenda-table td { padding: 6px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+        .agenda-table tr:hover { background: rgba(255,153,0,0.05); }
+        .time-col { font-family: monospace; font-weight: 600; color: var(--aws-orange); white-space: nowrap; width: 120px; }
+        .agenda-break { background: #f0fdf4 !important; }
+        .agenda-review { background: #faf5ff !important; }
+        .agenda-day2 { border-top: 3px dashed var(--aws-orange) !important; }
+
+        /* Cards Grid */
+        .cards-grid { display: grid; gap: 16px; width: 100%; max-width: 1100px; }
+        .cards-grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .cards-grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .card-dark { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 20px; }
+
+        /* Role badges */
+        .role-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+        .badge-pm { background: #DBEAFE; color: #1E40AF; }
+        .badge-arch { background: #FEF3C7; color: #92400E; }
+        .badge-dev { background: #D1FAE5; color: #065F46; }
+        .badge-qa { background: #EDE9FE; color: #5B21B6; }
+        .badge-tester { background: #FCE7F3; color: #9D174D; }
+
+        /* Code block */
+        .code-block { background: #1e1e1e; border-radius: 8px; padding: 16px 20px; font-family: 'Fira Code', monospace; font-size: 0.8rem; color: #4ec9b0; overflow-x: auto; text-align: left; }
+
+        /* FAQ */
+        .faq-item { border-bottom: 1px solid #e5e7eb; padding: 12px 0; text-align: left; width: 100%; max-width: 900px; }
+        .faq-q { font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-a { font-size: 0.85rem; color: #555; margin-top: 8px; display: none; line-height: 1.6; }
+        .faq-item.open .faq-a { display: block; }
+        .faq-item.open .faq-arrow { transform: rotate(90deg); }
+        .faq-arrow { transition: transform 0.2s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide { padding: 20px 24px; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.6rem; }
+            .cards-grid-3, .cards-grid-2 { grid-template-columns: 1fr; }
+            .agenda-table { font-size: 0.7rem; }
+            .agenda-table td, .agenda-table th { padding: 4px 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="slides-wrapper" id="slidesWrapper">
+
+<!-- Slide 1: Title -->
+<div class="slide slide-dark active" data-slide="0">
+    <div style="text-align:center;">
+        <div style="margin-bottom:24px;">
+            <span class="tag tag-orange">AWS × Kiro</span>
+            <span style="margin:0 8px;opacity:0.4;">·</span>
+            <span class="tag tag-purple">BMAD Method v6</span>
+        </div>
+        <h1>AI 驱动的全生命周期<br>开发实战 Workshop</h1>
+        <p class="subtitle" style="margin:0 auto 32px;">
+            使用 <strong>Kiro</strong> + <strong>BMAD Method</strong> 完成从需求到部署的端到端演练<br>
+            AI 执行 + Human-in-the-Loop 监督
+        </p>
+        <div style="display:flex;justify-content:center;gap:40px;margin-top:40px;">
+            <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">1.5 天</div><div style="font-size:0.75rem;opacity:0.6;">Workshop 时长</div></div>
+            <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">5</div><div style="font-size:0.75rem;opacity:0.6;">参与角色</div></div>
+            <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">2</div><div style="font-size:0.75rem;opacity:0.6;">Review Gate</div></div>
+            <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">E2E</div><div style="font-size:0.75rem;opacity:0.6;">全生命周期</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 2: Agenda -->
+<div class="slide slide-white" data-slide="1">
+    <h2 style="text-align:center;">📅 Workshop Agenda</h2>
+    <p style="text-align:center;color:#666;margin-bottom:20px;font-size:0.9rem;">Day 1 下午动手实操 · Day 2 上午小组分享</p>
+    <table class="agenda-table">
+        <thead>
+            <tr><th colspan="3" style="color:var(--aws-orange);font-size:0.9rem;">Day 1 — 下午（14:00 - 18:00）</th></tr>
+            <tr><th>时间</th><th>环节</th><th>角色</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="time-col">14:00 - 14:10</td><td>Opening</td><td>全员</td></tr>
+            <tr><td class="time-col">14:10 - 14:55</td><td>📢 讲师分享：AIDLC — Agentic AI 时代的软件工程</td><td>全员</td></tr>
+            <tr><td class="time-col">14:55 - 15:25</td><td>🛠️ Workshop 实操讲解：如何使用 BMAD</td><td>全员</td></tr>
+            <tr><td class="time-col">15:25 - 15:35</td><td>🚀 各组启动 Workshop</td><td>各组</td></tr>
+            <tr><td class="time-col">15:35 - 16:05</td><td>▶ PRD + 架构 + 测试策略（并行）</td><td>PM / 运维 / QA</td></tr>
+            <tr class="agenda-review"><td class="time-col">16:05 - 16:20</td><td>🔍 Review Gate #1</td><td>全员</td></tr>
+            <tr class="agenda-break"><td class="time-col">16:20 - 16:30</td><td>☕ 休息</td><td>—</td></tr>
+            <tr><td class="time-col">16:30 - 16:40</td><td>Sprint Planning</td><td>全员</td></tr>
+            <tr><td class="time-col">16:40 - 17:30</td><td>⚡ 并行开发（开发 / QA / 测试 / 运维）</td><td>各角色</td></tr>
+            <tr class="agenda-review"><td class="time-col">17:30 - 17:45</td><td>🔍 Review Gate #2 + 测试演示</td><td>全员</td></tr>
+            <tr><td class="time-col">17:45 - 18:00</td><td>Wrap-up + 明日预告</td><td>全员</td></tr>
+        </tbody>
+        <thead>
+            <tr class="agenda-day2"><th colspan="3" style="color:var(--aws-orange);font-size:0.9rem;padding-top:12px;">Day 2 — 上午（10:00 - 11:30）</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="time-col">10:00 - 11:30</td><td>🎬 小组演示 + 经验分享（每组 10 分钟）</td><td>各组轮流</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Slide 3: What is AIDLC -->
+<div class="slide slide-light" data-slide="2">
+    <h2 style="text-align:center;">什么是 AIDLC？</h2>
+    <p style="text-align:center;color:#666;margin-bottom:32px;max-width:700px;">AIDLC（AI-Driven Lifecycle）是一套 AI 驱动的软件开发全生命周期方法论，结合 BMAD 多 Agent 协作框架。</p>
+    <div class="cards-grid cards-grid-3">
+        <div class="card" style="border-top:4px solid #3B82F6;">
+            <div style="font-size:2rem;margin-bottom:8px;">🎯</div>
+            <h3>Inception（需求）</h3>
+            <p style="font-size:0.85rem;color:#666;">PM 创建 PRD，QA 编写测试策略。AI Agent 引导结构化思考。</p>
+        </div>
+        <div class="card" style="border-top:4px solid #10B981;">
+            <div style="font-size:2rem;margin-bottom:8px;">⚡</div>
+            <h3>Construction（构建）</h3>
+            <p style="font-size:0.85rem;color:#666;">开发、QA、测试、运维 4 角色并行。AI 生成代码和测试，人工 Review。</p>
+        </div>
+        <div class="card" style="border-top:4px solid #8B5CF6;">
+            <div style="font-size:2rem;margin-bottom:8px;">🚀</div>
+            <h3>Operations（运维）</h3>
+            <p style="font-size:0.85rem;color:#666;">CDK 定义基础设施，CloudWatch 监控，IaC 确保环境一致性。</p>
+        </div>
+    </div>
+    <div style="margin-top:32px;background:#232F3E;border-radius:12px;padding:24px 32px;max-width:800px;color:white;text-align:center;">
+        <p style="font-style:italic;opacity:0.9;font-size:0.95rem;">"AI is not Google. The AI is a facilitator — every module becomes a master facilitator to bring the best out of you."</p>
+        <p style="font-size:0.8rem;opacity:0.6;margin-top:8px;">—— Brian · BMAD 作者</p>
+    </div>
+</div>
+
+<!-- Slide 4: Roles -->
+<div class="slide slide-white" data-slide="3">
+    <h2 style="text-align:center;">角色与分工</h2>
+    <p style="text-align:center;color:#666;margin-bottom:24px;">5 个角色对应 BMAD Agent，覆盖 AIDLC 全生命周期</p>
+    <div class="cards-grid" style="grid-template-columns:repeat(5,1fr);max-width:1100px;">
+        <div class="card" style="border-top:3px solid #3B82F6;padding:16px;text-align:center;">
+            <div style="width:40px;height:40px;background:#DBEAFE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;color:#1E40AF;font-size:0.8rem;">PM</div>
+            <h3 style="font-size:0.9rem;">产品经理</h3>
+            <p style="font-size:0.7rem;color:#666;margin:4px 0;">John Agent</p>
+            <span class="role-badge badge-pm" style="font-size:0.65rem;">CP</span>
+        </div>
+        <div class="card" style="border-top:3px solid #F59E0B;padding:16px;text-align:center;">
+            <div style="width:40px;height:40px;background:#FEF3C7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;color:#92400E;font-size:0.7rem;">运维</div>
+            <h3 style="font-size:0.9rem;">架构师</h3>
+            <p style="font-size:0.7rem;color:#666;margin:4px 0;">Winston Agent</p>
+            <span class="role-badge badge-arch" style="font-size:0.65rem;">CA</span>
+        </div>
+        <div class="card" style="border-top:3px solid #10B981;padding:16px;text-align:center;">
+            <div style="width:40px;height:40px;background:#D1FAE5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;color:#065F46;font-size:0.8rem;">Dev</div>
+            <h3 style="font-size:0.9rem;">开发工程师</h3>
+            <p style="font-size:0.7rem;color:#666;margin:4px 0;">Amelia Agent</p>
+            <span class="role-badge badge-dev" style="font-size:0.65rem;">DS</span>
+        </div>
+        <div class="card" style="border-top:3px solid #8B5CF6;padding:16px;text-align:center;">
+            <div style="width:40px;height:40px;background:#EDE9FE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;color:#5B21B6;font-size:0.8rem;">QA</div>
+            <h3 style="font-size:0.9rem;">QA</h3>
+            <p style="font-size:0.7rem;color:#666;margin:4px 0;">Quinn Agent</p>
+            <span class="role-badge badge-qa" style="font-size:0.65rem;">QA</span>
+        </div>
+        <div class="card" style="border-top:3px solid #EC4899;padding:16px;text-align:center;">
+            <div style="width:40px;height:40px;background:#FCE7F3;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;color:#9D174D;font-size:0.7rem;">Test</div>
+            <h3 style="font-size:0.9rem;">测试工程师</h3>
+            <p style="font-size:0.7rem;color:#666;margin:4px 0;">Quinn + TEA</p>
+            <span class="role-badge badge-tester" style="font-size:0.65rem;">QA</span>
+        </div>
+    </div>
+    <div style="margin-top:24px;background:#FFF7ED;border:1px solid #FDBA74;border-radius:12px;padding:16px 24px;max-width:600px;text-align:center;">
+        <strong style="color:#9A3412;">🎉 Party Mode</strong>
+        <p style="font-size:0.8rem;color:#78350F;margin-top:4px;">多 Agent 联合评审 — Review Gate 环节全员参与</p>
+    </div>
+</div>
+
+<!-- Slide 5: Setup (Greenfield) -->
+<div class="slide slide-light" data-slide="4">
+    <h2 style="text-align:center;">🛠️ 环境准备 — Greenfield（新项目）</h2>
+    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:0.82rem;">⚠️ 所有步骤必须按顺序执行，每步完成后验证再进入下一步</p>
+    <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="card" style="padding:14px;">
+            <h3 style="font-size:0.9rem;">Step 1：检查前置依赖</h3>
+            <div class="code-block" style="font-size:0.7rem;margin-top:6px;">
+                node --version &nbsp;&nbsp;<span style="color:#888;"># 必须 >= v20</span><br>
+                python3 --version <span style="color:#888;"># 必须 >= 3.10</span><br>
+                uv --version &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 可选</span>
+            </div>
+            <div style="margin-top:6px;background:#FEF2F2;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#991B1B;">
+                ❌ 版本不对？→ <code>nvm install 20</code> / <code>brew install python@3.12</code>
+            </div>
+        </div>
+        <div class="card" style="padding:14px;">
+            <h3 style="font-size:0.9rem;">Step 2：创建项目 + 运行初始化脚本</h3>
+            <div class="code-block" style="font-size:0.7rem;margin-top:6px;">
+                mkdir aidlc-bmad-workshop && cd aidlc-bmad-workshop<br>
+                git clone &lt;repo-url&gt; . <span style="color:#888;"># 或下载 zip</span><br>
+                chmod +x setup-workshop.sh && ./setup-workshop.sh
+            </div>
+            <div style="margin-top:6px;background:#F0FDF4;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#166534;">
+                ✅ 脚本会自动创建 _bmad/ 配置 + seed prompts + product brief
+            </div>
+        </div>
+        <div class="card" style="padding:14px;">
+            <h3 style="font-size:0.9rem;">Step 3：安装 BMAD Method</h3>
+            <div class="code-block" style="font-size:0.7rem;margin-top:6px;">
+                <span style="color:#888;"># 在项目目录中运行（需要 Node.js >= 20）</span><br>
+                npx bmad-method install
+            </div>
+            <div style="font-size:0.72rem;color:#555;margin-top:6px;line-height:1.5;">
+                按提示选择：<br>
+                • Modules → <strong>BMM</strong>（核心框架）<br>
+                • AI IDE → <strong>kiro</strong>（推荐）/ claude-code / cursor / codex<br>
+                • 语言 → Chinese · 项目名 → 你的项目名
+            </div>
+            <div style="margin-top:6px;background:#EFF6FF;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#1E40AF;">
+                💡 非交互式：<code>npx bmad-method install --yes --modules bmm --tools kiro</code><br>
+                &nbsp;&nbsp;&nbsp;其他 IDE：<code>--tools codex</code> / <code>--tools cursor</code> / <code>--tools claude-code</code> / <code>--tools github-copilot</code>
+            </div>
+        </div>
+        <div class="card" style="padding:14px;">
+            <h3 style="font-size:0.9rem;">Step 4：验证安装（必须全部 ✓）</h3>
+            <div class="code-block" style="font-size:0.7rem;margin-top:6px;">
+                ls _bmad/bmm/agents/ &nbsp;&nbsp;<span style="color:#888;"># ✓ 有 agent yaml 文件</span><br>
+                ls _bmad/manifest.yaml <span style="color:#888;"># ✓ 安装清单</span><br>
+                npx bmad-method status <span style="color:#888;"># ✓ 显示已安装模块</span>
+            </div>
+            <div style="margin-top:6px;background:#FEF2F2;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#991B1B;">
+                ❌ 失败？→ 删除 <code>_bmad/</code> 重新运行 <code>npx bmad-method install</code><br>
+                ⚠️ 如果 setup-workshop.sh 已创建 <code>_bmad/</code>，<code>--yes</code> 会走 quick-update 导致不完整。<br>
+                &nbsp;&nbsp;&nbsp;解决：先 <code>rm -rf _bmad/</code> 再运行安装命令
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5b: Setup (Brownfield) -->
+<div class="slide slide-white" data-slide="5">
+    <h2 style="text-align:center;">🛠️ 环境准备 — Brownfield（已有项目）</h2>
+    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:0.82rem;">⚠️ 不要动已有代码！只在项目根目录叠加 BMAD 配置</p>
+    <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="card" style="padding:14px;border-left:4px solid #F59E0B;">
+            <h3 style="font-size:0.9rem;">Step 1：在已有项目中安装 BMAD</h3>
+            <div class="code-block" style="font-size:0.7rem;margin-top:6px;">
+                cd your-existing-project<br><br>
+                <span style="color:#888;"># 直接在已有项目根目录安装</span><br>
+                npx bmad-method install
+            </div>
+            <div style="margin-top:6px;background:#FEF3C7;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#92400E;">
+                ⚠️ BMAD 只会创建 <code>_bmad/</code> 目录，不会修改已有文件<br>
+                ❌ 禁止：删除或移动已有文件 / 修改 package.json
+            </div>
+        </div>
+        <div class="card" style="padding:14px;border-left:4px solid #3B82F6;">
+            <h3 style="font-size:0.9rem;">Step 2：让 BMAD 生成项目上下文</h3>
+            <div class="code-block" style="font-size:0.72rem;margin-top:6px;">
+                <span style="color:#888;"># 在 AI IDE 中激活 PM Agent</span><br>
+                /pm<br><br>
+                <span style="color:#888;"># 选择 Create Product Brief（BP）</span><br>
+                <span style="color:#888;"># Agent 会自动扫描代码库并追问你</span><br>
+                <span style="color:#888;"># 产出 product-brief.md 含项目上下文</span>
+            </div>
+            <div style="font-size:0.72rem;color:#555;margin-top:6px;line-height:1.5;">
+                或者直接告诉 Agent：<br>
+                <em>"Analyze this existing codebase and create a product brief<br>
+                that documents the current architecture, tech stack,<br>
+                constraints, and areas I want to change."</em>
+            </div>
+            <div style="margin-top:6px;background:#EFF6FF;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#1E40AF;">
+                💡 Agent 会自动读取代码结构，生成上下文文档，无需手动编写
+            </div>
+        </div>
+        <div class="card" style="padding:14px;border-left:4px solid #10B981;">
+            <h3 style="font-size:0.9rem;">Step 3：验证已有代码健康</h3>
+            <div class="code-block" style="font-size:0.7rem;margin-top:6px;">
+                <span style="color:#888;"># 已有测试必须先跑通</span><br>
+                npm test <span style="color:#888;"># 或 mvn test / pytest / go test</span><br><br>
+                <span style="color:#888;"># git 状态必须干净</span><br>
+                git status <span style="color:#888;"># 只有 _bmad/ 是新增</span>
+            </div>
+            <div style="margin-top:6px;background:#FEF2F2;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#991B1B;">
+                ❌ 测试失败 → 先修复再开始 Workshop<br>
+                ❌ 有未提交变更 → 先 <code>git commit</code> 或 <code>git stash</code>
+            </div>
+        </div>
+        <div class="card" style="padding:14px;border-left:4px solid #8B5CF6;">
+            <h3 style="font-size:0.9rem;">Step 4：确认 BMAD 可用</h3>
+            <div class="code-block" style="font-size:0.7rem;margin-top:6px;">
+                npx bmad-method status <span style="color:#888;"># 显示已安装模块</span><br>
+                ls _bmad/bmm/agents/ &nbsp;&nbsp;<span style="color:#888;"># 有 agent 文件</span>
+            </div>
+            <div style="font-size:0.72rem;color:#555;margin-top:6px;line-height:1.5;">
+                然后在 AI IDE 中测试：<br>
+                输入 <code>/bmad-help</code> → 应看到帮助菜单<br>
+                输入 <code>/pm</code> → 应看到 PM Agent 菜单
+            </div>
+            <div style="margin-top:6px;background:#F0FDF4;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#166534;">
+                ✅ 全部通过 → 可以开始 Workshop！
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Seed Prompts -->
+<div class="slide slide-dark" data-slide="6">
+    <h2 style="text-align:center;">Seed Prompts — 开箱即用</h2>
+    <p style="text-align:center;opacity:0.7;margin-bottom:24px;font-size:0.9rem;">复制对应角色的 Prompt 粘贴到 AI IDE 即可启动</p>
+    <div class="cards-grid cards-grid-2" style="max-width:1000px;">
+        <div class="card-dark">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="role-badge badge-pm">PM</span><strong style="color:white;">创建 PRD</strong>
+            </div>
+            <div class="code-block" style="font-size:0.7rem;">CP<br><br>Based on the product brief,<br>create a PRD for Hotel Booking API.<br>Focus on: 5 endpoints, JWT auth,<br>error handling, API versioning.</div>
+        </div>
+        <div class="card-dark">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="role-badge badge-arch">运维</span><strong style="color:white;">技术架构</strong>
+            </div>
+            <div class="code-block" style="font-size:0.7rem;">CA<br><br>Create architecture for Hotel API.<br>Stack: Lambda + API GW + DynamoDB + CDK<br>Requirements: Serverless, JWT auth,<br>CloudWatch + X-Ray, CI/CD.</div>
+        </div>
+        <div class="card-dark">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="role-badge badge-dev">开发</span><strong style="color:white;">实现代码</strong>
+            </div>
+            <div class="code-block" style="font-size:0.7rem;">DS<br><br>Implement "Create Room" endpoint.<br>Tech: TypeScript + Lambda + DynamoDB<br>POST /api/v1/rooms · Zod validation<br>TDD: write test first, then implement.</div>
+        </div>
+        <div class="card-dark">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="role-badge badge-tester">测试</span><strong style="color:white;">E2E + 性能测试</strong>
+            </div>
+            <div class="code-block" style="font-size:0.7rem;">QA<br><br>As Test Engineer, create test suites.<br>E2E + Performance (&lt;200ms p95)<br>Security testing + Data integrity<br>Tools: Jest + supertest + Artillery</div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: BMAD Usage Flow -->
+<div class="slide slide-light" data-slide="7">
+    <h2 style="text-align:center;">🚀 BMAD 使用流程 — 安装完成后怎么用</h2>
+    <p style="text-align:center;color:#666;margin-bottom:16px;font-size:0.82rem;">在 AI IDE 中输入以下命令即可启动对应 Agent 和工作流</p>
+    <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="card" style="padding:14px;">
+            <h3 style="font-size:0.9rem;">① 获取帮助（任何时候都可以用）</h3>
+            <div class="code-block" style="font-size:0.72rem;margin-top:6px;">
+                /bmad-help <span style="color:#888;"># 查看当前可用命令</span><br>
+                /bmad-help I just finished the PRD, what next?
+            </div>
+            <div style="margin-top:6px;font-size:0.72rem;color:#555;">
+                💡 不确定下一步做什么？问 <code>/bmad-help</code> 就对了
+            </div>
+        </div>
+        <div class="card" style="padding:14px;">
+            <h3 style="font-size:0.9rem;">② 激活 Agent</h3>
+            <div class="code-block" style="font-size:0.72rem;margin-top:6px;">
+                /pm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → John (PM) 菜单</span><br>
+                /architect &nbsp;<span style="color:#888;"># → Winston (架构) 菜单</span><br>
+                /dev &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → Amelia (开发) 菜单</span><br>
+                /qa &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → Quinn (QA) 菜单</span>
+            </div>
+            <div style="margin-top:6px;font-size:0.72rem;color:#555;">
+                每个 Agent 会显示带编号的菜单，选择对应操作即可
+            </div>
+        </div>
+        <div class="card" style="padding:14px;">
+            <h3 style="font-size:0.9rem;">③ 直接调用工作流</h3>
+            <div class="code-block" style="font-size:0.72rem;margin-top:6px;">
+                /create-prd &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 创建 PRD</span><br>
+                /create-architecture <span style="color:#888;"># 创建架构文档</span><br>
+                /create-epics-and-stories <span style="color:#888;"># 拆分 Epic/Story</span><br>
+                /sprint-planning &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># Sprint 规划</span><br>
+                /develop-story &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 实现一个 Story</span>
+            </div>
+        </div>
+        <div class="card" style="padding:14px;">
+            <h3 style="font-size:0.9rem;">④ Party Mode（联合评审）</h3>
+            <div class="code-block" style="font-size:0.72rem;margin-top:6px;">
+                /party-mode <span style="color:#888;"># 启动多 Agent 协作</span>
+            </div>
+            <div style="margin-top:6px;font-size:0.72rem;color:#555;line-height:1.6;">
+                然后输入评审指令，如：<br>
+                <em>"Review PRD and Architecture for consistency"</em>
+            </div>
+            <div style="margin-top:6px;background:#FFF7ED;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#9A3412;">
+                ⚠️ 每个工作流结束后<strong>开新聊天</strong>！上下文残留会降低质量
+            </div>
+        </div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:12px;max-width:980px;width:100%;">
+        <div style="flex:1;background:#232F3E;border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:0.75rem;color:#FF9900;font-weight:600;">Workshop 中的使用顺序</div>
+            <div style="font-size:0.72rem;color:#ccc;margin-top:4px;">/pm → CP → <em>Review</em> → /architect → CA → <em>Review</em> → /sprint-planning → /dev → DS → /qa → <em>Review</em></div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Brownfield Prompts -->
+<div class="slide slide-white" data-slide="8">
+    <h2 style="text-align:center;">🛡️ Brownfield 安全护栏 — Prompt 约束模板</h2>
+    <p style="text-align:center;color:#666;margin-bottom:20px;font-size:0.85rem;">Brownfield 项目的 Seed Prompt 必须增加以下约束，防止 AI 破坏已有代码</p>
+    <div style="max-width:950px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="card" style="padding:16px;border-top:3px solid #DC2626;">
+            <h3 style="font-size:0.9rem;color:#DC2626;">🚫 绝对禁止（写入每个 Prompt）</h3>
+            <div style="font-size:0.78rem;color:#555;line-height:1.8;margin-top:8px;">
+                • 不得删除或重命名已有文件<br>
+                • 不得修改已有 API 的请求/响应格式<br>
+                • 不得变更数据库 schema（除非 migration）<br>
+                • 不得引入与已有框架冲突的新依赖<br>
+                • 不得跳过已有的 lint / test 规则
+            </div>
+        </div>
+        <div class="card" style="padding:16px;border-top:3px solid #10B981;">
+            <h3 style="font-size:0.9rem;color:#10B981;">✅ 必须遵守（写入每个 Prompt）</h3>
+            <div style="font-size:0.78rem;color:#555;line-height:1.8;margin-top:8px;">
+                • 先读 project-context.md 再动手<br>
+                • 新代码必须匹配已有代码风格<br>
+                • 所有变更必须有对应测试<br>
+                • 已有测试必须全部通过<br>
+                • 新功能用 Feature Flag 包裹
+            </div>
+        </div>
+        <div class="card" style="padding:16px;grid-column:span 2;">
+            <h3 style="font-size:0.9rem;">📝 Brownfield Prompt 模板（复制后修改 [ ] 内容）</h3>
+            <div class="code-block" style="font-size:0.7rem;margin-top:8px;">
+DS<br><br>
+⚠️ BROWNFIELD PROJECT — Read _bmad-output/planning-artifacts/project-context.md FIRST.<br><br>
+Implement [Story 名称] in the EXISTING codebase at [目录路径].<br><br>
+BEFORE writing any code:<br>
+1. Read existing patterns in [src/相关目录]<br>
+2. Run existing tests: [npm test / mvn test / pytest] — must all pass<br>
+3. Check git status is clean<br><br>
+CONSTRAINTS:<br>
+- Backward compatible with [已有 API/接口]<br>
+- Follow existing [error handling / logging / auth] patterns<br>
+- Do NOT modify files outside [允许修改的目录]<br>
+- All new code must have unit tests<br>
+- Wrap new features with feature flag: [flag name]
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: FAQ -->
+<div class="slide slide-light" data-slide="9">
+    <h2 style="text-align:center;">❓ 常见问题</h2>
+    <div style="max-width:800px;width:100%;">
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">必须使用 Kiro 吗？<span class="faq-arrow">▶</span></div>
+            <div class="faq-a">推荐 Kiro（AWS AI IDE，内置 Spec Driven），但 Claude Code、Cursor、CodeX 同样兼容。核心差异在于 Kiro 的 Agent 协作和 Review 工作流更原生。</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">没有安装 BMAD 怎么办？<span class="faq-arrow">▶</span></div>
+            <div class="faq-a">直接使用 Seed Prompt 文件中的内容，手动粘贴到 AI IDE。BMAD 安装是可选增强。</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">一个人可以扮演多个角色吗？<span class="faq-arrow">▶</span></div>
+            <div class="faq-a">可以。使用 Party Mode 在同一终端切换不同 Agent。人数不足时建议兼任相近角色（如 QA + 测试工程师）。</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">Workshop 时间不够怎么办？<span class="faq-arrow">▶</span></div>
+            <div class="faq-a">应急方案：① 砍掉 IaC ② 开发只完成 1 个 Story ③ 使用预置 PRD 跳过生成。确保至少完成一次"AI 生成 → 人工 Review"循环。</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">Kiro Spec Driven 和 BMAD 什么关系？<span class="faq-arrow">▶</span></div>
+            <div class="faq-a">同一哲学的不同维度。Kiro 在 IDE 层面确保"先规格再代码"；BMAD 在方法论层面确保"Agent 引导逐层精化"。结合 = 从想法到规格到代码的完整闭环。</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">Agent 响应太慢或出错？<span class="faq-arrow">▶</span></div>
+            <div class="faq-a">① 切换 Quick Flow（Barry Agent）② 检查 API Key 配额 ③ 准备离线 mock 数据 ④ Party Mode 绕过卡住环节。</div>
+        </div>
+        <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">Day 2 小组分享怎么准备？<span class="faq-arrow">▶</span></div>
+            <div class="faq-a">每组 10 分钟：2min 项目概述 → 4min 产出物演示 → 2min Aha Moment / 踩坑 → 2min Q&A。建议提前准备屏幕录制或截图。</div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Success Criteria -->
+<div class="slide slide-accent" data-slide="10">
+    <h2 style="text-align:center;">🏆 成功标准</h2>
+    <p style="text-align:center;opacity:0.7;margin-bottom:32px;font-size:0.9rem;">Workshop 结束时，每组应完成以下产出物</p>
+    <div class="cards-grid" style="grid-template-columns:repeat(4,1fr);max-width:900px;">
+        <div class="card-dark" style="text-align:center;padding:16px;">
+            <div style="font-size:1.8rem;margin-bottom:6px;">📋</div>
+            <div style="font-size:0.8rem;">PRD 文档</div>
+        </div>
+        <div class="card-dark" style="text-align:center;padding:16px;">
+            <div style="font-size:1.8rem;margin-bottom:6px;">🏗️</div>
+            <div style="font-size:0.8rem;">架构文档</div>
+        </div>
+        <div class="card-dark" style="text-align:center;padding:16px;">
+            <div style="font-size:1.8rem;margin-bottom:6px;">💻</div>
+            <div style="font-size:0.8rem;">2 个 API 实现</div>
+        </div>
+        <div class="card-dark" style="text-align:center;padding:16px;">
+            <div style="font-size:1.8rem;margin-bottom:6px;">🧪</div>
+            <div style="font-size:0.8rem;">E2E + 性能测试</div>
+        </div>
+        <div class="card-dark" style="text-align:center;padding:16px;">
+            <div style="font-size:1.8rem;margin-bottom:6px;">📐</div>
+            <div style="font-size:0.8rem;">测试策略</div>
+        </div>
+        <div class="card-dark" style="text-align:center;padding:16px;">
+            <div style="font-size:1.8rem;margin-bottom:6px;">☁️</div>
+            <div style="font-size:0.8rem;">CDK IaC 模板</div>
+        </div>
+        <div class="card-dark" style="text-align:center;padding:16px;">
+            <div style="font-size:1.8rem;margin-bottom:6px;">🔍</div>
+            <div style="font-size:0.8rem;">2 次 Review Gate</div>
+        </div>
+        <div class="card-dark" style="text-align:center;padding:16px;">
+            <div style="font-size:1.8rem;margin-bottom:6px;">🎬</div>
+            <div style="font-size:0.8rem;">Day 2 演示</div>
+        </div>
+    </div>
+    <div style="margin-top:32px;text-align:center;">
+        <p style="color:#FF9900;font-weight:600;font-size:1.1rem;">所有产出物 = AI Agent 生成 + 人工 Review 确认</p>
+        <p style="opacity:0.6;font-size:0.85rem;margin-top:8px;">完整体现 AIDLC 方法论：AI 执行 + Human-in-the-Loop 监督</p>
+    </div>
+</div>
+
+</div><!-- end slides-wrapper -->
+
+<!-- Navigation Dots -->
+<div class="slide-nav" id="slideNav"></div>
+<div class="slide-counter" id="slideCounter">1 / 11</div>
+<div class="slide-hint">← → 键翻页 · 触屏滑动</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+let currentSlide = 0;
+
+// Build nav dots
+const nav = document.getElementById('slideNav');
+for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    nav.appendChild(dot);
+}
+
+function goToSlide(n) {
+    if (n < 0 || n >= totalSlides || n === currentSlide) return;
+    slides[currentSlide].className = slides[currentSlide].className.replace(' active', '') + (n > currentSlide ? ' prev' : '');
+    slides[currentSlide].classList.remove('active');
+    slides[currentSlide].classList.add('prev');
+    currentSlide = n;
+    slides[currentSlide].classList.remove('prev');
+    slides[currentSlide].classList.add('active');
+    // Update dots
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+    document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+}
+
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
+    if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+    if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+});
+
+// Touch/swipe navigation
+let touchStartX = 0, touchStartY = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; });
+document.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+        if (dx < 0) nextSlide(); else prevSlide();
+    }
+});
+
+// Mouse wheel
+let wheelTimeout;
+document.addEventListener('wheel', (e) => {
+    if (wheelTimeout) return;
+    wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 600);
+    if (e.deltaY > 0) nextSlide(); else prevSlide();
+}, { passive: true });
+</script>
+</body>
+</html>

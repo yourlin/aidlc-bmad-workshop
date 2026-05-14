@@ -1,0 +1,29 @@
+# Test runs
+test-run/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Node
+node_modules/
+package-lock.json
+
+# BMAD runtime (participants generate locally)
+.kiro/skills/
+.claude/skills/
+.cursor/
+.agents/
+
+# Workshop runtime outputs (each participant generates their own)
+_bmad-output/implementation-artifacts/*
+!_bmad-output/implementation-artifacts/.gitkeep
+src/
+
+# Logs
+*.log
+build.log
