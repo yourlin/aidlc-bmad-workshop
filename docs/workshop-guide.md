@@ -4,7 +4,7 @@
 
 | 项目 | 内容 |
 |------|------|
-| **时长** | 4 小时（半天） |
+| **时长** | Day 1: 4 小时动手实操 + Day 2: 2 小时成果分享 |
 | **目标** | 使用 BMAD 方法完成端到端 AIDLC 生命周期演练 |
 | **核心理念** | AI 执行 + Human-in-the-Loop 监督 |
 
@@ -14,11 +14,11 @@
 
 | 角色 | BMAD Agent | 命令 | 阶段 |
 |------|-----------|------|------|
-| PM | John | `CP` | Inception |
-| 运维/架构 | Winston | `CA` | Operations |
-| 开发工程师 | Amelia | `DS` | Construction |
-| QA | Quinn | `QA` | Construction |
-| 测试工程师 | Quinn + TEA | `QA` | Construction |
+| PM | John | `/pm` → `CP` | Inception |
+| 运维/架构 | Winston | `/architect` → `CA` | Operations |
+| 开发工程师 | Amelia | `/dev` → `DS` | Construction |
+| QA | Quinn | `/qa` → `TS` | Construction |
+| 测试工程师 | Quinn + TEA | `/qa` → `E2E` / `PF` / `ST` | Construction |
 
 ---
 

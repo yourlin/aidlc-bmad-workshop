@@ -90,12 +90,9 @@ ls _bmad/bmm/agents/     # 确认 Agent 文件存在
 ```
 aidlc-bmad-workshop/
 ├── _bmad/                              # BMAD 配置目录
-│   ├── core/config.yaml                # 核心配置（语言、输出目录、Party Mode）
-│   ├── bmm/
-│   │   ├── config.yaml                 # 模块配置（项目名、技能级别）
-│   │   ├── agents/                     # Agent 定义（BMAD 安装后自动生成）
-│   │   └── workflows/                  # 工作流定义（BMAD 安装后自动生成）
-│   └── custom/                         # ⭐ Agent 自定义配置（Workshop 核心）
+│   ├── core/                           # （npx bmad-method install 生成，不提交）
+│   ├── bmm/                            # （npx bmad-method install 生成，不提交）
+│   └── custom/                         # ⭐ Agent 自定义配置（Workshop 核心，提交到 git）
 │       ├── bmad-agent-pm.toml          # PM: 跳过 Analysis，快速创建 PRD
 │       ├── bmad-agent-architect.toml   # 架构: 技术栈锁定，聚焦文档+CDK
 │       ├── bmad-agent-dev.toml         # 开发: TDD 模式，TypeScript+Zod+Jest
@@ -208,33 +205,34 @@ persistent_facts = [
 
 ## 使用方式
 
-### 方式一：直接使用 Seed Prompt
+### 方式一（推荐）：BMAD 命令 + Agent 定制
 
-1. 打开你角色对应的 Seed Prompt 文件（如 `docs/seed-prompts/dev-seed.md`）
-2. 复制 `## Prompt` 部分的内容
-3. 粘贴到 AI IDE 的对话窗口中
-4. AI Agent 会根据 BMAD 配置自动执行任务
-
-### 方式二：使用 BMAD 命令
-
-安装 BMAD 后（`npx bmad-method install`），在 AI IDE 中直接输入命令：
+安装完成后，`_bmad/custom/*.toml` 中的定制会自动生效。在 AI IDE 中直接输入命令：
 
 ```
 /bmad-help                    → 获取帮助（任何时候可用）
-/pm                           → 启动 PM Agent（John）
-/architect                    → 启动架构 Agent（Winston）
-/dev                          → 启动开发 Agent（Amelia）
-/qa                           → 启动 QA Agent（Quinn）
+/pm                           → 启动 PM Agent → 选择 CP（自动加载 Brief）
+/architect                    → 启动架构 Agent → 选择 CA（技术栈已锁定）
+/dev                          → 启动开发 Agent → 选择 DS（TDD 模式）
+/qa                           → 启动 QA Agent → 选择 TS / AC
 /create-prd                   → 直接启动 PRD 创建工作流
 /create-architecture          → 直接启动架构设计工作流
-/create-epics-and-stories     → 拆分 Epic 和 Story
 /sprint-planning              → Sprint 规划
 /develop-story                → 实现一个 Story
 /party-mode                   → 启动多 Agent 联合评审
-/quick-flow-solo-dev          → 快速开发模式（小功能/bug fix）
 ```
 
 > ⚠️ **重要**：每个工作流结束后开新聊天！上下文残留是 AI 质量下降的头号原因。
+
+### 方式二（备选）：手动粘贴 Seed Prompt
+
+如果 BMAD 未安装或遇到问题，可以手动使用 `docs/seed-prompts/` 中的 Prompt：
+
+1. 打开对应角色的文件（如 `docs/seed-prompts/dev-seed.md`）
+2. 复制 Prompt 内容粘贴到 AI IDE
+3. AI 会根据 Prompt 内容执行任务
+
+> 💡 Seed Prompts 是 Agent 定制的"降级方案"——功能相同，但没有 `persistent_facts` 和 `activation_steps` 的自动加载。
 
 ### 方式三：Party Mode（联合评审）
 
