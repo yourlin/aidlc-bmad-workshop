@@ -435,35 +435,56 @@
     </div>
 </div>
 
-<!-- Slide 6: Seed Prompts -->
+<!-- Slide 7: Role Quick Reference -->
 <div class="slide slide-dark" data-slide="7">
-    <h2 style="text-align:center;">Seed Prompts — 开箱即用</h2>
-    <p style="text-align:center;opacity:0.7;margin-bottom:24px;font-size:0.9rem;">复制对应角色的 Prompt 粘贴到 AI IDE 即可启动</p>
+    <h2 style="text-align:center;">各角色任务速览</h2>
+    <p style="text-align:center;opacity:0.7;margin-bottom:24px;font-size:0.9rem;">在 Kiro 中输入命令 → 选择菜单代码 → Agent 自动执行（已加载定制配置）</p>
     <div class="cards-grid cards-grid-2" style="max-width:1000px;">
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-pm">PM</span><strong style="color:white;">创建 PRD</strong>
+                <span class="role-badge badge-pm">PM</span><strong style="color:white;">/pm → CP</strong>
             </div>
-            <div class="code-block" style="font-size:0.7rem;">CP<br><br>Based on the product brief,<br>create a PRD for Hotel Booking API.<br>Focus on: 5 endpoints, JWT auth,<br>error handling, API versioning.</div>
+            <div style="font-size:0.75rem;color:#ccc;line-height:1.6;">
+                自动加载 product-brief.md<br>
+                产出：<code>prd.md</code>（5 端点 + JWT + 错误处理）<br>
+                <span style="color:#FF9900;">⏱ 30 分钟内完成</span>
+            </div>
         </div>
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-arch">运维</span><strong style="color:white;">技术架构</strong>
+                <span class="role-badge badge-arch">架构</span><strong style="color:white;">/architect → CA / CI</strong>
             </div>
-            <div class="code-block" style="font-size:0.7rem;">CA<br><br>Create architecture for Hotel API.<br>Stack: Lambda + API GW + DynamoDB + CDK<br>Requirements: Serverless, JWT auth,<br>CloudWatch + X-Ray, CI/CD.</div>
+            <div style="font-size:0.75rem;color:#ccc;line-height:1.6;">
+                技术栈已锁定，不讨论选型<br>
+                产出：<code>architecture.md</code> + <code>src/infra/</code><br>
+                <span style="color:#FF9900;">⏱ 30 分钟架构 + 50 分钟 CDK</span>
+            </div>
         </div>
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-dev">开发</span><strong style="color:white;">实现代码</strong>
+                <span class="role-badge badge-dev">开发</span><strong style="color:white;">/dev → DS / D2</strong>
             </div>
-            <div class="code-block" style="font-size:0.7rem;">DS<br><br>Implement "Create Room" endpoint.<br>Tech: TypeScript + Lambda + DynamoDB<br>POST /api/v1/rooms · Zod validation<br>TDD: write test first, then implement.</div>
+            <div style="font-size:0.75rem;color:#ccc;line-height:1.6;">
+                TDD 模式：先测试 → 再实现<br>
+                产出：<code>src/handlers/</code> + <code>src/__tests__/</code><br>
+                <span style="color:#FF9900;">⏱ 每个 Story 约 25 分钟</span>
+            </div>
         </div>
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-tester">测试</span><strong style="color:white;">E2E + 性能测试</strong>
+                <span class="role-badge badge-qa">QA</span><strong style="color:white;">/qa → TS / AC</strong>
+                <span style="margin-left:8px;"></span>
+                <span class="role-badge badge-tester">测试</span><strong style="color:white;">→ E2E / PF / ST</strong>
             </div>
-            <div class="code-block" style="font-size:0.7rem;">QA<br><br>As Test Engineer, create test suites.<br>E2E + Performance (&lt;200ms p95)<br>Security testing + Data integrity<br>Tools: Jest + supertest + Artillery</div>
+            <div style="font-size:0.75rem;color:#ccc;line-height:1.6;">
+                QA：策略 + 验收用例 · 测试工程师：E2E + 性能 + 安全<br>
+                产出：<code>test-strategy.md</code> + <code>src/__tests__/</code> + <code>src/performance/</code><br>
+                <span style="color:#FF9900;">⏱ Review Gate #2 需现场演示</span>
+            </div>
         </div>
+    </div>
+    <div style="margin-top:20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:12px 20px;max-width:700px;text-align:center;">
+        <span style="font-size:0.8rem;color:#ccc;">⚠️ 每个工作流结束后<strong style="color:#FF9900;">开新聊天</strong> — 上下文残留是质量下降的头号原因</span>
     </div>
 </div>
 
@@ -526,49 +547,44 @@
     </div>
 </div>
 
-<!-- Slide 8: Brownfield Prompts -->
+<!-- Slide 9: Brownfield Notes -->
 <div class="slide slide-white" data-slide="9">
-    <h2 style="text-align:center;">🛡️ Brownfield 安全护栏 — Prompt 约束模板</h2>
-    <p style="text-align:center;color:#666;margin-bottom:20px;font-size:0.85rem;">Brownfield 项目的 Seed Prompt 必须增加以下约束，防止 AI 破坏已有代码</p>
-    <div style="max-width:950px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <h2 style="text-align:center;">🛡️ Brownfield 项目注意事项</h2>
+    <p style="text-align:center;color:#666;margin-bottom:20px;font-size:0.85rem;">Agent 定制配置（<code>_bmad/custom/*.toml</code>）已内置安全约束，以下是额外提醒</p>
+    <div style="max-width:900px;width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
         <div class="card" style="padding:16px;border-top:3px solid #DC2626;">
-            <h3 style="font-size:0.9rem;color:#DC2626;">🚫 绝对禁止（写入每个 Prompt）</h3>
-            <div style="font-size:0.78rem;color:#555;line-height:1.8;margin-top:8px;">
-                • 不得删除或重命名已有文件<br>
-                • 不得修改已有 API 的请求/响应格式<br>
-                • 不得变更数据库 schema（除非 migration）<br>
-                • 不得引入与已有框架冲突的新依赖<br>
-                • 不得跳过已有的 lint / test 规则
+            <h3 style="font-size:0.85rem;color:#DC2626;">🚫 AI 不可以做</h3>
+            <div style="font-size:0.75rem;color:#555;line-height:1.8;margin-top:8px;">
+                • 删除/重命名已有文件<br>
+                • 修改已有 API 格式<br>
+                • 破坏性 schema 变更<br>
+                • 引入冲突依赖<br>
+                • 跳过 lint/test 规则
             </div>
         </div>
         <div class="card" style="padding:16px;border-top:3px solid #10B981;">
-            <h3 style="font-size:0.9rem;color:#10B981;">✅ 必须遵守（写入每个 Prompt）</h3>
-            <div style="font-size:0.78rem;color:#555;line-height:1.8;margin-top:8px;">
-                • 先读 project-context.md 再动手<br>
-                • 新代码必须匹配已有代码风格<br>
-                • 所有变更必须有对应测试<br>
-                • 已有测试必须全部通过<br>
-                • 新功能用 Feature Flag 包裹
+            <h3 style="font-size:0.85rem;color:#10B981;">✅ AI 必须做</h3>
+            <div style="font-size:0.75rem;color:#555;line-height:1.8;margin-top:8px;">
+                • 先读代码再动手<br>
+                • 匹配已有代码风格<br>
+                • 变更必须有测试<br>
+                • 已有测试全部通过<br>
+                • Feature Flag 包裹新功能
             </div>
         </div>
-        <div class="card" style="padding:16px;grid-column:span 2;">
-            <h3 style="font-size:0.9rem;">📝 Brownfield Prompt 模板（复制后修改 [ ] 内容）</h3>
-            <div class="code-block" style="font-size:0.7rem;margin-top:8px;">
-DS<br><br>
-⚠️ BROWNFIELD PROJECT — Read _bmad-output/planning-artifacts/project-context.md FIRST.<br><br>
-Implement [Story 名称] in the EXISTING codebase at [目录路径].<br><br>
-BEFORE writing any code:<br>
-1. Read existing patterns in [src/相关目录]<br>
-2. Run existing tests: [npm test / mvn test / pytest] — must all pass<br>
-3. Check git status is clean<br><br>
-CONSTRAINTS:<br>
-- Backward compatible with [已有 API/接口]<br>
-- Follow existing [error handling / logging / auth] patterns<br>
-- Do NOT modify files outside [允许修改的目录]<br>
-- All new code must have unit tests<br>
-- Wrap new features with feature flag: [flag name]
+        <div class="card" style="padding:16px;border-top:3px solid #3B82F6;">
+            <h3 style="font-size:0.85rem;color:#3B82F6;">� 你需要做</h3>
+            <div style="font-size:0.75rem;color:#555;line-height:1.8;margin-top:8px;">
+                • 修改 <code>*.toml</code> 中的技术栈<br>
+                • 追加受保护目录列表<br>
+                • 用 <code>/pm → BP</code> 生成上下文<br>
+                • 开始前跑通已有测试<br>
+                • Review Gate 更严格
             </div>
         </div>
+    </div>
+    <div style="margin-top:16px;background:#FEF3C7;border:1px solid #FCD34D;border-radius:8px;padding:12px 20px;max-width:700px;text-align:center;">
+        <span style="font-size:0.8rem;color:#92400E;">💡 这些约束已写入 <code>_bmad/custom/*.toml</code> 的 <code>persistent_facts</code> 和 <code>principles</code> 中。<br>Brownfield 项目只需修改技术栈描述 + 追加受保护路径，无需手写 Prompt。</span>
     </div>
 </div>
 
