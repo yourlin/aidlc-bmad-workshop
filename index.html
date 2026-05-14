@@ -385,22 +385,22 @@
             </div>
         </div>
         <div class="card" style="padding:14px;border-left:4px solid #3B82F6;">
-            <h3 style="font-size:0.9rem;">Step 2：让 BMAD 生成项目上下文</h3>
+            <h3 style="font-size:0.9rem;">Step 2：让 BMAD 生成 Product Brief</h3>
+            <div style="margin-top:4px;background:#FEF2F2;border-radius:6px;padding:4px 8px;font-size:0.65rem;color:#991B1B;">
+                ❌ 不要用预置的 product-brief.md（那是 Greenfield 演练项目的）
+            </div>
             <div class="code-block" style="font-size:0.72rem;margin-top:6px;">
                 <span style="color:#888;"># 在 AI IDE 中激活 PM Agent</span><br>
                 /pm<br><br>
-                <span style="color:#888;"># 选择 Create Product Brief（BP）</span><br>
-                <span style="color:#888;"># Agent 会自动扫描代码库并追问你</span><br>
-                <span style="color:#888;"># 产出 product-brief.md 含项目上下文</span>
+                <span style="color:#888;"># 选择 BP（Create Product Brief）</span><br>
+                <span style="color:#888;"># Agent 自动扫描代码库 → 追问 → 生成 Brief</span>
             </div>
             <div style="font-size:0.72rem;color:#555;margin-top:6px;line-height:1.5;">
-                或者直接告诉 Agent：<br>
-                <em>"Analyze this existing codebase and create a product brief<br>
-                that documents the current architecture, tech stack,<br>
-                constraints, and areas I want to change."</em>
+                Agent 会产出符合你项目实际情况的 product-brief.md，<br>
+                包含：现有架构、技术栈、约束、本次变更范围。
             </div>
             <div style="margin-top:6px;background:#EFF6FF;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#1E40AF;">
-                💡 Agent 会自动读取代码结构，生成上下文文档，无需手动编写
+                💡 无需手动编写——Agent 读代码后自动生成
             </div>
         </div>
         <div class="card" style="padding:14px;border-left:4px solid #10B981;">

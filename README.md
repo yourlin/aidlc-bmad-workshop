@@ -104,7 +104,7 @@ aidlc-bmad-workshop/
 │       └── bmad-agent-tester.toml      # 测试工程师: E2E+性能+安全测试
 ├── _bmad-output/                       # AI Agent 产出物
 │   ├── planning-artifacts/             # 规划阶段产出
-│   │   └── product-brief.md           # 预置 Product Brief（跳过 Analysis）
+│   │   └── product-brief.md           # Greenfield 预置 / Brownfield 用 /pm→BP 生成
 │   └── implementation-artifacts/       # 实现阶段产出
 ├── docs/                               # 文档目录
 │   ├── seed-prompts/                   # 各角色启动 Prompt
@@ -333,11 +333,19 @@ document_output_language:
 
 ## 预置内容说明
 
-### Product Brief（跳过 Analysis 阶段）
+### Product Brief
 
 文件：`_bmad-output/planning-artifacts/product-brief.md`
 
-这是一个预置的产品简介，描述了 Hotel Booking Inventory API 的核心需求。通过预置此文件，Workshop 可以跳过耗时的 Analysis 阶段，直接从 PRD 创建开始，节省约 45 分钟。
+**Greenfield 项目**：预置了 Hotel Booking Inventory API 的产品简介，Workshop 可以跳过 Analysis 阶段直接从 PRD 创建开始，节省约 45 分钟。
+
+**Brownfield 项目**：不要使用预置的 Brief！BMAD 安装完成后，用 Agent 动态生成：
+
+```
+/pm → 选择 BP（Create Product Brief）
+```
+
+Agent 会自动扫描已有代码库，追问关键问题后产出符合你项目实际情况的 product-brief.md。
 
 ### 演练项目：Hotel Booking Inventory API
 
