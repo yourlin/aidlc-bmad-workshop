@@ -41,6 +41,10 @@ powershell -ExecutionPolicy Bypass -File setup-workshop.ps1
 
 ### 3. 安装 BMAD Method
 
+> 📖 **BMAD 官方仓库**：[https://github.com/bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD)
+>
+> 完整安装文档：[https://docs.bmad-method.org/how-to/install-bmad/](https://docs.bmad-method.org/how-to/install-bmad/)
+
 ```bash
 npx bmad-method install
 ```
@@ -57,7 +61,7 @@ npx bmad-method install
 >
 > 查看所有支持的 IDE：`npx bmad-method install --list-tools`
 
-> ⚠️ **注意**：如果 `setup-workshop.sh` 已创建了 `_bmad/` 目录，`--yes` 模式会走 quick-update 而非全新安装，导致模块不完整。解决方法：先 `rm -rf _bmad/` 再运行 `npx bmad-method install`。
+> ⚠️ **注意**：`setup-workshop.sh` 不会自动安装 BMAD，你必须手动运行 `npx bmad-method install`。如果目录中已有 `_bmad/core/`（由之前的安装生成），`--yes` 模式会走 quick-update。解决方法：先 `rm -rf _bmad/core _bmad/bmm _bmad/_config` 保留 `_bmad/custom/`，再运行安装命令。
 
 ### 4. 验证并开始 Workshop
 
