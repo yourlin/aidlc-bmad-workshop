@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AIDLC Workshop × BMAD — AI 驱动的全生命周期开发实战</title>
+    <meta name="description" content="使用 Kiro + BMAD Method 完成从需求到部署的端到端演练。4 小时动手实操 + 2 小时成果分享。">
+    <meta property="og:title" content="AIDLC Workshop × BMAD — AI 驱动的全生命周期开发实战">
+    <meta property="og:description" content="使用 Kiro + BMAD Method 完成从需求到部署的端到端演练。AI 执行 + Human-in-the-Loop 监督。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourlin.github.io/aidlc-bmad-workshop/">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
     <style>
         :root {
             --aws-orange: #FF9900;
@@ -195,8 +201,68 @@
     </div>
 </div>
 
-<!-- Slide 4: Roles -->
-<div class="slide slide-white" data-slide="3">
+<!-- Slide 4: Workflow Diagram -->
+<div class="slide slide-light" data-slide="3">
+    <h2 style="text-align:center;">🗺️ Workshop 工作流全景</h2>
+    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:0.82rem;">每个阶段的负责人、并行关系、使用的 Agent/命令一目了然</p>
+    <div style="max-width:1050px;width:100%;overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.72rem;text-align:center;">
+            <thead>
+                <tr style="background:#232F3E;color:white;">
+                    <th style="padding:6px 8px;width:100px;">阶段</th>
+                    <th style="padding:6px 8px;width:90px;">时间</th>
+                    <th style="padding:6px 8px;">PM</th>
+                    <th style="padding:6px 8px;">架构师</th>
+                    <th style="padding:6px 8px;">QA</th>
+                    <th style="padding:6px 8px;">开发</th>
+                    <th style="padding:6px 8px;">测试工程师</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#EFF6FF;">
+                    <td style="padding:8px;font-weight:700;color:#1E40AF;" rowspan="1">Inception<br><span style="font-size:0.6rem;font-weight:400;">需求定义</span></td>
+                    <td style="padding:8px;font-family:monospace;color:#FF9900;">15:35-16:05</td>
+                    <td style="padding:8px;background:#DBEAFE;border-radius:6px;"><strong>/pm → CP</strong><br>创建 PRD<br><span style="color:#666;">产出: prd.md</span></td>
+                    <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/architect → CA</strong><br>架构设计<br><span style="color:#666;">产出: architecture.md</span></td>
+                    <td style="padding:8px;background:#EDE9FE;border-radius:6px;"><strong>/qa → TS</strong><br>测试策略<br><span style="color:#666;">产出: test-strategy.md</span></td>
+                    <td style="padding:8px;color:#999;">—<br><span style="font-size:0.6rem;">等待 Sprint Planning</span></td>
+                    <td style="padding:8px;color:#999;">—<br><span style="font-size:0.6rem;">等待 Sprint Planning</span></td>
+                </tr>
+                <tr>
+                    <td colspan="7" style="padding:4px;background:#FAF5FF;font-weight:600;color:#7C3AED;">🔍 Review Gate #1 — Party Mode 联合评审（PRD + 架构 + 测试策略一致性）</td>
+                </tr>
+                <tr style="background:#F0FDF4;">
+                    <td style="padding:8px;font-weight:700;color:#065F46;" rowspan="1">Construction<br><span style="font-size:0.6rem;font-weight:400;">并行构建</span></td>
+                    <td style="padding:8px;font-family:monospace;color:#FF9900;">16:40-17:30</td>
+                    <td style="padding:8px;color:#999;">—<br><span style="font-size:0.6rem;">支持 & 答疑</span></td>
+                    <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/architect → CI</strong><br>CDK IaC 代码<br><span style="color:#666;">产出: src/infra/</span></td>
+                    <td style="padding:8px;background:#EDE9FE;border-radius:6px;"><strong>/qa → AC</strong><br>验收用例<br><span style="color:#666;">产出: acceptance-tests.md</span></td>
+                    <td style="padding:8px;background:#D1FAE5;border-radius:6px;"><strong>/dev → DS, D2</strong><br>实现 Story #1 #2<br><span style="color:#666;">产出: src/handlers/</span></td>
+                    <td style="padding:8px;background:#FCE7F3;border-radius:6px;"><strong>/qa → E2E, PF, ST</strong><br>E2E+性能+安全<br><span style="color:#666;">产出: src/__tests__/</span></td>
+                </tr>
+                <tr>
+                    <td colspan="7" style="padding:4px;background:#FAF5FF;font-weight:600;color:#7C3AED;">🔍 Review Gate #2 — Party Mode 联合评审 + 测试执行演示</td>
+                </tr>
+                <tr style="background:#FFF7ED;">
+                    <td style="padding:8px;font-weight:700;color:#9A3412;">Day 2<br><span style="font-size:0.6rem;font-weight:400;">成果分享</span></td>
+                    <td style="padding:8px;font-family:monospace;color:#FF9900;">10:00-12:00</td>
+                    <td colspan="5" style="padding:8px;background:#FFF7ED;border-radius:6px;text-align:center;"><strong>全员参与</strong> — 每组 10 分钟演示产出物 + AI 协作心得 + 讲师点评</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <span style="font-size:0.65rem;background:#DBEAFE;padding:2px 8px;border-radius:4px;">🔵 PM 工作</span>
+        <span style="font-size:0.65rem;background:#FEF3C7;padding:2px 8px;border-radius:4px;">🟡 架构工作</span>
+        <span style="font-size:0.65rem;background:#EDE9FE;padding:2px 8px;border-radius:4px;">🟣 QA 工作</span>
+        <span style="font-size:0.65rem;background:#D1FAE5;padding:2px 8px;border-radius:4px;">🟢 开发工作</span>
+        <span style="font-size:0.65rem;background:#FCE7F3;padding:2px 8px;border-radius:4px;">🔴 测试工程师</span>
+        <span style="font-size:0.65rem;background:#FAF5FF;padding:2px 8px;border-radius:4px;">🟣 Review Gate</span>
+    </div>
+</div>
+
+<!-- Slide 5: Roles -->
+<div class="slide slide-white" data-slide="4">
     <h2 style="text-align:center;">角色与分工</h2>
     <p style="text-align:center;color:#666;margin-bottom:24px;">5 个角色对应 BMAD Agent，覆盖 AIDLC 全生命周期</p>
     <div class="cards-grid" style="grid-template-columns:repeat(5,1fr);max-width:1100px;">
@@ -238,7 +304,7 @@
 </div>
 
 <!-- Slide 5: Setup (Greenfield) -->
-<div class="slide slide-light" data-slide="4">
+<div class="slide slide-light" data-slide="5">
     <h2 style="text-align:center;">🛠️ 环境准备 — Greenfield（新项目）</h2>
     <p style="text-align:center;color:#666;margin-bottom:12px;font-size:0.82rem;">⚠️ 所有步骤必须按顺序执行，每步完成后验证再进入下一步</p>
     <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -301,7 +367,7 @@
 </div>
 
 <!-- Slide 5b: Setup (Brownfield) -->
-<div class="slide slide-white" data-slide="5">
+<div class="slide slide-white" data-slide="6">
     <h2 style="text-align:center;">🛠️ 环境准备 — Brownfield（已有项目）</h2>
     <p style="text-align:center;color:#666;margin-bottom:12px;font-size:0.82rem;">⚠️ 不要动已有代码！只在项目根目录叠加 BMAD 配置</p>
     <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -370,7 +436,7 @@
 </div>
 
 <!-- Slide 6: Seed Prompts -->
-<div class="slide slide-dark" data-slide="6">
+<div class="slide slide-dark" data-slide="7">
     <h2 style="text-align:center;">Seed Prompts — 开箱即用</h2>
     <p style="text-align:center;opacity:0.7;margin-bottom:24px;font-size:0.9rem;">复制对应角色的 Prompt 粘贴到 AI IDE 即可启动</p>
     <div class="cards-grid cards-grid-2" style="max-width:1000px;">
@@ -402,7 +468,7 @@
 </div>
 
 <!-- Slide 7: BMAD Usage Flow -->
-<div class="slide slide-light" data-slide="7">
+<div class="slide slide-light" data-slide="8">
     <h2 style="text-align:center;">🚀 BMAD 使用流程 — 安装完成后怎么用</h2>
     <p style="text-align:center;color:#666;margin-bottom:16px;font-size:0.82rem;">在 AI IDE 中输入以下命令即可启动对应 Agent 和工作流</p>
     <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -461,7 +527,7 @@
 </div>
 
 <!-- Slide 8: Brownfield Prompts -->
-<div class="slide slide-white" data-slide="8">
+<div class="slide slide-white" data-slide="9">
     <h2 style="text-align:center;">🛡️ Brownfield 安全护栏 — Prompt 约束模板</h2>
     <p style="text-align:center;color:#666;margin-bottom:20px;font-size:0.85rem;">Brownfield 项目的 Seed Prompt 必须增加以下约束，防止 AI 破坏已有代码</p>
     <div style="max-width:950px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
@@ -507,7 +573,7 @@ CONSTRAINTS:<br>
 </div>
 
 <!-- Slide 9: FAQ -->
-<div class="slide slide-light" data-slide="9">
+<div class="slide slide-light" data-slide="10">
     <h2 style="text-align:center;">❓ 常见问题</h2>
     <div style="max-width:800px;width:100%;">
         <div class="faq-item" onclick="this.classList.toggle('open')">
@@ -542,7 +608,7 @@ CONSTRAINTS:<br>
 </div>
 
 <!-- Slide 10: Success Criteria -->
-<div class="slide slide-accent" data-slide="10">
+<div class="slide slide-accent" data-slide="11">
     <h2 style="text-align:center;">🏆 成功标准</h2>
     <p style="text-align:center;opacity:0.7;margin-bottom:32px;font-size:0.9rem;">Workshop 结束时，每组应完成以下产出物</p>
     <div class="cards-grid" style="grid-template-columns:repeat(4,1fr);max-width:900px;">
@@ -589,7 +655,7 @@ CONSTRAINTS:<br>
 
 <!-- Navigation Dots -->
 <div class="slide-nav" id="slideNav"></div>
-<div class="slide-counter" id="slideCounter">1 / 11</div>
+<div class="slide-counter" id="slideCounter">1 / 12</div>
 <div class="slide-hint">← → 键翻页 · 触屏滑动</div>
 
 <script>

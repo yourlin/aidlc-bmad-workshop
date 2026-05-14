@@ -370,26 +370,26 @@ Review the implementation artifacts:
 ```
 aidlc-bmad-workshop/
 ├── _bmad/
-│   ├── core/config.yaml                    ✅ 已配置
-│   └── bmm/
-│       ├── config.yaml                     ✅ 已配置
-│       ├── agents/                         ✅ 自动生成
-│       └── workflows/                      ✅ 自动生成
+│   └── custom/                             ⭐ Workshop Agent 定制（核心）
+│       ├── config.toml                     ✅ 中文语言覆盖
+│       ├── bmad-agent-pm.toml              ✅ PM 定制
+│       ├── bmad-agent-architect.toml       ✅ 架构定制
+│       ├── bmad-agent-dev.toml             ✅ 开发定制
+│       ├── bmad-agent-qa.toml              ✅ QA 定制
+│       └── bmad-agent-tester.toml          ✅ 测试工程师定制
 ├── _bmad-output/
 │   └── planning-artifacts/
 │       └── product-brief.md                ✅ 预置（第3节）
 ├── docs/
-│   ├── seed-prompts/
-│   │   ├── pm-seed.md                      ✅ 预置（第4节）
-│   │   ├── architect-seed.md               ✅ 预置
-│   │   ├── dev-seed.md                     ✅ 预置
-│   │   ├── qa-seed.md                      ✅ 预置
-│   │   └── tester-seed.md                  ✅ 预置
+│   ├── seed-prompts/                       ✅ 备选 Prompt（5 个）
 │   └── workshop-guide.md                   ✅ 参与者指南
 ├── setup-workshop.sh                       ✅ 初始化脚本（macOS/Linux）
 ├── setup-workshop.ps1                      ✅ 初始化脚本（Windows）
+├── index.html                              ✅ PPT 式演示页面
 └── src/                                    🔲 开发时创建
 ```
+
+> 注：`_bmad/core/`、`_bmad/bmm/` 由 `npx bmad-method install` 自动生成，不提交到 git。
 
 ---
 
