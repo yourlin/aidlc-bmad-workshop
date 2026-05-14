@@ -91,10 +91,16 @@ ls _bmad/bmm/agents/     # 确认 Agent 文件存在
 aidlc-bmad-workshop/
 ├── _bmad/                              # BMAD 配置目录
 │   ├── core/config.yaml                # 核心配置（语言、输出目录、Party Mode）
-│   └── bmm/
-│       ├── config.yaml                 # 模块配置（项目名、技能级别）
-│       ├── agents/                     # Agent 定义（BMAD 安装后自动生成）
-│       └── workflows/                  # 工作流定义（BMAD 安装后自动生成）
+│   ├── bmm/
+│   │   ├── config.yaml                 # 模块配置（项目名、技能级别）
+│   │   ├── agents/                     # Agent 定义（BMAD 安装后自动生成）
+│   │   └── workflows/                  # 工作流定义（BMAD 安装后自动生成）
+│   └── custom/                         # ⭐ Agent 自定义配置（Workshop 核心）
+│       ├── bmad-agent-pm.toml          # PM: 跳过 Analysis，快速创建 PRD
+│       ├── bmad-agent-architect.toml   # 架构: 技术栈锁定，聚焦文档+CDK
+│       ├── bmad-agent-dev.toml         # 开发: TDD 模式，TypeScript+Zod+Jest
+│       ├── bmad-agent-qa.toml          # QA: 测试策略设计+验收用例
+│       └── bmad-agent-tester.toml      # 测试工程师: E2E+性能+安全测试
 ├── _bmad-output/                       # AI Agent 产出物
 │   ├── planning-artifacts/             # 规划阶段产出
 │   │   └── product-brief.md           # 预置 Product Brief（跳过 Analysis）
@@ -112,6 +118,60 @@ aidlc-bmad-workshop/
 ├── setup-workshop.ps1                  # 初始化脚本（Windows）
 ├── AIDLC Workshop BMAD 配置规划.md      # 原始规划文档
 └── README.md                           # 本文件
+```
+
+---
+
+## Agent 自定义配置（Workshop 核心简化）
+
+`_bmad/custom/` 目录下的 5 个 `.toml` 文件是本 Workshop 的核心——它们通过 BMAD 的三层覆盖机制，将通用 Agent 定制为 Workshop 专用模式：
+
+| 配置文件 | 简化了什么 |
+|---------|-----------|
+| `bmad-agent-pm.toml` | 跳过 Analysis 阶段，自动加载 Brief，菜单直接给"快速创建 PRD" |
+| `bmad-agent-architect.toml` | 技术栈锁定不讨论选型，菜单含"创建架构"+"生成 CDK 骨架" |
+| `bmad-agent-dev.toml` | TDD 流程固化，自动读取 PRD+架构，菜单含"实现 Story" |
+| `bmad-agent-qa.toml` | 测试策略模板化，菜单含"创建策略"+"编写验收用例" |
+| `bmad-agent-tester.toml` | 三类测试预定义，菜单含"E2E"+"性能"+"安全" |
+
+每个配置通过以下字段实现简化：
+
+- **`persistent_facts`** — 注入时间约束和技术栈锁定，Agent 不再追问已确定的事项
+- **`activation_steps_prepend`** — 自动加载相关文档（Brief/PRD/架构），用户不需要手动指定
+- **`menu`** — 预定义快捷操作，选一个代码就能启动，不需要写完整 Prompt
+- **`principles`** — 约束 Agent 行为（如"30 分钟内完成"、"MVP 优先"）
+
+### Greenfield 项目
+
+直接使用这些配置即可。`setup-workshop.sh` + `npx bmad-method install` 后，Agent 会自动加载 `_bmad/custom/` 中的定制。
+
+### Brownfield 项目
+
+需要在配置基础上做两处调整：
+
+1. **修改 `persistent_facts`**：将技术栈描述改为你的实际技术栈
+2. **添加约束**：在对应 Agent 的 `.toml` 中追加 Brownfield 安全护栏
+
+示例——在 `bmad-agent-dev.toml` 中追加：
+
+```toml
+# _bmad/custom/bmad-agent-dev.toml（追加到 persistent_facts 数组）
+persistent_facts = [
+  "这是 Brownfield 项目，已有代码库不可破坏。",
+  "修改前必须先读取现有代码模式，保持风格一致。",
+  "所有变更必须通过已有测试（npm test 必须全绿）。",
+  "不得修改 src/core/ 和 src/auth/ 目录下的文件。",
+]
+```
+
+或者创建个人覆盖文件 `_bmad/custom/bmad-agent-dev.user.toml`（不提交到 git）：
+
+```toml
+[agent]
+persistent_facts = [
+  "我的项目用 Java/Spring Boot，不是 TypeScript。",
+  "数据库是 PostgreSQL，不是 DynamoDB。",
+]
 ```
 
 ---

@@ -274,7 +274,10 @@
                 按提示选择：<br>
                 • Modules → <strong>BMM</strong>（核心框架）<br>
                 • AI IDE → <strong>kiro</strong>（推荐）/ claude-code / cursor / codex<br>
-                • 语言 → Chinese · 项目名 → 你的项目名
+                • 语言 → Chinese · 项目名 → 你的项目名<br>
+                <br>
+                安装后 <code>_bmad/custom/*.toml</code> 中的 Agent 定制会自动生效：<br>
+                PM 跳过 Analysis · 架构锁定技术栈 · 开发 TDD 模式 · QA 策略模板化
             </div>
             <div style="margin-top:6px;background:#EFF6FF;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#1E40AF;">
                 💡 非交互式：<code>npx bmad-method install --yes --modules bmm --tools kiro</code><br>
@@ -347,18 +350,20 @@
             </div>
         </div>
         <div class="card" style="padding:14px;border-left:4px solid #8B5CF6;">
-            <h3 style="font-size:0.9rem;">Step 4：确认 BMAD 可用</h3>
+            <h3 style="font-size:0.9rem;">Step 4：定制 Agent + 确认可用</h3>
             <div class="code-block" style="font-size:0.7rem;margin-top:6px;">
-                npx bmad-method status <span style="color:#888;"># 显示已安装模块</span><br>
-                ls _bmad/bmm/agents/ &nbsp;&nbsp;<span style="color:#888;"># 有 agent 文件</span>
+                <span style="color:#888;"># 修改 Agent 配置中的技术栈描述</span><br>
+                vi _bmad/custom/bmad-agent-dev.toml<br>
+                <span style="color:#888;"># 将 persistent_facts 中的技术栈改为你的实际栈</span>
             </div>
             <div style="font-size:0.72rem;color:#555;margin-top:6px;line-height:1.5;">
-                然后在 AI IDE 中测试：<br>
-                输入 <code>/bmad-help</code> → 应看到帮助菜单<br>
-                输入 <code>/pm</code> → 应看到 PM Agent 菜单
+                <code>_bmad/custom/*.toml</code> 中的 Agent 定制需要适配你的项目：<br>
+                • 修改技术栈描述（如 Java/Spring 替换 TypeScript/Lambda）<br>
+                • 追加 Brownfield 约束（不可修改的目录/接口）<br>
+                • 在 AI IDE 中输入 <code>/bmad-help</code> 确认生效
             </div>
             <div style="margin-top:6px;background:#F0FDF4;border-radius:6px;padding:6px 8px;font-size:0.68rem;color:#166534;">
-                ✅ 全部通过 → 可以开始 Workshop！
+                ✅ Agent 响应符合你的项目上下文 → 可以开始 Workshop！
             </div>
         </div>
     </div>
