@@ -1,0 +1,10 @@
+# Workshop 团队级中央配置覆盖
+# 优先级高于 _bmad/config.toml（安装器生成），确保中文为默认语言
+
+[core]
+communication_language = "Chinese"
+document_output_language = "Chinese"
+
+[modules.bmm]
+project_name = "aidlc-bmad-workshop"
+user_skill_level = "intermediate"

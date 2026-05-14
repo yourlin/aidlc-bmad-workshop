@@ -156,6 +156,20 @@ EOF
 echo -e "  ${GREEN}✓${NC} _bmad-output/planning-artifacts/product-brief.md"
 
 # --- Agent 自定义配置（Workshop 核心简化）---
+cat > _bmad/custom/config.toml << 'EOF'
+# Workshop 团队级中央配置覆盖
+# 确保中文为默认语言（优先级高于安装器生成的 _bmad/config.toml）
+
+[core]
+communication_language = "Chinese"
+document_output_language = "Chinese"
+
+[modules.bmm]
+project_name = "aidlc-bmad-workshop"
+user_skill_level = "intermediate"
+EOF
+echo -e "  ${GREEN}✓${NC} _bmad/custom/config.toml (中文语言覆盖)"
+
 cat > _bmad/custom/bmad-agent-pm.toml << 'EOF'
 # PM Agent (John) — AIDLC Workshop 定制
 [agent]
@@ -472,7 +486,7 @@ echo -e "${YELLOW}[4/5] 安装 BMAD Method...${NC}"
 echo -e "  运行: npx bmad-method install --yes --modules bmm --tools kiro --directory $(pwd)"
 echo ""
 
-if npx bmad-method install --yes --modules bmm --tools kiro --directory "$(pwd)" --set core.communication_language="Chinese" --set core.document_output_language="Chinese" --set bmm.project_name="aidlc-bmad-workshop" 2>&1 | tail -5; then
+if npx bmad-method install --yes --modules bmm --tools kiro --directory "$(pwd)" --communication-language "Chinese" --document-output-language "Chinese" --set core.communication_language="Chinese" --set core.document_output_language="Chinese" --set bmm.project_name="aidlc-bmad-workshop" 2>&1 | tail -5; then
     echo ""
     echo -e "  ${GREEN}✓${NC} BMAD Method 安装完成"
 else
@@ -490,6 +504,7 @@ echo ""
 echo -e "${YELLOW}[5/5] 验证文件完整性...${NC}"
 
 FILES=(
+    "_bmad/custom/config.toml"
     "_bmad/custom/bmad-agent-pm.toml"
     "_bmad/custom/bmad-agent-architect.toml"
     "_bmad/custom/bmad-agent-dev.toml"
