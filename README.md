@@ -3,6 +3,8 @@
 > 半天（4 小时）端到端 AIDLC 生命周期演练，使用 BMAD 方法驱动 AI Agent 协作开发。
 > 
 > 项目名：**aidlc-bmad-workshop**
+>
+> 📺 **[在线演示](https://yourlin.github.io/aidlc-bmad-workshop/)**
 
 ---
 
