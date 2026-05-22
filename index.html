@@ -178,7 +178,7 @@
 <!-- Slide 3: What is AIDLC -->
 <div class="slide slide-light" data-slide="2">
     <h2 style="text-align:center;">什么是 AIDLC？</h2>
-    <p style="text-align:center;color:#666;margin-bottom:32px;max-width:700px;">AIDLC（AI-Driven Lifecycle）是一套 AI 驱动的软件开发全生命周期方法论，结合 BMAD 多 Agent 协作框架。</p>
+    <p style="text-align:center;color:#666;margin-bottom:32px;max-width:700px;">AIDLC（AI-Driven Lifecycle）是一套 AI 驱动的软件开发全生命周期方法论，结合 BMAD（Build More Architect Dreams）— AI 驱动的敏捷开发框架，具有规模自适应智能，提供 12+ 专业化 Agent 和 34+ 工作流。</p>
     <div class="cards-grid cards-grid-3">
         <div class="card" style="border-top:4px solid #3B82F6;">
             <div style="font-size:2rem;margin-bottom:8px;">🎯</div>
@@ -589,8 +589,55 @@
     </div>
 </div>
 
-<!-- Slide 9: FAQ -->
-<div class="slide slide-light" data-slide="10">
+<!-- Slide 10: Team Collaboration -->
+<div class="slide slide-white" data-slide="10">
+    <h2 style="text-align:center;">👥 多人团队协作</h2>
+    <p style="text-align:center;color:#666;margin-bottom:16px;font-size:0.85rem;">核心原则：<strong>规划收敛、实施发散</strong> — Phase 1-3 一人主笔，Phase 4 按 Epic 并行</p>
+    <div style="max-width:1000px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="card" style="padding:16px;border-top:3px solid #3B82F6;">
+            <h3 style="font-size:0.9rem;">分阶段策略</h3>
+            <div style="font-size:0.75rem;color:#555;line-height:1.8;margin-top:8px;">
+                <strong>Phase 1-2（Analysis/PRD）：</strong>1 Tech Lead 主笔，团队评审<br>
+                <strong>Phase 3（Architecture）：</strong>架构 + UX 可并行，Epic 拆分等二者完成<br>
+                <strong>Phase 4（Implementation）：</strong>按 Epic 分配，每人独立 context
+            </div>
+        </div>
+        <div class="card" style="padding:16px;border-top:3px solid #10B981;">
+            <h3 style="font-size:0.9rem;">推荐：Epic 级分工</h3>
+            <div style="font-size:0.75rem;color:#555;line-height:1.8;margin-top:8px;">
+                Epic 1 用户认证 → 开发者甲<br>
+                Epic 2 订单管理 → 开发者乙<br>
+                Epic 3 支付集成 → 开发者丙<br>
+                <span style="color:#10B981;">✓ context 独立 · 冲突少 · 责任清晰</span>
+            </div>
+        </div>
+        <div class="card" style="padding:16px;border-top:3px solid #8B5CF6;">
+            <h3 style="font-size:0.9rem;">5 个必须同步的时机</h3>
+            <div style="font-size:0.75rem;color:#555;line-height:1.8;margin-top:8px;">
+                1️⃣ PRD 完成 — 全员 review<br>
+                2️⃣ Architecture 完成 — 全员 review<br>
+                3️⃣ Sprint Planning — 认领 story<br>
+                4️⃣ Epic Retrospective — Party Mode<br>
+                5️⃣ Course Correction — 需求/架构变更
+            </div>
+        </div>
+        <div class="card" style="padding:16px;border-top:3px solid #DC2626;">
+            <h3 style="font-size:0.9rem;">4 个反模式</h3>
+            <div style="font-size:0.75rem;color:#555;line-height:1.8;margin-top:8px;">
+                ❌ 多人各自跑 Mary 头脑风暴<br>
+                ❌ 每人写自己的 architecture.md<br>
+                ❌ A 写 story，B 直接改<br>
+                ❌ 多人共享同一 Agent 会话
+            </div>
+        </div>
+    </div>
+    <div style="margin-top:16px;background:#232F3E;border-radius:8px;padding:12px 20px;max-width:800px;text-align:center;">
+        <span style="font-size:0.8rem;color:#ccc;">推荐角色分配（3-6人）：<strong style="color:#FF9900;">1 Tech Lead</strong>（Phase 1-3 主笔）+ <strong style="color:#FF9900;">2-4 开发者</strong>（Phase 4 分 Epic）+ <strong style="color:#FF9900;">1 QA Lead</strong>（审全员 PR）</span>
+    </div>
+</div>
+
+<!-- Slide 11: FAQ -->
+<div class="slide slide-light" data-slide="11">
     <h2 style="text-align:center;">❓ 常见问题</h2>
     <div style="max-width:800px;width:100%;">
         <div class="faq-item" onclick="this.classList.toggle('open')">
@@ -624,8 +671,8 @@
     </div>
 </div>
 
-<!-- Slide 10: Success Criteria -->
-<div class="slide slide-accent" data-slide="11">
+<!-- Slide 12: Success Criteria -->
+<div class="slide slide-accent" data-slide="12">
     <h2 style="text-align:center;">🏆 成功标准</h2>
     <p style="text-align:center;opacity:0.7;margin-bottom:32px;font-size:0.9rem;">Workshop 结束时，每组应完成以下产出物</p>
     <div class="cards-grid" style="grid-template-columns:repeat(4,1fr);max-width:900px;">
@@ -672,7 +719,7 @@
 
 <!-- Navigation Dots -->
 <div class="slide-nav" id="slideNav"></div>
-<div class="slide-counter" id="slideCounter">1 / 12</div>
+<div class="slide-counter" id="slideCounter">1 / 13</div>
 <div class="slide-hint">← → 键翻页 · 触屏滑动</div>
 
 <script>
