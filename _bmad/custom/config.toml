@@ -8,3 +8,11 @@ document_output_language = "Chinese"
 [modules.bmm]
 project_name = "aidlc-bmad-workshop"
 user_skill_level = "intermediate"
+
+[modules.tea]
+# Test Architect Enterprise (TEA) — 企业级测试架构模块
+# 提供风险驱动测试策略、自动化架构、质量门禁、发布就绪评估
+enabled = true
+default_testing_frameworks = ["jest", "supertest", "artillery"]
+quality_gate_enforcement = true
+risk_based_prioritization = true
