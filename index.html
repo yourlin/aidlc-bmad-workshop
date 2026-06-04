@@ -232,9 +232,9 @@
                 <tr style="background:#EFF6FF;">
                     <td style="padding:8px;font-weight:700;color:#1E40AF;" rowspan="1">Inception<br><span style="font-size:0.78rem;font-weight:400;">需求定义</span></td>
                     <td style="padding:8px;font-family:monospace;color:#FF9900;">15:35-16:05</td>
-                    <td style="padding:8px;background:#DBEAFE;border-radius:6px;"><strong>/pm → CP</strong><br>创建 PRD<br><span style="color:#666;">产出: prd.md</span></td>
-                    <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/architect → CA</strong><br>架构设计<br><span style="color:#666;">产出: architecture.md</span></td>
-                    <td style="padding:8px;background:#EDE9FE;border-radius:6px;"><strong>/qa → TS</strong><br>测试策略<br><span style="color:#666;">产出: test-strategy.md</span></td>
+                    <td style="padding:8px;background:#DBEAFE;border-radius:6px;"><strong>/bmad-agent-pm → CP</strong><br>创建 PRD<br><span style="color:#666;">产出: prd.md</span></td>
+                    <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/bmad-agent-architect → CA</strong><br>架构设计<br><span style="color:#666;">产出: architecture.md</span></td>
+                    <td style="padding:8px;background:#EDE9FE;border-radius:6px;"><strong>/bmad-testarch-test-design</strong><br>测试策略<br><span style="color:#666;">产出: test-strategy.md</span></td>
                     <td style="padding:8px;color:#999;">—<br><span style="font-size:0.78rem;">等待 Sprint Planning</span></td>
                     <td style="padding:8px;color:#999;">—<br><span style="font-size:0.78rem;">等待 Sprint Planning</span></td>
                 </tr>
@@ -245,10 +245,10 @@
                     <td style="padding:8px;font-weight:700;color:#065F46;" rowspan="1">Construction<br><span style="font-size:0.78rem;font-weight:400;">并行构建</span></td>
                     <td style="padding:8px;font-family:monospace;color:#FF9900;">16:40-17:30</td>
                     <td style="padding:8px;color:#999;">—<br><span style="font-size:0.78rem;">支持 & 答疑</span></td>
-                    <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/architect → CI</strong><br>CDK IaC 代码<br><span style="color:#666;">产出: src/infra/</span></td>
-                    <td style="padding:8px;background:#EDE9FE;border-radius:6px;"><strong>/qa → AC</strong><br>验收用例<br><span style="color:#666;">产出: acceptance-tests.md</span></td>
-                    <td style="padding:8px;background:#D1FAE5;border-radius:6px;"><strong>/dev → DS, D2</strong><br>实现 Story #1 #2<br><span style="color:#666;">产出: src/handlers/</span></td>
-                    <td style="padding:8px;background:#FCE7F3;border-radius:6px;"><strong>/qa → E2E, PF, ST</strong><br>E2E+性能+安全<br><span style="color:#666;">产出: src/__tests__/</span></td>
+                    <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/bmad-agent-architect → CI</strong><br>CDK IaC 代码<br><span style="color:#666;">产出: src/infra/</span></td>
+                    <td style="padding:8px;background:#EDE9FE;border-radius:6px;"><strong>/bmad-testarch-test-design</strong><br>验收用例<br><span style="color:#666;">产出: acceptance-tests.md</span></td>
+                    <td style="padding:8px;background:#D1FAE5;border-radius:6px;"><strong>/bmad-agent-dev → DS, D2</strong><br>实现 Story #1 #2<br><span style="color:#666;">产出: src/handlers/</span></td>
+                    <td style="padding:8px;background:#FCE7F3;border-radius:6px;"><strong>/bmad-tea → E2E, PF, ST</strong><br>E2E+性能+安全<br><span style="color:#666;">产出: src/__tests__/</span></td>
                 </tr>
                 <tr>
                     <td colspan="7" style="padding:4px;background:#FAF5FF;font-weight:600;color:#7C3AED;">🔍 Review Gate #2 — Party Mode 联合评审 + 测试执行演示</td>
@@ -379,67 +379,55 @@
 <!-- Slide 5b: Setup (Brownfield) -->
 <div class="slide slide-white" data-slide="6">
     <h2 style="text-align:center;">🛠️ 环境准备 — Brownfield（已有项目）</h2>
-    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:1rem;">⚠️ 不要动已有代码！只在项目根目录叠加 BMAD 配置</p>
+    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:1rem;">⚠️ 不要动已有代码！只在项目根目录叠加 BMAD 配置，脚本自动适配你的技术栈</p>
     <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div class="card" style="padding:14px;border-left:4px solid #F59E0B;">
-            <h3 style="font-size:1.1rem;">Step 1：在已有项目中安装 BMAD <a href="https://github.com/bmad-code-org/BMAD-METHOD" target="_blank" style="font-size:1.1rem;color:#3B82F6;text-decoration:none;">📖 文档</a></h3>
-            <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
-                cd your-existing-project<br><br>
-                <span style="color:#888;"># 直接在已有项目根目录安装</span><br>
-                npx bmad-method install
-            </div>
-            <div style="margin-top:6px;background:#FEF3C7;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#92400E;">
-                ⚠️ BMAD 只会创建 <code>_bmad/</code> 目录，不会修改已有文件<br>
-                ❌ 禁止：删除或移动已有文件 / 修改 package.json
-            </div>
-        </div>
-        <div class="card" style="padding:14px;border-left:4px solid #3B82F6;">
-            <h3 style="font-size:1.1rem;">Step 2：让 BMAD 生成 Product Brief</h3>
-            <div style="margin-top:4px;background:#FEF2F2;border-radius:6px;padding:4px 8px;font-size:1.1rem;color:#991B1B;">
-                ❌ 不要用预置的 product-brief.md（那是 Greenfield 演练项目的）
-            </div>
-            <div class="code-block" style="font-size:1.1rem;margin-top:6px;">
-                <span style="color:#888;"># 在 AI IDE 中激活 PM Agent</span><br>
-                /pm<br><br>
-                <span style="color:#888;"># 选择 BP（Create Product Brief）</span><br>
-                <span style="color:#888;"># Agent 自动扫描代码库 → 追问 → 生成 Brief</span>
-            </div>
-            <div style="font-size:1.1rem;color:#555;margin-top:6px;line-height:1.5;">
-                Agent 会产出符合你项目实际情况的 product-brief.md，<br>
-                包含：现有架构、技术栈、约束、本次变更范围。
-            </div>
-            <div style="margin-top:6px;background:#EFF6FF;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#1E40AF;">
-                💡 无需手动编写——Agent 读代码后自动生成
-            </div>
-        </div>
         <div class="card" style="padding:14px;border-left:4px solid #10B981;">
-            <h3 style="font-size:1.1rem;">Step 3：验证已有代码健康</h3>
+            <h3 style="font-size:1.1rem;">Step 1：验证现有代码健康</h3>
             <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
                 <span style="color:#888;"># 已有测试必须先跑通</span><br>
                 npm test <span style="color:#888;"># 或 mvn test / pytest / go test</span><br><br>
                 <span style="color:#888;"># git 状态必须干净</span><br>
-                git status <span style="color:#888;"># 只有 _bmad/ 是新增</span>
+                git status
             </div>
             <div style="margin-top:6px;background:#FEF2F2;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#991B1B;">
-                ❌ 测试失败 → 先修复再开始 Workshop<br>
+                ❌ 测试失败 → 先修复再开始<br>
                 ❌ 有未提交变更 → 先 <code>git commit</code> 或 <code>git stash</code>
             </div>
         </div>
-        <div class="card" style="padding:14px;border-left:4px solid #8B5CF6;">
-            <h3 style="font-size:1.1rem;">Step 4：定制 Agent + 确认可用</h3>
+        <div class="card" style="padding:14px;border-left:4px solid #F59E0B;">
+            <h3 style="font-size:1.1rem;">Step 2：安装 BMAD <a href="https://github.com/bmad-code-org/BMAD-METHOD" target="_blank" style="font-size:1.1rem;color:#3B82F6;text-decoration:none;">📖 文档</a></h3>
             <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
-                <span style="color:#888;"># 修改 Agent 配置中的技术栈描述</span><br>
-                vi _bmad/custom/bmad-agent-dev.toml<br>
-                <span style="color:#888;"># 将 persistent_facts 中的技术栈改为你的实际栈</span>
+                cd your-existing-project<br>
+                npx bmad-method install --yes --modules bmm --tools kiro
             </div>
-            <div style="font-size:1.1rem;color:#555;margin-top:6px;line-height:1.5;">
-                <code>_bmad/custom/*.toml</code> 中的 Agent 定制需要适配你的项目：<br>
-                • 修改技术栈描述（如 Java/Spring 替换 TypeScript/Lambda）<br>
-                • 追加 Brownfield 约束（不可修改的目录/接口）<br>
-                • 在 AI IDE 中输入 <code>/bmad-help</code> 确认生效
+            <div style="margin-top:6px;background:#FEF3C7;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#92400E;">
+                ⚠️ 只创建 <code>_bmad/</code> 目录，不会修改已有文件
+            </div>
+        </div>
+        <div class="card" style="padding:14px;border-left:4px solid #3B82F6;">
+            <h3 style="font-size:1.1rem;">Step 3：运行初始化脚本（关键！）</h3>
+            <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
+                chmod +x workshop-init.sh<br>
+                ./workshop-init.sh
+            </div>
+            <div style="font-size:1rem;color:#555;margin-top:6px;line-height:1.6;">
+                脚本自动完成：<br>
+                • 检测技术栈（package.json / pom.xml / requirements.txt）<br>
+                • 推断架构模式（微服务 / Serverless / 单体）<br>
+                • 生成 <code>project-context.md</code><br>
+                • 为所有 Agent TOML 写入实际 <code>persistent_facts</code>
+            </div>
+        </div>
+        <div class="card" style="padding:14px;border-left:4px solid #8B5CF6;">
+            <h3 style="font-size:1.1rem;">Step 4：讲师带领审核 + 补充</h3>
+            <div style="font-size:1rem;color:#555;margin-top:6px;line-height:1.6;">
+                • 审核确认卡（技术栈 / 架构 / 规模）<br>
+                • 补充业务描述（项目做什么 / 本次加什么功能）<br>
+                • 配置受保护路径（不可修改的目录/文件）<br>
+                • <code>/bmad-help</code> + <code>/bmad-agent-pm</code> 确认可用
             </div>
             <div style="margin-top:6px;background:#F0FDF4;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#166534;">
-                ✅ Agent 响应符合你的项目上下文 → 可以开始 Workshop！
+                ✅ 确认卡内容正确 + Agent 响应正常 → 开始 Workshop！
             </div>
         </div>
     </div>
@@ -452,7 +440,7 @@
     <div class="cards-grid cards-grid-2" style="max-width:1000px;">
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-pm">PM</span><strong style="color:white;">/pm → CP</strong>
+                <span class="role-badge badge-pm">PM</span><strong style="color:white;">/bmad-agent-pm → CP</strong>
             </div>
             <div style="font-size:0.92rem;color:#ccc;line-height:1.6;">
                 自动加载 product-brief.md<br>
@@ -462,7 +450,7 @@
         </div>
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-arch">架构</span><strong style="color:white;">/architect → CA / CI</strong>
+                <span class="role-badge badge-arch">架构</span><strong style="color:white;">/bmad-agent-architect → CA / CI</strong>
             </div>
             <div style="font-size:0.92rem;color:#ccc;line-height:1.6;">
                 技术栈已锁定，不讨论选型<br>
@@ -472,7 +460,7 @@
         </div>
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-dev">开发</span><strong style="color:white;">/dev → DS / D2</strong>
+                <span class="role-badge badge-dev">开发</span><strong style="color:white;">/bmad-agent-dev → DS / D2</strong>
             </div>
             <div style="font-size:0.92rem;color:#ccc;line-height:1.6;">
                 TDD 模式：先测试 → 再实现<br>
@@ -482,9 +470,9 @@
         </div>
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-qa">QA</span><strong style="color:white;">/qa → TS / AC</strong>
+                <span class="role-badge badge-qa">QA</span><strong style="color:white;">/bmad-testarch-test-design</strong>
                 <span style="margin-left:8px;"></span>
-                <span class="role-badge badge-tester">测试</span><strong style="color:white;">→ E2E / PF / ST</strong>
+                <span class="role-badge badge-tester">测试</span><strong style="color:white;">/bmad-tea → E2E / PF / ST</strong>
             </div>
             <div style="font-size:0.92rem;color:#ccc;line-height:1.6;">
                 QA：策略 + 验收用例 · 测试工程师：E2E + 性能 + 安全<br>
@@ -516,10 +504,10 @@
         <div class="card" style="padding:14px;">
             <h3 style="font-size:1.1rem;">② 激活 Agent</h3>
             <div class="code-block" style="font-size:1.1rem;margin-top:6px;">
-                /pm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → John (PM) 菜单</span><br>
-                /architect &nbsp;<span style="color:#888;"># → Winston (架构) 菜单</span><br>
-                /dev &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → Amelia (开发) 菜单</span><br>
-                /qa &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → Quinn (QA) 菜单</span>
+                /bmad-agent-pm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → John (PM)</span><br>
+                /bmad-agent-architect &nbsp;<span style="color:#888;"># → Winston (架构)</span><br>
+                /bmad-agent-dev &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → Amelia (开发)</span><br>
+                /bmad-tea &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → Murat (TEA)</span>
             </div>
             <div style="margin-top:6px;font-size:1.1rem;color:#555;">
                 每个 Agent 会显示带编号的菜单，选择对应操作即可
@@ -528,17 +516,17 @@
         <div class="card" style="padding:14px;">
             <h3 style="font-size:1.1rem;">③ 直接调用工作流</h3>
             <div class="code-block" style="font-size:1.1rem;margin-top:6px;">
-                /create-prd &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 创建 PRD</span><br>
-                /create-architecture <span style="color:#888;"># 创建架构文档</span><br>
-                /create-epics-and-stories <span style="color:#888;"># 拆分 Epic/Story</span><br>
-                /sprint-planning &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># Sprint 规划</span><br>
-                /develop-story &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 实现一个 Story</span>
+                /bmad-prd &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 创建 PRD</span><br>
+                /bmad-create-architecture <span style="color:#888;"># 创建架构文档</span><br>
+                /bmad-create-epics-and-stories <span style="color:#888;"># 拆分 Epic/Story</span><br>
+                /bmad-sprint-planning &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># Sprint 规划</span><br>
+                /bmad-dev-story &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 实现一个 Story</span>
             </div>
         </div>
         <div class="card" style="padding:14px;">
             <h3 style="font-size:1.1rem;">④ Party Mode（联合评审）</h3>
             <div class="code-block" style="font-size:1.1rem;margin-top:6px;">
-                /party-mode <span style="color:#888;"># 启动多 Agent 协作</span>
+                /bmad-party-mode <span style="color:#888;"># 启动多 Agent 协作</span>
             </div>
             <div style="margin-top:6px;font-size:1.1rem;color:#555;line-height:1.6;">
                 然后输入评审指令，如：<br>
@@ -552,7 +540,7 @@
     <div style="margin-top:12px;display:flex;gap:12px;max-width:980px;width:100%;">
         <div style="flex:1;background:#232F3E;border-radius:8px;padding:12px;text-align:center;">
             <div style="font-size:0.92rem;color:#FF9900;font-weight:600;">Workshop 中的使用顺序</div>
-            <div style="font-size:1.1rem;color:#ccc;margin-top:4px;">/pm → CP → <em>Review</em> → /architect → CA → <em>Review</em> → /sprint-planning → /dev → DS → /qa → <em>Review</em></div>
+            <div style="font-size:1.1rem;color:#ccc;margin-top:4px;">/bmad-agent-pm → CP → <em>Review</em> → /bmad-agent-architect → CA → <em>Review</em> → /bmad-sprint-planning → /bmad-agent-dev → DS → <em>Review</em></div>
         </div>
     </div>
 </div>
@@ -585,16 +573,16 @@
         <div class="card" style="padding:16px;border-top:3px solid #3B82F6;">
             <h3 style="font-size:1.05rem;color:#3B82F6;">� 你需要做</h3>
             <div style="font-size:0.92rem;color:#555;line-height:1.8;margin-top:8px;">
-                • 修改 <code>*.toml</code> 中的技术栈<br>
+                • 运行 <code>workshop-init.sh</code> 自动适配<br>
+                • 审核确认卡 + 补充业务描述<br>
                 • 追加受保护目录列表<br>
-                • 用 <code>/pm → BP</code> 生成上下文<br>
                 • 开始前跑通已有测试<br>
                 • Review Gate 更严格
             </div>
         </div>
     </div>
     <div style="margin-top:16px;background:#FEF3C7;border:1px solid #FCD34D;border-radius:8px;padding:12px 20px;max-width:700px;text-align:center;">
-        <span style="font-size:1.1rem;color:#92400E;">💡 这些约束已写入 <code>_bmad/custom/*.toml</code> 的 <code>persistent_facts</code> 和 <code>principles</code> 中。<br>Brownfield 项目只需修改技术栈描述 + 追加受保护路径，无需手写 Prompt。</span>
+        <span style="font-size:1.1rem;color:#92400E;">💡 <code>workshop-init.sh</code> 已自动将你的技术栈写入 <code>_bmad/custom/*.toml</code> 的 <code>persistent_facts</code> 中。<br>你只需审核确认卡、补充业务描述、追加受保护路径即可。</span>
     </div>
 </div>
 

@@ -41,6 +41,26 @@ try {
     } else { throw }
 } catch { Write-Host "  ✗ Python3 未安装" -ForegroundColor Red; $Errors++ }
 
+# 检查 GitHub Token（BMAD 安装需要，避免 rate limit）
+if ($env:GITHUB_TOKEN) {
+    $tokenPrefix = $env:GITHUB_TOKEN.Substring(0, 4)
+    Write-Host "  ✓ GitHub Token 已配置 ($tokenPrefix...)" -ForegroundColor Green
+} elseif ($env:GH_TOKEN) {
+    $tokenPrefix = $env:GH_TOKEN.Substring(0, 4)
+    Write-Host "  ✓ GitHub Token 已配置 via GH_TOKEN ($tokenPrefix...)" -ForegroundColor Green
+} else {
+    Write-Host "  ✗ GitHub Token 未配置（BMAD 安装可能因 rate limit 失败）" -ForegroundColor Red
+    Write-Host ""
+    Write-Host "  配置方法：" -ForegroundColor Yellow
+    Write-Host "  1. 打开 https://github.com/settings/tokens"
+    Write-Host "  2. Generate new token (classic) → Scopes 勾选 public_repo → 生成"
+    Write-Host "  3. PowerShell 临时设置: `$env:GITHUB_TOKEN = 'ghp_你的token'"
+    Write-Host "  4. 永久设置: [Environment]::SetEnvironmentVariable('GITHUB_TOKEN', 'ghp_你的token', 'User')"
+    Write-Host ""
+    Write-Host "  配置完成后重新运行本脚本。" -ForegroundColor Yellow
+    $Errors++
+}
+
 try {
     $uvVersion = (uv --version 2>$null)
     if ($uvVersion) { Write-Host "  ✓ uv $uvVersion" -ForegroundColor Green }
@@ -175,77 +195,52 @@ prompt = "基于第一个 Story 模式实现第二个端点。复用封装，同
 '@ | Set-Content -Path "_bmad/custom/bmad-agent-dev.toml" -Encoding UTF8
 
 @'
-[agent]
-icon = "✅"
-role = "Workshop QA — 测试策略设计+验收标准+质量门禁。"
-communication_style = "结构化表格化，中文沟通。用例用表格（ID/场景/输入/预期/优先级）。"
-persistent_facts = ["半天 Workshop，策略 30 分钟完成。","5 端点+JWT。Jest+supertest+Artillery。","<200ms p95，覆盖率>80%。"]
-principles = ["风险驱动。","测试金字塔。","边界值优先。"]
+# QA 测试设计 Workflow — AIDLC Workshop 定制
+[workflow]
+persistent_facts = ["半天 Workshop，策略 30 分钟完成。","5 端点+JWT。Jest+supertest+Artillery。","<200ms p95，覆盖率>80%。","风险驱动——高风险路径优先。","测试金字塔——单元多、集成适中、E2E 少。","边界值优先。"]
 activation_steps_prepend = ["读取 {project-root}/_bmad-output/planning-artifacts/product-brief.md。"]
-[[agent.menu]]
-code = "TS"
-description = "创建测试策略"
-prompt = "创建策略：范围+分层+覆盖率矩阵+优先级+门禁+工具链。输出到 {planning_artifacts}/test-strategy.md"
-[[agent.menu]]
-code = "AC"
-description = "编写验收用例"
-prompt = "每端点 5 个用例（1正常+2边界+2异常），表格格式。输出到 {planning_artifacts}/acceptance-tests.md"
-'@ | Set-Content -Path "_bmad/custom/bmad-agent-qa.toml" -Encoding UTF8
+'@ | Set-Content -Path "_bmad/custom/bmad-testarch-test-design.toml" -Encoding UTF8
 
 @'
+# TEA Agent (Murat) — AIDLC Workshop 定制
 [agent]
 icon = "🧪"
-role = "Workshop 测试工程师 — E2E+性能+安全测试代码实现。"
-communication_style = "代码优先，中文注释。产出可直接 npm test 运行。"
-persistent_facts = ["半天 Workshop，50 分钟完成。","Jest+supertest+Artillery。","<200ms p95，并发 100 无错误。","Review Gate #2 现场演示。"]
-principles = ["可运行优先。","CI 友好。","幂等性。"]
-activation_steps_prepend = ["读取 {project-root}/_bmad-output/planning-artifacts/test-strategy.md（如果存在）。"]
-[[agent.menu]]
-code = "E2E"
-description = "E2E 测试"
-prompt = "5 端点 E2E（Jest+supertest），含认证场景，mock DynamoDB。输出到 src/__tests__/e2e/"
-[[agent.menu]]
-code = "PF"
-description = "性能测试"
-prompt = "Artillery 配置：CRUD+高并发，p95<200ms，阶梯 10→50→100。输出到 src/performance/"
-[[agent.menu]]
-code = "ST"
-description = "安全测试"
-prompt = "JWT 安全+注入+速率限制+权限边界。Jest 实现。输出到 src/__tests__/security/"
-'@ | Set-Content -Path "_bmad/custom/bmad-agent-tester.toml" -Encoding UTF8
-Write-Host "  ✓ 5 个 Agent 定制配置" -ForegroundColor Green
+persistent_facts = ["半天 Workshop，50 分钟完成。","Jest+supertest+Artillery。","<200ms p95，并发 100 无错误。","Review Gate #2 现场演示。","可运行优先。","CI 友好。","幂等性。"]
+activation_steps_prepend = ["读取 {project-root}/_bmad-output/planning-artifacts/test-strategy.md（如果存在）。","读取 {project-root}/_bmad-output/planning-artifacts/architecture.md（如果存在）。"]
+'@ | Set-Content -Path "_bmad/custom/bmad-tea.toml" -Encoding UTF8
+Write-Host "  ✓ 5 个 Agent/Workflow 定制配置" -ForegroundColor Green
 
 # --- Seed Prompts（备选）---
 @'
-# PM Seed Prompt (备选：BMAD 已装时用 /pm → CP)
+# PM Seed Prompt (备选：BMAD 已装时用 /bmad-agent-pm → CP)
 ```
 CP
 Based on product-brief.md, create PRD: 5 endpoints + JWT + error handling + versioning. MVP scope.
 ```
 '@ | Set-Content -Path "docs/seed-prompts/pm-seed.md" -Encoding UTF8
 @'
-# Architect Seed Prompt (备选：BMAD 已装时用 /architect → CA)
+# Architect Seed Prompt (备选：BMAD 已装时用 /bmad-agent-architect → CA)
 ```
 CA
 Create architecture: Lambda+API GW+DynamoDB+CDK. Single-table design, JWT Authorizer, CloudWatch+X-Ray.
 ```
 '@ | Set-Content -Path "docs/seed-prompts/architect-seed.md" -Encoding UTF8
 @'
-# Dev Seed Prompt (备选：BMAD 已装时用 /dev → DS)
+# Dev Seed Prompt (备选：BMAD 已装时用 /bmad-agent-dev → DS)
 ```
 DS
 Implement "Create Room" endpoint. TypeScript+Lambda+DynamoDB. POST /api/v1/rooms. Zod+Jest. TDD.
 ```
 '@ | Set-Content -Path "docs/seed-prompts/dev-seed.md" -Encoding UTF8
 @'
-# QA Seed Prompt (备选：BMAD 已装时用 /qa → TS)
+# QA Seed Prompt (备选：BMAD 已装时用 /bmad-testarch-test-design → TS)
 ```
 QA
 Test strategy + automated tests: unit+integration+contract+edge cases. Jest+supertest.
 ```
 '@ | Set-Content -Path "docs/seed-prompts/qa-seed.md" -Encoding UTF8
 @'
-# Tester Seed Prompt (备选：BMAD 已装时用 /qa → E2E/PF/ST)
+# Tester Seed Prompt (备选：BMAD 已装时用 /bmad-tea → E2E/PF/ST)
 ```
 QA
 E2E + Performance(<200ms p95) + Security(JWT bypass, injection). Jest+supertest+Artillery.
@@ -258,11 +253,11 @@ Write-Host ""
 # Step 4: 安装 BMAD Method
 # ============================================================
 Write-Host "[4/5] 安装 BMAD Method..." -ForegroundColor Yellow
-Write-Host "  运行: npx bmad-method install --yes --modules bmm --tools kiro"
+Write-Host "  运行: npx bmad-method install --yes --modules bmm,tea --tools kiro"
 Write-Host ""
 
 try {
-    $output = npx bmad-method install --yes --modules bmm --tools kiro --directory (Get-Location).Path --communication-language "Chinese" --document-output-language "Chinese" --set bmm.project_name="aidlc-bmad-workshop" 2>&1
+    $output = npx bmad-method install --yes --modules bmm,tea --tools kiro --directory (Get-Location).Path --communication-language "Chinese" --document-output-language "Chinese" --set bmm.project_name="aidlc-bmad-workshop" 2>&1
     Write-Host "  ✓ BMAD Method 安装完成" -ForegroundColor Green
 } catch {
     Write-Host "  ⚠ BMAD 自动安装未成功，请手动运行：" -ForegroundColor Yellow
@@ -281,8 +276,9 @@ $files = @(
     "_bmad/custom/bmad-agent-pm.toml",
     "_bmad/custom/bmad-agent-architect.toml",
     "_bmad/custom/bmad-agent-dev.toml",
-    "_bmad/custom/bmad-agent-qa.toml",
-    "_bmad/custom/bmad-agent-tester.toml",
+    "_bmad/custom/bmad-testarch-test-design.toml",
+    "_bmad/custom/bmad-tea.toml",
+    "_bmad/custom/bmad-tea.toml",
     "_bmad-output/planning-artifacts/product-brief.md"
 )
 
@@ -295,6 +291,12 @@ foreach ($f in $files) {
 if (Test-Path "_bmad/_config/manifest.yaml") { Write-Host "  ✓ BMAD 核心已安装" -ForegroundColor Green }
 else { Write-Host "  ⚠ BMAD 核心未检测到（请手动 npx bmad-method install）" -ForegroundColor Yellow }
 
+if ((Test-Path "_bmad/tea") -or (Test-Path "_bmad/custom/bmad-tea.toml")) {
+    Write-Host "  ✓ TEA (Test Architecture) 模块已配置" -ForegroundColor Green
+} else {
+    Write-Host "  ⚠ TEA 模块未检测到（可手动运行: npx bmad-method install --modules tea）" -ForegroundColor Yellow
+}
+
 Write-Host ""
 if ($allOk) {
     Write-Host "╔══════════════════════════════════════════════════╗" -ForegroundColor Green
@@ -302,7 +304,7 @@ if ($allOk) {
     Write-Host "╚══════════════════════════════════════════════════╝" -ForegroundColor Green
     Write-Host ""
     Write-Host "使用方式：" -ForegroundColor Cyan
-    Write-Host "  推荐: 在 Kiro 中输入 /pm → CP（Agent 自动加载定制）"
+    Write-Host "  推荐: 在 Kiro 中输入 /bmad-agent-pm → CP（Agent 自动加载定制）"
     Write-Host "  备选: 复制 docs/seed-prompts/ 中的 Prompt 手动粘贴"
     Write-Host ""
     Write-Host "下一步："

@@ -100,11 +100,11 @@ aidlc-bmad-workshop/
 │       ├── bmad-agent-pm.toml          # PM: 跳过 Analysis，快速创建 PRD
 │       ├── bmad-agent-architect.toml   # 架构: 技术栈锁定，聚焦文档+CDK
 │       ├── bmad-agent-dev.toml         # 开发: TDD 模式，TypeScript+Zod+Jest
-│       ├── bmad-agent-qa.toml          # QA: 测试策略设计+验收用例
-│       └── bmad-agent-tester.toml      # 测试工程师: E2E+性能+安全测试
+│       ├── bmad-testarch-test-design.toml # QA: 测试设计 workflow 定制
+│       └── bmad-tea.toml               # 测试工程师: TEA Agent 定制
 ├── _bmad-output/                       # AI Agent 产出物
 │   ├── planning-artifacts/             # 规划阶段产出
-│   │   └── product-brief.md           # Greenfield 预置 / Brownfield 用 /pm→BP 生成
+│   │   └── product-brief.md           # Greenfield 预置 / Brownfield 用 /bmad-agent-pm→BP 生成
 │   └── implementation-artifacts/       # 实现阶段产出
 ├── docs/                               # 文档目录
 │   ├── seed-prompts/                   # 各角色启动 Prompt
@@ -115,8 +115,9 @@ aidlc-bmad-workshop/
 │   │   └── tester-seed.md            # 测试工程师（测试执行与自动化）
 │   └── workshop-guide.md              # 参与者完整指南
 ├── src/                                # 源代码（开发阶段创建）
-├── setup-workshop.sh                   # 初始化脚本（macOS/Linux）
-├── setup-workshop.ps1                  # 初始化脚本（Windows）
+├── setup-workshop.sh                   # Greenfield 初始化脚本（macOS/Linux）
+├── setup-workshop.ps1                  # Greenfield 初始化脚本（Windows）
+├── workshop-init.sh                    # Brownfield 初始化脚本（自动检测技术栈）
 ├── AIDLC Workshop BMAD 配置规划.md      # 原始规划文档
 └── README.md                           # 本文件
 ```
@@ -132,8 +133,8 @@ aidlc-bmad-workshop/
 | `bmad-agent-pm.toml` | 跳过 Analysis 阶段，自动加载 Brief，菜单直接给"快速创建 PRD" |
 | `bmad-agent-architect.toml` | 技术栈锁定不讨论选型，菜单含"创建架构"+"生成 CDK 骨架" |
 | `bmad-agent-dev.toml` | TDD 流程固化，自动读取 PRD+架构，菜单含"实现 Story" |
-| `bmad-agent-qa.toml` | 测试策略模板化，菜单含"创建策略"+"编写验收用例" |
-| `bmad-agent-tester.toml` | 三类测试预定义，菜单含"E2E"+"性能"+"安全" |
+| `bmad-testarch-test-design.toml` | QA workflow 定制：时间约束 + 测试策略 persistent_facts |
+| `bmad-tea.toml` | TEA Agent 定制：时间约束 + 三类测试 persistent_facts |
 
 每个配置通过以下字段实现简化：
 
@@ -148,12 +149,20 @@ aidlc-bmad-workshop/
 
 ### Brownfield 项目
 
-需要在配置基础上做两处调整：
+运行 `workshop-init.sh` 脚本自动完成适配：
 
-1. **修改 `persistent_facts`**：将技术栈描述改为你的实际技术栈
-2. **添加约束**：在对应 Agent 的 `.toml` 中追加 Brownfield 安全护栏
+```bash
+chmod +x workshop-init.sh
+./workshop-init.sh
+```
 
-示例——在 `bmad-agent-dev.toml` 中追加：
+脚本会自动检测技术栈并修改所有 Agent TOML 的 `persistent_facts`。完成后需要人工审核：
+
+1. **审核确认卡**：确认技术栈、架构模式、规模等信息正确
+2. **补充业务描述**：在 `project-context.md` 末尾添加项目做什么、本次加什么功能
+3. **追加受保护路径**：在对应 Agent 的 `.toml` 中添加不可修改的目录
+
+如需手动追加约束，在 `bmad-agent-dev.toml` 中编辑：
 
 ```toml
 # _bmad/custom/bmad-agent-dev.toml（追加到 persistent_facts 数组）
@@ -181,11 +190,11 @@ persistent_facts = [
 
 | 角色 | BMAD Agent | 命令 | AIDLC 阶段 | Seed Prompt |
 |------|-----------|------|-----------|-------------|
-| PM | John | `CP` | Inception | `docs/seed-prompts/pm-seed.md` |
-| 运维/架构 | Winston | `CA` | Operations | `docs/seed-prompts/architect-seed.md` |
-| 开发工程师 | Amelia | `DS` | Construction | `docs/seed-prompts/dev-seed.md` |
-| QA | Quinn | `QA` | Construction | `docs/seed-prompts/qa-seed.md` |
-| 测试工程师 | Quinn + TEA | `QA` | Construction | `docs/seed-prompts/tester-seed.md` |
+| PM | John | `/bmad-agent-pm` → `CP` | Inception | `docs/seed-prompts/pm-seed.md` |
+| 运维/架构 | Winston | `/bmad-agent-architect` → `CA` | Operations | `docs/seed-prompts/architect-seed.md` |
+| 开发工程师 | Amelia | `/bmad-agent-dev` → `DS` | Construction | `docs/seed-prompts/dev-seed.md` |
+| QA | Quinn | `/bmad-testarch-test-design` → `TS` / `AC` | Construction | `docs/seed-prompts/qa-seed.md` |
+| 测试工程师 | Quinn + TEA | `/bmad-tea` → `E2E` / `PF` / `ST` | Construction | `docs/seed-prompts/tester-seed.md` |
 
 ---
 
@@ -218,8 +227,8 @@ persistent_facts = [
 ### 并行工作流详图
 
 ```
-阶段            PM              架构师           QA              开发            测试工程师
-                /pm             /architect       /qa             /dev            /qa
+阶段         PM               架构师                  QA                       开发             测试工程师
+命令         /bmad-agent-pm   /bmad-agent-architect   /bmad-testarch-test-design  /bmad-agent-dev  /bmad-tea
 ─────────────────────────────────────────────────────────────────────────────────────────────
 Inception       ┌─────────┐    ┌─────────┐    ┌─────────┐
 (15:35-16:05)   │ CP      │    │ CA      │    │ TS      │      (等待)          (等待)
@@ -246,11 +255,11 @@ Construction                   ┌─────────┐    ┌───
 
 | 角色 | Agent 命令 | 菜单代码 | 产出物 |
 |------|-----------|---------|--------|
-| PM | `/pm` | `CP` | prd.md |
-| 架构师 | `/architect` | `CA` / `CI` | architecture.md, src/infra/ |
-| QA | `/qa` | `TS` / `AC` | test-strategy.md, acceptance-tests.md |
-| 开发 | `/dev` | `DS` / `D2` | src/handlers/, src/__tests__/ |
-| 测试工程师 | `/qa` | `E2E` / `PF` / `ST` | src/__tests__/e2e/, src/performance/ |
+| PM | `/bmad-agent-pm` | `CP` | prd.md |
+| 架构师 | `/bmad-agent-architect` | `CA` / `CI` | architecture.md, src/infra/ |
+| QA | `/bmad-testarch-test-design` | `TS` / `AC` | test-strategy.md, acceptance-tests.md |
+| 开发 | `/bmad-agent-dev` | `DS` / `D2` | src/handlers/, src/__tests__/ |
+| 测试工程师 | `/bmad-tea` | `E2E` / `PF` / `ST` | src/__tests__/e2e/, src/performance/ |
 
 ---
 
@@ -262,15 +271,16 @@ Construction                   ┌─────────┐    ┌───
 
 ```
 /bmad-help                    → 获取帮助（任何时候可用）
-/pm                           → 启动 PM Agent → 选择 CP（自动加载 Brief）
-/architect                    → 启动架构 Agent → 选择 CA（技术栈已锁定）
-/dev                          → 启动开发 Agent → 选择 DS（TDD 模式）
-/qa                           → 启动 QA Agent → 选择 TS / AC
-/create-prd                   → 直接启动 PRD 创建工作流
-/create-architecture          → 直接启动架构设计工作流
-/sprint-planning              → Sprint 规划
-/develop-story                → 实现一个 Story
-/party-mode                   → 启动多 Agent 联合评审
+/bmad-agent-pm                → 启动 PM Agent（对话模式）
+/bmad-agent-architect         → 启动架构 Agent（对话模式）
+/bmad-agent-dev               → 启动开发 Agent（对话模式）
+/bmad-testarch-test-design    → 启动测试设计工作流（QA 角色用）
+/bmad-tea                     → 启动 TEA Agent（测试工程师用）
+/bmad-prd                     → 直接启动 PRD 创建工作流
+/bmad-create-architecture     → 直接启动架构设计工作流
+/bmad-sprint-planning         → Sprint 规划
+/bmad-dev-story               → 实现一个 Story
+/bmad-party-mode              → 启动多 Agent 联合评审
 ```
 
 > ⚠️ **重要**：每个工作流结束后开新聊天！上下文残留是 AI 质量下降的头号原因。
@@ -339,13 +349,7 @@ document_output_language:
 
 **Greenfield 项目**：预置了 Hotel Booking Inventory API 的产品简介，Workshop 可以跳过 Analysis 阶段直接从 PRD 创建开始，节省约 45 分钟。
 
-**Brownfield 项目**：不要使用预置的 Brief！BMAD 安装完成后，用 Agent 动态生成：
-
-```
-/pm → 选择 BP（Create Product Brief）
-```
-
-Agent 会自动扫描已有代码库，追问关键问题后产出符合你项目实际情况的 product-brief.md。
+**Brownfield 项目**：不要使用预置的 Brief！运行 `workshop-init.sh` 后会自动生成 `project-context.md`。如需更详细的 Product Brief，可在 Inception 阶段用 `/bmad-agent-pm` → `BP` 让 Agent 基于已有上下文扩展生成。
 
 ### 演练项目：Hotel Booking Inventory API
 
@@ -402,58 +406,52 @@ Workshop 结束时，团队应完成：
 
 ### 使用步骤
 
-#### Step 1：在已有项目中安装 BMAD
-
-```bash
-cd your-existing-project
-
-# 直接在已有项目根目录安装 BMAD（只创建 _bmad/ 目录，不动已有代码）
-npx bmad-method install
-```
-
-安装时按提示选择：
-- Modules → **BMM**（核心框架）
-- AI IDE → **Kiro** / Claude Code / Cursor
-- 项目名 → 你的实际项目名
-
-> ⚠️ **禁止**：删除或移动已有文件、修改已有的 package.json / pom.xml 等
-
-#### Step 2：让 BMAD 生成项目上下文
-
-不需要手动编写 `project-context.md`，使用 BMAD 自带的 Agent 自动分析：
-
-```
-# 在 AI IDE 中激活 PM Agent
-/pm
-
-# 选择 Create Product Brief（BP）
-# Agent 会自动扫描代码库并追问你关键信息
-```
-
-或者直接告诉 Agent：
-
-```
-Analyze this existing codebase and create a product brief
-that documents the current architecture, tech stack,
-constraints, and areas I want to change.
-```
-
-Agent 会自动读取代码结构，生成包含技术栈、约束和变更范围的上下文文档。
-
-#### Step 3：验证已有代码健康
+#### Step 1：验证现有代码健康
 
 ```bash
 # 已有测试必须先跑通
 npm test  # 或 mvn test / pytest / go test
 
-# git 状态必须干净（只有 _bmad/ 是新增）
+# git 状态必须干净
 git status
 ```
 
 > ❌ 测试失败 → 先修复再开始 Workshop
 > ❌ 有未提交变更 → 先 `git commit` 或 `git stash`
 
-#### Step 4：确认 BMAD 可用
+#### Step 2：在已有项目中安装 BMAD
+
+```bash
+cd your-existing-project
+
+# 只创建 _bmad/ 目录，不动已有代码
+npx bmad-method install --yes --modules bmm --tools kiro
+```
+
+> ⚠️ **禁止**：删除或移动已有文件、修改已有的 package.json / pom.xml 等
+
+#### Step 3：运行 Brownfield 初始化脚本
+
+```bash
+chmod +x workshop-init.sh
+./workshop-init.sh
+```
+
+脚本自动完成：
+- 检测技术栈（package.json / pom.xml / requirements.txt / Cargo.toml）
+- 推断架构模式（微服务 / Serverless / 单体 / Monorepo）
+- 生成 `_bmad-output/planning-artifacts/project-context.md`
+- 为所有 Agent TOML 写入实际 `persistent_facts`
+- 输出项目理解确认卡
+
+#### Step 4：讲师带领审核 + 补充
+
+1. 审核确认卡内容（技术栈 / 架构 / 规模）
+2. 在 `project-context.md` 末尾补充业务描述
+3. 检查 `_bmad/custom/*.toml` 中的 `persistent_facts`
+4. 追加受保护路径
+
+#### Step 5：确认 BMAD 可用
 
 ```bash
 npx bmad-method status   # 显示已安装模块
@@ -462,11 +460,11 @@ ls _bmad/bmm/agents/     # 确认 Agent 文件存在
 
 在 AI IDE 中测试：
 - 输入 `/bmad-help` → 应看到帮助菜单
-- 输入 `/pm` → 应看到 PM Agent 菜单
+- 输入 `/bmad-agent-pm` → 应看到 PM Agent 菜单
 
 > ✅ 全部通过 → 可以开始 Workshop！
 
-#### Step 4：调整 Seed Prompt（安全护栏）
+#### Step 6：调整 Seed Prompt（安全护栏，可选）
 
 Brownfield 场景下，Seed Prompt 需要增加约束声明，防止 AI 破坏已有代码。示例：
 

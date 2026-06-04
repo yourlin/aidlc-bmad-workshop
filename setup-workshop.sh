@@ -61,6 +61,26 @@ else
     ERRORS=$((ERRORS + 1))
 fi
 
+# 检查 GitHub Token（BMAD 安装需要，避免 rate limit）
+if [ -n "$GITHUB_TOKEN" ]; then
+    TOKEN_PREFIX="${GITHUB_TOKEN:0:4}"
+    echo -e "  ${GREEN}✓${NC} GitHub Token 已配置 (${TOKEN_PREFIX}...)"
+elif [ -n "$GH_TOKEN" ]; then
+    TOKEN_PREFIX="${GH_TOKEN:0:4}"
+    echo -e "  ${GREEN}✓${NC} GitHub Token 已配置 via GH_TOKEN (${TOKEN_PREFIX}...)"
+else
+    echo -e "  ${RED}✗${NC} GitHub Token 未配置（BMAD 安装可能因 rate limit 失败）"
+    echo ""
+    echo -e "  ${YELLOW}配置方法：${NC}"
+    echo -e "  1. 打开 https://github.com/settings/tokens"
+    echo -e "  2. Generate new token (classic) → Scopes 勾选 public_repo → 生成"
+    echo -e "  3. 运行: export GITHUB_TOKEN=ghp_你的token"
+    echo -e "  4. 写入配置: echo 'export GITHUB_TOKEN=ghp_你的token' >> ~/.zshrc"
+    echo ""
+    echo -e "  ${YELLOW}配置完成后重新运行本脚本。${NC}"
+    ERRORS=$((ERRORS + 1))
+fi
+
 # 检查 uv
 if command -v uv &> /dev/null; then
     UV_VERSION=$(uv --version 2>/dev/null || echo "unknown")
@@ -276,21 +296,15 @@ prompt = "基于第一个 Story 的模式，实现第二个 API 端点。复用�
 EOF
 echo -e "  ${GREEN}✓${NC} _bmad/custom/bmad-agent-dev.toml"
 
-cat > _bmad/custom/bmad-agent-qa.toml << 'EOF'
-# QA Agent (Quinn) — AIDLC Workshop 定制
-[agent]
-icon = "✅"
-role = "Workshop QA — 设计测试策略、编写验收标准、定义质量门禁。"
-communication_style = "结构化、表格化，中文沟通。测试用例用表格（ID/场景/输入/预期/优先级）。"
+cat > _bmad/custom/bmad-testarch-test-design.toml << 'EOF'
+# QA 测试设计 Workflow — AIDLC Workshop 定制
+[workflow]
 
 persistent_facts = [
   "这是一个半天 Workshop，测试策略 30 分钟内完成。",
   "项目：Hotel Booking API，5 个端点 + JWT 认证。",
   "工具链：Jest + supertest + Artillery。",
   "非功能需求：<200ms (p95)，覆盖率 >80%。",
-]
-
-principles = [
   "风险驱动——高风险路径优先（认证、数据一致性）。",
   "测试金字塔——单元多、集成适中、E2E 少而精。",
   "边界值优先——正常路径一个用例够，边界和异常是重点。",
@@ -299,25 +313,13 @@ principles = [
 activation_steps_prepend = [
   "读取 {project-root}/_bmad-output/planning-artifacts/product-brief.md。",
 ]
-
-[[agent.menu]]
-code = "TS"
-description = "创建测试策略文档"
-prompt = "创建测试策略：范围 + 分层 + 覆盖率矩阵 + 优先级 + 质量门禁 + 工具链。输出到 {planning_artifacts}/test-strategy.md"
-
-[[agent.menu]]
-code = "AC"
-description = "编写验收测试用例"
-prompt = "基于 PRD 每个端点写验收用例：每端点 5 个（1 正常 + 2 边界 + 2 异常），表格格式。输出到 {planning_artifacts}/acceptance-tests.md"
 EOF
-echo -e "  ${GREEN}✓${NC} _bmad/custom/bmad-agent-qa.toml"
+echo -e "  ${GREEN}✓${NC} _bmad/custom/bmad-testarch-test-design.toml"
 
-cat > _bmad/custom/bmad-agent-tester.toml << 'EOF'
-# Test Engineer Agent (Quinn + TEA) — AIDLC Workshop 定制
+cat > _bmad/custom/bmad-tea.toml << 'EOF'
+# TEA Agent (Murat) — AIDLC Workshop 定制
 [agent]
 icon = "🧪"
-role = "Workshop 测试工程师 — 实现 E2E、性能、安全测试代码。可直接运行。"
-communication_style = "代码优先，中文注释。产出可直接 npm test 运行的脚本。"
 
 persistent_facts = [
   "这是一个半天 Workshop，测试代码在 50 分钟并行阶段完成。",
@@ -325,9 +327,6 @@ persistent_facts = [
   "非功能需求：<200ms (p95)，并发 100 用户无错误。",
   "测试到 src/__tests__/，性能到 src/performance/。",
   "Review Gate #2 需要现场演示测试执行。",
-]
-
-principles = [
   "可运行优先——产出必须能直接跑通。",
   "CI 友好——用 mock 隔离，不依赖外部服务。",
   "幂等性——每次运行结果一致。",
@@ -337,28 +336,13 @@ activation_steps_prepend = [
   "读取 {project-root}/_bmad-output/planning-artifacts/test-strategy.md（如果存在）。",
   "读取 {project-root}/_bmad-output/planning-artifacts/architecture.md（如果存在）。",
 ]
-
-[[agent.menu]]
-code = "E2E"
-description = "编写 E2E 自动化测试"
-prompt = "为 5 个 API 端点写 E2E 测试（Jest + supertest），含认证成功/失败场景，mock DynamoDB。输出到 src/__tests__/e2e/"
-
-[[agent.menu]]
-code = "PF"
-description = "编写性能测试（Artillery）"
-prompt = "创建 Artillery 配置：CRUD 流程 + 高并发查询，目标 p95<200ms，阶梯 10→50→100 用户。输出到 src/performance/"
-
-[[agent.menu]]
-code = "ST"
-description = "编写安全测试"
-prompt = "创建安全测试：JWT 安全 + 输入注入 + 速率限制 + 权限边界。Jest + supertest 实现。输出到 src/__tests__/security/"
 EOF
-echo -e "  ${GREEN}✓${NC} _bmad/custom/bmad-agent-tester.toml"
+echo -e "  ${GREEN}✓${NC} _bmad/custom/bmad-tea.toml"
 
 # --- Seed Prompts（备选方案：未安装 BMAD 时手动使用）---
 cat > docs/seed-prompts/pm-seed.md << 'EOF'
 # PM — John Agent Seed Prompt
-> 备选方案：如果 BMAD 已安装，直接在 AI IDE 中输入 `/pm` → 选择 `CP` 即可，无需手动粘贴。
+> 备选方案：如果 BMAD 已安装，直接在 AI IDE 中输入 `/bmad-agent-pm` → 选择 `CP` 即可，无需手动粘贴。
 
 ## Prompt
 ```
@@ -381,7 +365,7 @@ echo -e "  ${GREEN}✓${NC} docs/seed-prompts/pm-seed.md"
 
 cat > docs/seed-prompts/architect-seed.md << 'EOF'
 # 运维/架构 — Winston Agent Seed Prompt
-> 备选方案：如果 BMAD 已安装，直接在 AI IDE 中输入 `/architect` → 选择 `CA` 即可。
+> 备选方案：如果 BMAD 已安装，直接在 AI IDE 中输入 `/bmad-agent-architect` → 选择 `CA` 即可。
 
 ## Prompt
 ```
@@ -404,7 +388,7 @@ echo -e "  ${GREEN}✓${NC} docs/seed-prompts/architect-seed.md"
 
 cat > docs/seed-prompts/dev-seed.md << 'EOF'
 # 开发工程师 — Amelia Agent Seed Prompt
-> 备选方案：如果 BMAD 已安装，直接在 AI IDE 中输入 `/dev` → 选择 `DS` 即可。
+> 备选方案：如果 BMAD 已安装，直接在 AI IDE 中输入 `/bmad-agent-dev` → 选择 `DS` 即可。
 
 ## Prompt
 ```
@@ -427,7 +411,7 @@ echo -e "  ${GREEN}✓${NC} docs/seed-prompts/dev-seed.md"
 
 cat > docs/seed-prompts/qa-seed.md << 'EOF'
 # QA — Quinn Agent Seed Prompt
-> 备选方案：如果 BMAD 已安装，直接在 AI IDE 中输入 `/qa` → 选择 `TS` 即可。
+> 备选方案：如果 BMAD 已安装，直接在 AI IDE 中输入 `/bmad-testarch-test-design` → 选择 `TS` 即可。
 
 ## Prompt
 ```
@@ -449,7 +433,7 @@ echo -e "  ${GREEN}✓${NC} docs/seed-prompts/qa-seed.md"
 
 cat > docs/seed-prompts/tester-seed.md << 'EOF'
 # 测试工程师 — Quinn + TEA Agent Seed Prompt
-> 备选方案：如果 BMAD 已安装，直接在 AI IDE 中输入 `/qa` → 选择 `E2E` / `PF` / `ST` 即可。
+> 备选方案：如果 BMAD 已安装，直接在 AI IDE 中输入 `/bmad-tea` → 选择 `E2E` / `PF` / `ST` 即可。
 
 ## Prompt
 ```
@@ -483,10 +467,10 @@ echo ""
 # Step 4: 安装 BMAD Method
 # ============================================================
 echo -e "${YELLOW}[4/5] 安装 BMAD Method...${NC}"
-echo -e "  运行: npx bmad-method install --yes --modules bmm --tools kiro --directory $(pwd)"
+echo -e "  运行: npx bmad-method install --yes --modules bmm,tea --tools kiro --directory $(pwd)"
 echo ""
 
-if npx bmad-method install --yes --modules bmm --tools kiro --directory "$(pwd)" --communication-language "Chinese" --document-output-language "Chinese" --set core.communication_language="Chinese" --set core.document_output_language="Chinese" --set bmm.project_name="aidlc-bmad-workshop" 2>&1 | tail -5; then
+if npx bmad-method install --yes --modules bmm,tea --tools kiro --directory "$(pwd)" --communication-language "Chinese" --document-output-language "Chinese" --set core.communication_language="Chinese" --set core.document_output_language="Chinese" --set bmm.project_name="aidlc-bmad-workshop" 2>&1 | tail -5; then
     echo ""
     echo -e "  ${GREEN}✓${NC} BMAD Method 安装完成"
 else
@@ -508,8 +492,8 @@ FILES=(
     "_bmad/custom/bmad-agent-pm.toml"
     "_bmad/custom/bmad-agent-architect.toml"
     "_bmad/custom/bmad-agent-dev.toml"
-    "_bmad/custom/bmad-agent-qa.toml"
-    "_bmad/custom/bmad-agent-tester.toml"
+    "_bmad/custom/bmad-testarch-test-design.toml"
+    "_bmad/custom/bmad-tea.toml"
     "_bmad-output/planning-artifacts/product-brief.md"
     "docs/seed-prompts/pm-seed.md"
     "docs/seed-prompts/architect-seed.md"
@@ -535,6 +519,13 @@ else
     echo -e "  ${YELLOW}⚠${NC} BMAD 核心未检测到（请手动运行 npx bmad-method install）"
 fi
 
+# 检查 TEA 模块
+if [ -d "_bmad/tea" ] || [ -f "_bmad/custom/bmad-tea.toml" ]; then
+    echo -e "  ${GREEN}✓${NC} TEA (Test Architecture) 模块已配置"
+else
+    echo -e "  ${YELLOW}⚠${NC} TEA 模块未检测到（可手动运行: npx bmad-method install --modules tea）"
+fi
+
 echo ""
 
 if [ "$ALL_OK" = true ]; then
@@ -554,7 +545,7 @@ if [ "$ALL_OK" = true ]; then
     echo -e "  └── src/ (开发时创建)"
     echo ""
     echo -e "${BLUE}使用方式（二选一）：${NC}"
-    echo -e "  ${GREEN}推荐${NC}: 在 AI IDE 中输入 /pm → 选择 CP（Agent 自动加载定制配置）"
+    echo -e "  ${GREEN}推荐${NC}: 在 AI IDE 中输入 /bmad-agent-pm → 选择 CP（Agent 自动加载定制配置）"
     echo -e "  备选: 复制 docs/seed-prompts/ 中的 Prompt 手动粘贴到 AI IDE"
     echo ""
     echo -e "下一步："

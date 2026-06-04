@@ -14,11 +14,11 @@
 
 | 角色 | BMAD Agent | 命令 | 阶段 |
 |------|-----------|------|------|
-| PM | John | `/pm` → `CP` | Inception |
-| 运维/架构 | Winston | `/architect` → `CA` | Operations |
-| 开发工程师 | Amelia | `/dev` → `DS` | Construction |
-| QA | Quinn | `/qa` → `TS` | Construction |
-| 测试工程师 | Quinn + TEA | `/qa` → `E2E` / `PF` / `ST` | Construction |
+| PM | John | `/bmad-agent-pm` → `CP` | Inception |
+| 运维/架构 | Winston | `/bmad-agent-architect` → `CA` | Operations |
+| 开发工程师 | Amelia | `/bmad-agent-dev` → `DS` | Construction |
+| QA | Quinn | `/bmad-testarch-test-design` → `TS` | Construction |
+| 测试工程师 | Quinn + TEA | `/bmad-tea` → `E2E` / `PF` / `ST` | Construction |
 
 ---
 
