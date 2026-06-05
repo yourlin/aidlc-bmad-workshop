@@ -194,7 +194,7 @@ persistent_facts = [
 | 运维/架构 | Winston | `/bmad-agent-architect` → `CA` | Operations | `docs/seed-prompts/architect-seed.md` |
 | 开发工程师 | Amelia | `/bmad-agent-dev` → `DS` | Construction | `docs/seed-prompts/dev-seed.md` |
 | QA | Quinn | `/bmad-testarch-test-design` → `TS` / `AC` | Construction | `docs/seed-prompts/qa-seed.md` |
-| 测试工程师 | Quinn + TEA | `/bmad-tea` → `E2E` / `PF` / `ST` | Construction | `docs/seed-prompts/tester-seed.md` |
+| 测试工程师 | Murat (TEA) | `/bmad-tea` → `TA` | Construction | `docs/seed-prompts/tester-seed.md` |
 
 ---
 
@@ -241,7 +241,7 @@ Inception       ┌─────────┐    ┌────────
               ═════════════════════════════════════════════════════
 
 Construction                   ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐
-(16:40-17:30)   (支持)         │ CI      │    │ AC      │    │ DS → D2 │    │E2E/PF/ST│
+(16:40-17:30)   (支持)         │ CI      │    │ AC      │    │ DS → D2 │    │   TA    │
  并行 ×4                       │ CDK代码 │    │ 验收用例│    │ 实现代码│    │ 测试代码│
                                └────┬────┘    └────┬────┘    └────┬────┘    └────┬────┘
                                     │              │              │              │
@@ -259,7 +259,7 @@ Construction                   ┌─────────┐    ┌───
 | 架构师 | `/bmad-agent-architect` | `CA` / `CI` | architecture.md, src/infra/ |
 | QA | `/bmad-testarch-test-design` | `TS` / `AC` | test-strategy.md, acceptance-tests.md |
 | 开发 | `/bmad-agent-dev` | `DS` / `D2` | src/handlers/, src/__tests__/ |
-| 测试工程师 | `/bmad-tea` | `E2E` / `PF` / `ST` | src/__tests__/e2e/, src/performance/ |
+| 测试工程师 | `/bmad-tea` | `TA` | src/__tests__/e2e/, src/performance/ |
 
 ---
 
