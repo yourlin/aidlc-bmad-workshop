@@ -321,56 +321,53 @@
         <div class="card" style="padding:14px;">
             <h3 style="font-size:1.1rem;">Step 1：检查前置依赖</h3>
             <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
-                node --version &nbsp;&nbsp;<span style="color:#888;"># 必须 >= v20</span><br>
-                python3 --version <span style="color:#888;"># 必须 >= 3.10</span><br>
-                uv --version &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 可选</span>
+                node --version &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 必须 >= v20</span><br>
+                python3 --version &nbsp;&nbsp;&nbsp;<span style="color:#888;"># 必须 >= 3.10</span><br>
+                echo $GITHUB_TOKEN &nbsp;&nbsp;<span style="color:#888;"># 应输出 ghp_...</span>
             </div>
             <div style="margin-top:6px;background:#FEF2F2;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#991B1B;">
-                ❌ 版本不对？→ <code>nvm install 20</code> / <code>brew install python@3.12</code>
+                ❌ 版本不对？→ <code>nvm install 20</code> / <code>brew install python@3.12</code><br>
+                ❌ 无 Token？→ GitHub Settings → Tokens → 勾选 <code>public_repo</code>
             </div>
         </div>
         <div class="card" style="padding:14px;">
-            <h3 style="font-size:1.1rem;">Step 2：创建项目 + 运行初始化脚本</h3>
+            <h3 style="font-size:1.1rem;">Step 2：创建项目 + 安装 BMAD <a href="https://github.com/bmad-code-org/BMAD-METHOD" target="_blank" style="font-size:1.1rem;color:#3B82F6;text-decoration:none;">📖 文档</a></h3>
             <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
                 mkdir aidlc-bmad-workshop && cd aidlc-bmad-workshop<br>
-                git clone &lt;repo-url&gt; . <span style="color:#888;"># 或下载 zip</span><br>
-                chmod +x setup-workshop.sh && ./setup-workshop.sh
+                git init<br>
+                npx bmad-method install
             </div>
-            <div style="margin-top:6px;background:#F0FDF4;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#166534;">
-                ✅ 脚本会自动创建 _bmad/ 配置 + seed prompts + product brief
+            <div style="font-size:1rem;color:#555;margin-top:6px;line-height:1.5;">
+                按提示选择：<br>
+                • Modules → <strong>BMM</strong> + <strong>TEA</strong><br>
+                • AI IDE → <strong>kiro</strong>（推荐）/ claude-code / cursor / codex<br>
+                • 语言 → Chinese · 项目名 → 你的项目名
+            </div>
+            <div style="margin-top:6px;background:#EFF6FF;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#1E40AF;">
+                💡 非交互式：<code>npx bmad-method install --yes --modules bmm,tea --tools kiro</code>
             </div>
         </div>
         <div class="card" style="padding:14px;">
-            <h3 style="font-size:1.1rem;">Step 3：安装 BMAD Method <a href="https://github.com/bmad-code-org/BMAD-METHOD" target="_blank" style="font-size:1.1rem;color:#3B82F6;text-decoration:none;">📖 官方文档</a></h3>
-            <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
-                <span style="color:#888;"># 必须手动运行（脚本不会自动安装）</span><br>
-                npx bmad-method install
-            </div>
-            <div style="font-size:1.1rem;color:#555;margin-top:6px;line-height:1.5;">
-                按提示选择：<br>
-                • Modules → <strong>BMM</strong>（核心框架）<br>
-                • AI IDE → <strong>kiro</strong>（推荐）/ claude-code / cursor / codex<br>
-                • 语言 → Chinese · 项目名 → 你的项目名<br>
-                <br>
-                安装后 <code>_bmad/custom/*.toml</code> 中的 Agent 定制会自动生效：<br>
-                PM 跳过 Analysis · 架构锁定技术栈 · 开发 TDD 模式 · QA 策略模板化
-            </div>
-            <div style="margin-top:6px;background:#EFF6FF;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#1E40AF;">
-                💡 非交互式：<code>npx bmad-method install --yes --modules bmm --tools kiro</code><br>
-                &nbsp;&nbsp;&nbsp;其他 IDE：<code>--tools codex</code> / <code>--tools cursor</code> / <code>--tools claude-code</code> / <code>--tools github-copilot</code>
+            <h3 style="font-size:1.1rem;">Step 3：通过提示词生成 Workshop 配置 <span style="display:inline-block;background:#DC2626;color:white;font-size:0.75rem;padding:2px 8px;border-radius:9999px;vertical-align:middle;font-weight:700;">关键</span></h3>
+            <div style="font-size:1rem;color:#555;margin-top:6px;line-height:1.5;">
+                在 AI IDE 中输入<strong>内联提示词</strong>，让 AI 自动生成：<br>
+                • <code>_bmad/custom/*.toml</code> — 5 个 Agent 定制配置<br>
+                • <code>_bmad-output/planning-artifacts/product-brief.md</code> — 预置 Brief<br><br>
+                提示词定义项目上下文（Hotel Booking API）、技术栈锁定、时间约束等，AI 据此生成完整配置。
             </div>
         </div>
         <div class="card" style="padding:14px;">
             <h3 style="font-size:1.1rem;">Step 4：验证安装（必须全部 ✓）</h3>
             <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
-                ls _bmad/bmm/agents/ &nbsp;&nbsp;<span style="color:#888;"># ✓ 有 agent yaml 文件</span><br>
-                ls _bmad/manifest.yaml <span style="color:#888;"># ✓ 安装清单</span><br>
+                ls _bmad/bmm/agents/ &nbsp;&nbsp;<span style="color:#888;"># ✓ 有 agent 文件</span><br>
+                ls _bmad/custom/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># ✓ 有 5 个 .toml 文件</span><br>
                 npx bmad-method status <span style="color:#888;"># ✓ 显示已安装模块</span>
             </div>
+            <div style="margin-top:6px;font-size:1rem;color:#555;line-height:1.5;">
+                在 AI IDE 中输入 <code>/bmad-help</code> 确认可以正常响应。
+            </div>
             <div style="margin-top:6px;background:#FEF2F2;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#991B1B;">
-                ❌ 失败？→ 删除 <code>_bmad/</code> 重新运行 <code>npx bmad-method install</code><br>
-                ⚠️ 如果 setup-workshop.sh 已创建 <code>_bmad/</code>，<code>--yes</code> 会走 quick-update 导致不完整。<br>
-                &nbsp;&nbsp;&nbsp;解决：先 <code>rm -rf _bmad/</code> 再运行安装命令
+                ❌ 失败？→ <code>rm -rf _bmad/</code> 重新运行 <code>npx bmad-method install</code>
             </div>
         </div>
     </div>
@@ -379,7 +376,7 @@
 <!-- Slide 5b: Setup (Brownfield) -->
 <div class="slide slide-white" data-slide="6">
     <h2 style="text-align:center;">🛠️ 环境准备 — Brownfield（已有项目）</h2>
-    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:1rem;">⚠️ 不要动已有代码！只在项目根目录叠加 BMAD 配置，脚本自动适配你的技术栈</p>
+    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:1rem;">⚠️ 不要动已有代码！只在项目根目录叠加 BMAD 配置，提示词驱动自动适配你的技术栈</p>
     <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
         <div class="card" style="padding:14px;border-left:4px solid #10B981;">
             <h3 style="font-size:1.1rem;">Step 1：验证现有代码健康</h3>
@@ -398,24 +395,20 @@
             <h3 style="font-size:1.1rem;">Step 2：安装 BMAD <a href="https://github.com/bmad-code-org/BMAD-METHOD" target="_blank" style="font-size:1.1rem;color:#3B82F6;text-decoration:none;">📖 文档</a></h3>
             <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
                 cd your-existing-project<br>
-                npx bmad-method install --yes --modules bmm --tools kiro
+                npx bmad-method install --yes --modules bmm,tea --tools kiro
             </div>
             <div style="margin-top:6px;background:#FEF3C7;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#92400E;">
                 ⚠️ 只创建 <code>_bmad/</code> 目录，不会修改已有文件
             </div>
         </div>
         <div class="card" style="padding:14px;border-left:4px solid #3B82F6;">
-            <h3 style="font-size:1.1rem;">Step 3：运行初始化脚本（关键！）</h3>
-            <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
-                chmod +x workshop-init.sh<br>
-                ./workshop-init.sh
-            </div>
+            <h3 style="font-size:1.1rem;">Step 3：通过提示词生成 Workshop 配置 <span style="display:inline-block;background:#DC2626;color:white;font-size:0.75rem;padding:2px 8px;border-radius:9999px;vertical-align:middle;font-weight:700;">关键</span></h3>
             <div style="font-size:1rem;color:#555;margin-top:6px;line-height:1.6;">
-                脚本自动完成：<br>
-                • 检测技术栈（package.json / pom.xml / requirements.txt）<br>
+                在 AI IDE 中输入<strong>内联提示词</strong>，AI 自动完成：<br>
+                • 扫描代码库（package.json / pom.xml / requirements.txt）<br>
                 • 推断架构模式（微服务 / Serverless / 单体）<br>
-                • 生成 <code>project-context.md</code><br>
-                • 为所有 Agent TOML 写入实际 <code>persistent_facts</code>
+                • 输出<strong>项目确认卡</strong>供你审核<br>
+                • 生成 <code>project-context.md</code> + <code>_bmad/custom/*.toml</code>
             </div>
         </div>
         <div class="card" style="padding:14px;border-left:4px solid #8B5CF6;">
@@ -571,9 +564,9 @@
             </div>
         </div>
         <div class="card" style="padding:16px;border-top:3px solid #3B82F6;">
-            <h3 style="font-size:1.05rem;color:#3B82F6;">� 你需要做</h3>
+            <h3 style="font-size:1.05rem;color:#3B82F6;">👤 你需要做</h3>
             <div style="font-size:0.92rem;color:#555;line-height:1.8;margin-top:8px;">
-                • 运行 <code>workshop-init.sh</code> 自动适配<br>
+                • 在 AI IDE 中输入提示词生成配置<br>
                 • 审核确认卡 + 补充业务描述<br>
                 • 追加受保护目录列表<br>
                 • 开始前跑通已有测试<br>
@@ -582,7 +575,7 @@
         </div>
     </div>
     <div style="margin-top:16px;background:#FEF3C7;border:1px solid #FCD34D;border-radius:8px;padding:12px 20px;max-width:700px;text-align:center;">
-        <span style="font-size:1.1rem;color:#92400E;">💡 <code>workshop-init.sh</code> 已自动将你的技术栈写入 <code>_bmad/custom/*.toml</code> 的 <code>persistent_facts</code> 中。<br>你只需审核确认卡、补充业务描述、追加受保护路径即可。</span>
+        <span style="font-size:1.1rem;color:#92400E;">💡 通过提示词驱动，AI 扫描代码后自动将技术栈写入 <code>_bmad/custom/*.toml</code> 的 <code>persistent_facts</code> 中。<br>你只需审核确认卡、补充业务描述、追加受保护路径即可。</span>
     </div>
 </div>
 
