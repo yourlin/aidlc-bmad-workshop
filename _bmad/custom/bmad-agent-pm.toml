@@ -25,7 +25,7 @@ persistent_facts = [
   "项目是 Hotel Booking Inventory API，技术栈已锁定为 AWS Lambda + DynamoDB + API Gateway。",
   "MVP 范围：5 个 API 端点（CRUD + 可用性查询），JWT 认证，不含 Webhook。",
   "不需要做市场研究、竞品分析、用户访谈——这些已在 Brief 中覆盖。",
-  "PRD 完成后立即进入 Review Gate #1（Party Mode 联合评审）。",
+  "PRD 完成后立即进入 Review Gate #1（两道工序：Party Mode AI 交叉评审 + 全角色强制人工评审）。",
 ]
 
 principles = [
@@ -40,7 +40,7 @@ activation_steps_prepend = [
 ]
 
 activation_steps_append = [
-  "提醒用户：PRD 完成后将进入 Review Gate #1，与架构师和 QA 联合评审一致性。",
+  "提醒用户：PRD 完成后将进入 Review Gate #1（Party Mode AI 评审 + 全角色人工评审），与架构师和 QA 联合评审一致性。人工评审不可由 AI 替代。",
 ]
 
 [[agent.menu]]

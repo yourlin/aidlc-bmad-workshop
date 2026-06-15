@@ -37,8 +37,25 @@
 | 场景 | 输入 | 期望 |
 |------|------|------|
 | 获取成功 | 存在的 roomId | 200 + 房间对象 |
-| 不存在 | 随机 UUID | 404 + NOT_FOUND |
+| 不存在 | 随机 UUID（从未创建） | 404 + NOT_FOUND |
+| 已归档 | 已 DELETE（软删除）的 roomId | 410 + GONE，响应体含 archivedAt |
 | 无效 ID 格式 | "abc" | 400 + VALIDATION_ERROR |
+
+### update-room.test.ts
+
+| 场景 | 输入 | 期望 |
+|------|------|------|
+| 更新成功 | 有效字段 | 200 + 更新后的房间对象 |
+| 不存在 | 随机 UUID | 404 + NOT_FOUND |
+| 无效字段 | pricePerNight=-1 | 400 + VALIDATION_ERROR |
+
+### archive-room.test.ts（软删除，可选端点）
+
+| 场景 | 输入 | 期望 |
+|------|------|------|
+| 归档成功 | 存在的 roomId | 200/204，status→archived 且写入 archivedAt |
+| 再次访问已归档 | 已归档的 roomId（GET） | 410 + GONE，响应体含 archivedAt |
+| 归档不存在的房间 | 随机 UUID | 404 + NOT_FOUND |
 
 ### list-rooms.test.ts
 
@@ -64,7 +81,9 @@
 1. POST /rooms → 创建房间 → 记录 roomId
 2. GET /rooms/{roomId} → 确认数据一致
 3. GET /rooms → 确认在列表中
-4. GET /rooms/{roomId}/availability?start=2026-07-01&end=2026-07-03 → 可用
+4. PUT /rooms/{roomId} → 更新价格 → 确认生效
+5. GET /rooms/availability?start=2026-07-01&end=2026-07-03 → 可用
+6. DELETE /rooms/{roomId} → 归档 → GET /rooms/{roomId} 返回 410 Gone（含 archivedAt）
 ```
 
 ### 认证流程
@@ -79,9 +98,14 @@
 
 ```
 1. POST /rooms + 无效 body → 400
-2. GET /rooms/not-exist-id → 404
-3. POST /rooms + 超长字段 → 400
+2. GET /rooms/not-exist-id → 404（房间从未存在）
+3. GET /rooms/{archived-id} → 410 Gone（房间已归档，含 archivedAt）
+4. POST /rooms + 超长字段 → 400
 ```
+
+:::alert{type="info"}
+**404 vs 410 的区分**是本 API 的关键验收点：404 表示"房间从未存在",410 Gone 表示"房间曾存在、已被软删除（归档）"。这正是 Review Gate #1 中"删除语义"对齐决策落到测试侧的体现——PRD（端点语义为归档）、架构（软删除 + 410）、测试策略三者必须一致。
+:::
 
 ## 质量门禁
 

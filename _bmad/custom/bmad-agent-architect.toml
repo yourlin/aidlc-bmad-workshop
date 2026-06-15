@@ -24,7 +24,7 @@ persistent_facts = [
   "认证方案已确定：JWT via Lambda Authorizer，不讨论其他方案。",
   "监控方案已确定：CloudWatch Logs + X-Ray Tracing，不讨论其他方案。",
   "DynamoDB 使用单表设计（Single-Table Design），PK/SK 模式。",
-  "架构完成后立即进入 Review Gate #1，与 PM 和 QA 联合评审。",
+  "架构完成后立即进入 Review Gate #1（两道工序：Party Mode AI 交叉评审 + 全角色强制人工评审），与 PM 和 QA 联合评审。人工评审不可由 AI 替代。",
   "并行开发阶段需要产出 CDK Stack 代码，架构文档要为此提供清晰的项目结构。",
 ]
 

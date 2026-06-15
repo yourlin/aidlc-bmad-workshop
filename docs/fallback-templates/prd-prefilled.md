@@ -14,21 +14,25 @@ Hotel Booking Inventory API 是一个 RESTful 微服务，提供酒店房间库�
 
 ## 功能需求
 
-### P0 — 必须实现
+### 5 个核心端点（MVP 范围）
 
 | # | 功能 | 端点 | 描述 |
 |---|------|------|------|
 | 1 | 创建房间 | POST /api/v1/rooms | 添加新房间到库存 |
 | 2 | 获取房间 | GET /api/v1/rooms/{id} | 查询单个房间详情 |
-| 3 | 列出房间 | GET /api/v1/rooms | 分页列出所有房间 |
-| 4 | 查询可用性 | GET /api/v1/rooms/{id}/availability | 查询指定日期范围可用性 |
+| 3 | 列出房间 | GET /api/v1/rooms | 列出房间（支持 status/type 筛选） |
+| 4 | 更新房间 | PUT /api/v1/rooms/{id} | 更新房间信息 |
+| 5 | 查询可用性 | GET /api/v1/rooms/availability | 按日期范围查询可用性 |
 
-### P1 — 如有时间
+### 可选端点 — 如有时间
 
 | # | 功能 | 端点 | 描述 |
 |---|------|------|------|
-| 5 | 更新房间 | PUT /api/v1/rooms/{id} | 更新房间信息 |
-| 6 | 删除房间 | DELETE /api/v1/rooms/{id} | 下架房间 |
+| 6 | 归档房间 | DELETE /api/v1/rooms/{id} | **软删除（归档）**：置 status=archived 并记录 archivedAt，不物理删除 |
+
+:::alert{type="info"}
+**关于"删除"语义：** 本 API 采用软删除——`DELETE /rooms/{id}` 的语义是"归档"而非物理删除。归档后再次 `GET` 该房间返回 **410 Gone（曾存在、已归档）并在响应体附 archivedAt 时间戳**；而 404 仅留给"从未存在"的房间 id。这是 Review Gate #1 中典型的跨文档语义对齐案例。
+:::
 
 ## 数据模型
 
@@ -44,9 +48,10 @@ Hotel Booking Inventory API 是一个 RESTful 微服务，提供酒店房间库�
   "pricePerNight": 299.00,
   "currency": "CNY",
   "amenities": ["wifi", "breakfast", "parking"],
-  "status": "active | inactive",
+  "status": "active | inactive | archived",
   "createdAt": "2026-01-01T00:00:00Z",
-  "updatedAt": "2026-01-01T00:00:00Z"
+  "updatedAt": "2026-01-01T00:00:00Z",
+  "archivedAt": null
 }
 ```
 
@@ -99,8 +104,10 @@ Content-Type: application/json
 
 ## 验收标准
 
-- [ ] 所有 P0 端点可通过 HTTP 调用
+- [ ] 5 个核心端点均可通过 HTTP 调用
 - [ ] 输入验证：非法数据返回 400
 - [ ] 认证：无 token 返回 401
+- [ ] 不存在的房间 id：`GET /rooms/{id}` 返回 404
+- [ ] 已归档房间：`GET /rooms/{id}` 返回 410 Gone，响应体含 archivedAt
 - [ ] 单元测试覆盖率 > 80%
 - [ ] 代码通过 lint 检查

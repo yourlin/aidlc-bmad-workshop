@@ -48,3 +48,5 @@ Output: Test plan + test code files
 - 测试策略应覆盖 PRD 中定义的验收标准
 - 与测试工程师协作：QA 设计策略，测试工程师负责执行
 - 完成后参与 Review Gate #2
+
+> **Review Gate 由两道工序组成**：① Party Mode AI 交叉评审，② 全角色强制人工评审签字放行。人工评审聚焦业务语义、跨文档一致性和关键决策，**不可由 AI 替代**。

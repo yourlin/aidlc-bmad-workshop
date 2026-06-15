@@ -23,7 +23,7 @@ persistent_facts = [
   "测试工具链：Jest（单元）+ supertest（集成）+ Artillery（性能）。",
   "非功能需求：响应时间 <200ms (p95)，测试覆盖率 >80%。",
   "QA 负责策略设计，测试工程师负责 E2E 和性能测试的实现。",
-  "测试策略完成后参与 Review Gate #1，验收测试完成后参与 Review Gate #2。",
+  "测试策略完成后参与 Review Gate #1，验收测试完成后参与 Review Gate #2。每道 Review Gate 都由两道工序组成：先 Party Mode AI 交叉评审，再全角色强制人工评审签字放行，人工评审不可由 AI 替代。",
 ]
 
 principles = [

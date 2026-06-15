@@ -37,3 +37,5 @@ Keep it concise — this is a small-scale MVP.
 - 基于预置的 Product Brief，无需从零开始
 - 保持 MVP 范围，不要过度设计
 - 完成后进入 Review Gate #1
+
+> **Review Gate 由两道工序组成**：① 先用 Party Mode 做 AI 交叉评审（机器比对，捞硬性冲突），② 再由全角色（PM/架构/开发/QA）做强制人工评审签字放行。人工评审聚焦业务语义、跨文档一致性和关键决策，**不可由 AI 替代**——只跑 Party Mode 跳过人工评审，等于让 AI 给 AI 签字。

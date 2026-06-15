@@ -38,3 +38,5 @@ Output: Architecture document + CDK project structure
 - 与 PM 的 PRD 并行启动（A 组同步）
 - 确保架构与 PRD 中的 API 端点一致
 - 完成后参与 Review Gate #1
+
+> **Review Gate 由两道工序组成**：① 先用 Party Mode 做 AI 交叉评审，② 再由全角色做强制人工评审签字放行。人工评审聚焦业务语义、跨文档一致性和关键决策，**不可由 AI 替代**。

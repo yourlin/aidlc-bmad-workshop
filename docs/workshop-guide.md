@@ -22,6 +22,18 @@
 
 ---
 
+## Kiro 在流程中的角色
+
+BMAD 定义了 Agent 约束和工作流，但需要一个执行环境把它们变成可运行的交互。[Kiro](https://kiro.dev/)（AWS 的 AI IDE）是本流程推荐的执行载体，其"约束优先"的设计哲学与 AIDLC 天然对齐：
+
+- **Spec 驱动——约束在执行之前**：PRD 和架构文档在 Kiro 中以 Spec 形式成为 AI 编码时不可违反的前提条件。
+- **Skills 是 BMAD Agent 的运行时**：每个 Agent（PM/Architect/Dev/TEA）以 Kiro Skill 形式存在，斜杠命令触发、自动加载 TOML 的 `persistent_facts`，启动即携带全部约束。
+- **执行中需变更要回流上游**：当执行暴露需求遗漏或设计缺陷时，**不要在 Kiro 里直接改代码绕过约束**，而是回到 BMAD 改配置/重跑工作流、回到 Spec 修订规格，再重新驱动一次执行。约束始终是上游的 PRD/架构/Spec，代码只是它们的产物。
+
+> 💡 Kiro 不是唯一选择——Claude Code / Cursor / CodeX 同样可用。但 Kiro 的 Spec + Skills 机制最贴合本流程的"先约束后执行"理念。
+
+---
+
 ## 环境准备
 
 ### 前置要求
@@ -72,11 +84,18 @@ ls docs/seed-prompts/              # Seed Prompts
 - 三者并行执行
 
 ### Review Gate #1（20 分钟）
-全员评审 PRD、架构文档和测试策略的一致性：
+
+Review Gate 由**两道工序**组成，缺一不可：
+
+**第一道——Party Mode AI 交叉评审**：用 Party Mode 快速捞出格式错位、字段缺失、端点数量对不上这类机器能发现的硬性不一致（prompt 见下文「Party Mode」章节）。
+
+**第二道——全角色强制人工评审**：Party Mode 跑完后，所有相关角色（PM、架构师、开发、QA）必须再坐下来人工评审，确认以下几点，并验收本阶段产出、为下一阶段做准备：
 1. API 端点是否在架构中有对应？
 2. DynamoDB schema 是否与 API 数据模型对齐？
 3. 非功能需求（延迟、认证）是否被满足？
 4. 测试策略是否覆盖所有验收标准？
+
+> ⚠️ **只跑 Party Mode 而跳过人工评审，等于让 AI 给 AI 的产出签字——这恰恰是 AIDLC 要避免的。** 人工评审才是决定本阶段能否放行的"闸门"，负责发现 AI 看不出的语义分歧（领域惯例、隐含假设、跨文档间接依赖）。
 
 ### 休息（10 分钟）
 
@@ -93,12 +112,15 @@ ls docs/seed-prompts/              # Seed Prompts
 ### 休息（10 分钟）
 
 ### Review Gate #2（25 分钟）
-全员评审代码、测试和 IaC：
+
+同样两道工序：**先 Party Mode AI 交叉评审，再全角色人工评审**。Party Mode 扫一遍代码与文档的硬性对齐问题，随后所有角色共同做一次人工验收：
 1. 代码是否符合架构设计？
 2. 测试是否覆盖验收标准？
 3. IaC 是否可部署？
 4. 安全性检查（认证、输入验证）
 5. 测试工程师现场演示测试执行
+
+> ⚠️ 人工评审聚焦**业务语义、跨文档一致性和关键决策**，而非逐行审读代码——代码正确性由 TDD（测试即可执行合同）承担。
 
 ### 总结 + Q&A（30 分钟）
 - 各角色分享 AI 协作心得
@@ -107,7 +129,9 @@ ls docs/seed-prompts/              # Seed Prompts
 
 ---
 
-## Party Mode（联合评审）
+## Party Mode（Review Gate 的第一道工序）
+
+> Party Mode 是 Review Gate 内的 **AI 交叉评审**工序，是"加速器"而非"放行闸"。它负责快速比对、捞出硬性冲突；跑完后**仍必须进行全角色人工评审**才能放行（见上文两个 Review Gate 章节）。
 
 ### Review Gate #1 Prompt
 ```
@@ -155,7 +179,7 @@ Workshop 结束时，团队应完成：
 - [ ] 至少 2 个 API endpoint 的完整实现（代码 + 单元测试）
 - [ ] E2E 自动化测试 + 性能测试脚本
 - [ ] IaC 模板（CDK stack 定义）
-- [ ] 2 次成功的 Party Mode 联合评审
+- [ ] 2 次完整的 Review Gate（Party Mode AI 评审 + 全角色人工评审）
 - [ ] 测试执行演示（Review Gate #2 现场跑通）
 
 **所有产出物都是 AI Agent 生成 + 人工 Review 确认，完整体现 AIDLC 方法论。**

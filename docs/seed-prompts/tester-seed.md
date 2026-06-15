@@ -60,6 +60,8 @@ Deliverables:
 - 完成后参与 Review Gate #2
 - 关注测试的可维护性，避免脆弱测试（flaky tests）
 
+> **Review Gate 由两道工序组成**：① Party Mode AI 交叉评审，② 全角色强制人工评审。Party Mode 是加速器，人工评审才是放行闸，**不可由 AI 替代**。
+
 ## Brownfield 项目补充 Prompt
 
 ```

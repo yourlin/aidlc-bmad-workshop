@@ -43,15 +43,16 @@ QA:       [验收用例: 15min] → [单元测试: 25min] ───────�
 ### Story 2: 获取房间
 - [ ] GET /api/v1/rooms/{id} 返回 200 + 房间数据
 - [ ] 不存在的 ID 返回 404
+- [ ] 已归档（软删除）的房间返回 410 Gone + archivedAt
 - [ ] 单元测试通过
 
 ### Story 3: 列出房间
-- [ ] GET /api/v1/rooms 返回房间列表
+- [ ] GET /api/v1/rooms 返回房间列表（支持 status/type 筛选）
 - [ ] 支持分页 (limit + lastKey)
 - [ ] 空结果返回 200 + 空数组
 
 ### Story 4: 查询可用性
-- [ ] GET /api/v1/rooms/{id}/availability?start=X&end=Y
+- [ ] GET /api/v1/rooms/availability?start=X&end=Y（按日期范围）
 - [ ] 返回日期范围内的可用性数据
 - [ ] 日期格式错误返回 400
 
