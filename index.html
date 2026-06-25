@@ -144,7 +144,7 @@
         <div style="display:flex;justify-content:center;gap:40px;margin-top:40px;">
             <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">4h</div><div style="font-size:0.92rem;opacity:0.6;">动手实操</div></div>
             <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">2h</div><div style="font-size:0.92rem;opacity:0.6;">成果分享</div></div>
-            <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">5</div><div style="font-size:0.92rem;opacity:0.6;">参与角色</div></div>
+            <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">4</div><div style="font-size:0.92rem;opacity:0.6;">参与角色</div></div>
             <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">E2E</div><div style="font-size:0.92rem;opacity:0.6;">全生命周期</div></div>
         </div>
     </div>
@@ -164,11 +164,11 @@
             <tr><td class="time-col">14:10 - 14:55</td><td>📢 讲师分享：AIDLC — Agentic AI 时代的软件工程</td><td>全员</td></tr>
             <tr><td class="time-col">14:55 - 15:25</td><td>🛠️ Workshop 实操讲解：如何使用 BMAD</td><td>全员</td></tr>
             <tr><td class="time-col">15:25 - 15:35</td><td>🚀 各组启动 Workshop</td><td>各组</td></tr>
-            <tr><td class="time-col">15:35 - 16:05</td><td>▶ PRD + 架构 + 测试策略（并行）</td><td>PM / 运维 / QA</td></tr>
+            <tr><td class="time-col">15:35 - 16:05</td><td>▶ PRD + 架构 + 测试策略（并行）</td><td>PM / 架构 / 测试</td></tr>
             <tr class="agenda-review"><td class="time-col">16:05 - 16:20</td><td>🔍 Review Gate #1</td><td>全员</td></tr>
             <tr class="agenda-break"><td class="time-col">16:20 - 16:30</td><td>☕ 休息</td><td>—</td></tr>
             <tr><td class="time-col">16:30 - 16:40</td><td>Sprint Planning</td><td>全员</td></tr>
-            <tr><td class="time-col">16:40 - 17:30</td><td>⚡ 并行开发（开发 / QA / 测试 / 运维）</td><td>各角色</td></tr>
+            <tr><td class="time-col">16:40 - 17:30</td><td>⚡ 并行开发（PM / 架构 / 开发 / 测试）</td><td>各角色</td></tr>
             <tr class="agenda-review"><td class="time-col">17:30 - 17:45</td><td>🔍 Review Gate #2 + 测试演示</td><td>全员</td></tr>
             <tr><td class="time-col">17:45 - 18:00</td><td>Wrap-up + 明日预告</td><td>全员</td></tr>
         </tbody>
@@ -197,7 +197,7 @@
         <div class="card" style="border-top:4px solid #10B981;">
             <div style="font-size:2rem;margin-bottom:8px;">⚡</div>
             <h3>Construction（构建）</h3>
-            <p style="font-size:1.05rem;color:#666;">开发、QA、测试、运维 4 角色并行。AI 生成代码和测试，人工 Review。</p>
+            <p style="font-size:1.05rem;color:#666;">PM、架构、开发、测试 4 角色并行。AI 生成代码和测试，人工 Review。</p>
         </div>
         <div class="card" style="border-top:4px solid #8B5CF6;">
             <div style="font-size:2rem;margin-bottom:8px;">🚀</div>
@@ -223,9 +223,8 @@
                     <th style="padding:6px 8px;width:90px;">时间</th>
                     <th style="padding:6px 8px;">PM</th>
                     <th style="padding:6px 8px;">架构师</th>
-                    <th style="padding:6px 8px;">QA</th>
                     <th style="padding:6px 8px;">开发</th>
-                    <th style="padding:6px 8px;">测试工程师</th>
+                    <th style="padding:6px 8px;">测试工程师 (TEA)</th>
                 </tr>
             </thead>
             <tbody>
@@ -234,29 +233,27 @@
                     <td style="padding:8px;font-family:monospace;color:#FF9900;">15:35-16:05</td>
                     <td style="padding:8px;background:#DBEAFE;border-radius:6px;"><strong>/bmad-agent-pm → PRD</strong><br>创建 PRD<br><span style="color:#666;">产出: prd.md</span></td>
                     <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/bmad-agent-architect → CA</strong><br>架构设计<br><span style="color:#666;">产出: architecture.md</span></td>
-                    <td style="padding:8px;background:#EDE9FE;border-radius:6px;"><strong>/bmad-testarch-test-design</strong><br>测试策略<br><span style="color:#666;">产出: test-strategy.md</span></td>
                     <td style="padding:8px;color:#999;">—<br><span style="font-size:0.78rem;">等待 Sprint Planning</span></td>
-                    <td style="padding:8px;color:#999;">—<br><span style="font-size:0.78rem;">等待 Sprint Planning</span></td>
+                    <td style="padding:8px;background:#FCE7F3;border-radius:6px;"><strong>/bmad-testarch-test-design</strong><br>测试策略（TD）<br><span style="color:#666;">产出: test-strategy.md</span></td>
                 </tr>
                 <tr>
-                    <td colspan="7" style="padding:4px;background:#FAF5FF;font-weight:600;color:#7C3AED;">🔍 Review Gate #1 — Party Mode 联合评审（PRD + 架构 + 测试策略一致性）</td>
+                    <td colspan="6" style="padding:4px;background:#FAF5FF;font-weight:600;color:#7C3AED;">🔍 Review Gate #1 — Party Mode 联合评审（PRD + 架构 + 测试策略一致性）</td>
                 </tr>
                 <tr style="background:#F0FDF4;">
                     <td style="padding:8px;font-weight:700;color:#065F46;" rowspan="1">Construction<br><span style="font-size:0.78rem;font-weight:400;">并行构建</span></td>
                     <td style="padding:8px;font-family:monospace;color:#FF9900;">16:40-17:30</td>
                     <td style="padding:8px;color:#999;">—<br><span style="font-size:0.78rem;">支持 & 答疑</span></td>
                     <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/bmad-agent-architect → CA</strong><br>CDK IaC 代码<br><span style="color:#666;">产出: src/infra/</span></td>
-                    <td style="padding:8px;background:#EDE9FE;border-radius:6px;"><strong>/bmad-testarch-test-design</strong><br>验收用例<br><span style="color:#666;">产出: acceptance-tests.md</span></td>
                     <td style="padding:8px;background:#D1FAE5;border-radius:6px;"><strong>/bmad-agent-dev → DS</strong><br>实现 Story #1 #2<br><span style="color:#666;">产出: src/handlers/</span></td>
-                    <td style="padding:8px;background:#FCE7F3;border-radius:6px;"><strong>/bmad-tea → TA, NR</strong><br>API/E2E 自动化 + NFR 审计<br><span style="color:#666;">产出: src/__tests__/</span></td>
+                    <td style="padding:8px;background:#FCE7F3;border-radius:6px;"><strong>/bmad-tea → TA, NR</strong><br>验收用例 + API/E2E 自动化 + NFR 审计<br><span style="color:#666;">产出: acceptance-tests.md · src/__tests__/</span></td>
                 </tr>
                 <tr>
-                    <td colspan="7" style="padding:4px;background:#FAF5FF;font-weight:600;color:#7C3AED;">🔍 Review Gate #2 — Party Mode 联合评审 + 测试执行演示</td>
+                    <td colspan="6" style="padding:4px;background:#FAF5FF;font-weight:600;color:#7C3AED;">🔍 Review Gate #2 — Party Mode 联合评审 + 测试执行演示</td>
                 </tr>
                 <tr style="background:#FFF7ED;">
                     <td style="padding:8px;font-weight:700;color:#9A3412;">Day 2<br><span style="font-size:0.78rem;font-weight:400;">成果分享</span></td>
                     <td style="padding:8px;font-family:monospace;color:#FF9900;">10:00-12:00</td>
-                    <td colspan="5" style="padding:8px;background:#FFF7ED;border-radius:6px;text-align:center;"><strong>全员参与</strong> — 每组 10 分钟演示产出物 + AI 协作心得 + 讲师点评</td>
+                    <td colspan="4" style="padding:8px;background:#FFF7ED;border-radius:6px;text-align:center;"><strong>全员参与</strong> — 每组 10 分钟演示产出物 + AI 协作心得 + 讲师点评</td>
                 </tr>
             </tbody>
         </table>
@@ -264,9 +261,8 @@
     <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
         <span style="font-size:1.1rem;background:#DBEAFE;padding:2px 8px;border-radius:4px;">🔵 PM 工作</span>
         <span style="font-size:1.1rem;background:#FEF3C7;padding:2px 8px;border-radius:4px;">🟡 架构工作</span>
-        <span style="font-size:1.1rem;background:#EDE9FE;padding:2px 8px;border-radius:4px;">🟣 QA 工作</span>
         <span style="font-size:1.1rem;background:#D1FAE5;padding:2px 8px;border-radius:4px;">🟢 开发工作</span>
-        <span style="font-size:1.1rem;background:#FCE7F3;padding:2px 8px;border-radius:4px;">🔴 测试工程师</span>
+        <span style="font-size:1.1rem;background:#FCE7F3;padding:2px 8px;border-radius:4px;">🔴 测试工程师 (TEA)</span>
         <span style="font-size:1.1rem;background:#FAF5FF;padding:2px 8px;border-radius:4px;">🟣 Review Gate</span>
     </div>
 </div>
@@ -274,16 +270,16 @@
 <!-- Slide 5: Roles -->
 <div class="slide slide-white" data-slide="4">
     <h2 style="text-align:center;">角色与分工</h2>
-    <p style="text-align:center;color:#666;margin-bottom:24px;">5 个角色对应 BMAD Agent，覆盖 AIDLC 全生命周期</p>
-    <div class="cards-grid" style="grid-template-columns:repeat(5,1fr);max-width:1100px;">
+    <p style="text-align:center;color:#666;margin-bottom:24px;">4 个角色对应 BMAD Agent，覆盖 AIDLC 全生命周期</p>
+    <div class="cards-grid" style="grid-template-columns:repeat(4,1fr);max-width:1100px;">
         <div class="card" style="border-top:3px solid #3B82F6;padding:16px;text-align:center;">
             <div style="width:40px;height:40px;background:#DBEAFE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;color:#1E40AF;font-size:1.1rem;">PM</div>
             <h3 style="font-size:1.1rem;">产品经理</h3>
             <p style="font-size:0.88rem;color:#666;margin:4px 0;">John Agent</p>
-            <span class="role-badge badge-pm" style="font-size:1.1rem;">CP</span>
+            <span class="role-badge badge-pm" style="font-size:1.1rem;">PRD</span>
         </div>
         <div class="card" style="border-top:3px solid #F59E0B;padding:16px;text-align:center;">
-            <div style="width:40px;height:40px;background:#FEF3C7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;color:#92400E;font-size:0.88rem;">运维</div>
+            <div style="width:40px;height:40px;background:#FEF3C7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;color:#92400E;font-size:0.88rem;">架构</div>
             <h3 style="font-size:1.1rem;">架构师</h3>
             <p style="font-size:0.88rem;color:#666;margin:4px 0;">Winston Agent</p>
             <span class="role-badge badge-arch" style="font-size:1.1rem;">CA</span>
@@ -294,17 +290,11 @@
             <p style="font-size:0.88rem;color:#666;margin:4px 0;">Amelia Agent</p>
             <span class="role-badge badge-dev" style="font-size:1.1rem;">DS</span>
         </div>
-        <div class="card" style="border-top:3px solid #8B5CF6;padding:16px;text-align:center;">
-            <div style="width:40px;height:40px;background:#EDE9FE;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;color:#5B21B6;font-size:1.1rem;">QA</div>
-            <h3 style="font-size:1.1rem;">QA</h3>
-            <p style="font-size:0.88rem;color:#666;margin:4px 0;">Quinn Agent</p>
-            <span class="role-badge badge-qa" style="font-size:1.1rem;">QA</span>
-        </div>
         <div class="card" style="border-top:3px solid #EC4899;padding:16px;text-align:center;">
             <div style="width:40px;height:40px;background:#FCE7F3;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-weight:700;color:#9D174D;font-size:0.88rem;">Test</div>
             <h3 style="font-size:1.1rem;">测试工程师</h3>
-            <p style="font-size:0.88rem;color:#666;margin:4px 0;">Quinn + TEA</p>
-            <span class="role-badge badge-tester" style="font-size:1.1rem;">QA</span>
+            <p style="font-size:0.88rem;color:#666;margin:4px 0;">Murat (TEA)</p>
+            <span class="role-badge badge-tester" style="font-size:1.1rem;">TA</span>
         </div>
     </div>
     <div style="margin-top:24px;background:#FFF7ED;border:1px solid #FDBA74;border-radius:12px;padding:16px 24px;max-width:600px;text-align:center;">
@@ -353,7 +343,7 @@
             <h3 style="font-size:1.1rem;">Step 3：通过提示词生成 Workshop 配置 <span style="display:inline-block;background:#DC2626;color:white;font-size:0.75rem;padding:2px 8px;border-radius:9999px;vertical-align:middle;font-weight:700;">关键</span></h3>
             <div style="font-size:1rem;color:#555;margin-top:6px;line-height:1.5;">
                 在 AI IDE 中输入<strong>内联提示词</strong>，让 AI 自动生成：<br>
-                • <code>_bmad/custom/*.toml</code> — 5 个 Agent 定制配置<br>
+                • <code>_bmad/custom/*.toml</code> — 4 个 Agent 定制配置<br>
                 • <code>_bmad-output/planning-artifacts/product-brief.md</code> — 预置 Brief<br><br>
                 提示词定义项目上下文（Hotel Booking API）、技术栈锁定、时间约束等，AI 据此生成完整配置。
             </div>
@@ -362,7 +352,7 @@
             <h3 style="font-size:1.1rem;">Step 4：验证安装（必须全部 ✓）</h3>
             <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
                 ls _bmad/bmm/agents/ &nbsp;&nbsp;<span style="color:#888;"># ✓ 有 agent 文件</span><br>
-                ls _bmad/custom/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># ✓ 有 5 个 .toml 文件</span><br>
+                ls _bmad/custom/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># ✓ 有 4 个 .toml 文件</span><br>
                 npx bmad-method status <span style="color:#888;"># ✓ 显示已安装模块</span>
             </div>
             <div style="margin-top:6px;font-size:1rem;color:#555;line-height:1.5;">
@@ -642,7 +632,7 @@
         </div>
         <div class="faq-item" onclick="this.classList.toggle('open')">
             <div class="faq-q">一个人可以扮演多个角色吗？<span class="faq-arrow">▶</span></div>
-            <div class="faq-a">可以。使用 Party Mode 在同一终端切换不同 Agent。人数不足时建议兼任相近角色（如 QA + 测试工程师）。</div>
+            <div class="faq-a">可以。使用 Party Mode 在同一终端切换不同 Agent。人数不足时建议兼任相近角色（如 PM + 架构师）。</div>
         </div>
         <div class="faq-item" onclick="this.classList.toggle('open')">
             <div class="faq-q">Workshop 时间不够怎么办？<span class="faq-arrow">▶</span></div>
