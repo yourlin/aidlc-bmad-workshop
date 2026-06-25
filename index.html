@@ -232,7 +232,7 @@
                 <tr style="background:#EFF6FF;">
                     <td style="padding:8px;font-weight:700;color:#1E40AF;" rowspan="1">Inception<br><span style="font-size:0.78rem;font-weight:400;">需求定义</span></td>
                     <td style="padding:8px;font-family:monospace;color:#FF9900;">15:35-16:05</td>
-                    <td style="padding:8px;background:#DBEAFE;border-radius:6px;"><strong>/bmad-agent-pm → CP</strong><br>创建 PRD<br><span style="color:#666;">产出: prd.md</span></td>
+                    <td style="padding:8px;background:#DBEAFE;border-radius:6px;"><strong>/bmad-agent-pm → PRD</strong><br>创建 PRD<br><span style="color:#666;">产出: prd.md</span></td>
                     <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/bmad-agent-architect → CA</strong><br>架构设计<br><span style="color:#666;">产出: architecture.md</span></td>
                     <td style="padding:8px;background:#EDE9FE;border-radius:6px;"><strong>/bmad-testarch-test-design</strong><br>测试策略<br><span style="color:#666;">产出: test-strategy.md</span></td>
                     <td style="padding:8px;color:#999;">—<br><span style="font-size:0.78rem;">等待 Sprint Planning</span></td>
@@ -245,10 +245,10 @@
                     <td style="padding:8px;font-weight:700;color:#065F46;" rowspan="1">Construction<br><span style="font-size:0.78rem;font-weight:400;">并行构建</span></td>
                     <td style="padding:8px;font-family:monospace;color:#FF9900;">16:40-17:30</td>
                     <td style="padding:8px;color:#999;">—<br><span style="font-size:0.78rem;">支持 & 答疑</span></td>
-                    <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/bmad-agent-architect → CI</strong><br>CDK IaC 代码<br><span style="color:#666;">产出: src/infra/</span></td>
+                    <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/bmad-agent-architect → CA</strong><br>CDK IaC 代码<br><span style="color:#666;">产出: src/infra/</span></td>
                     <td style="padding:8px;background:#EDE9FE;border-radius:6px;"><strong>/bmad-testarch-test-design</strong><br>验收用例<br><span style="color:#666;">产出: acceptance-tests.md</span></td>
-                    <td style="padding:8px;background:#D1FAE5;border-radius:6px;"><strong>/bmad-agent-dev → DS, D2</strong><br>实现 Story #1 #2<br><span style="color:#666;">产出: src/handlers/</span></td>
-                    <td style="padding:8px;background:#FCE7F3;border-radius:6px;"><strong>/bmad-tea → TA</strong><br>E2E+性能+安全<br><span style="color:#666;">产出: src/__tests__/</span></td>
+                    <td style="padding:8px;background:#D1FAE5;border-radius:6px;"><strong>/bmad-agent-dev → DS</strong><br>实现 Story #1 #2<br><span style="color:#666;">产出: src/handlers/</span></td>
+                    <td style="padding:8px;background:#FCE7F3;border-radius:6px;"><strong>/bmad-tea → TA, NR</strong><br>API/E2E 自动化 + NFR 审计<br><span style="color:#666;">产出: src/__tests__/</span></td>
                 </tr>
                 <tr>
                     <td colspan="7" style="padding:4px;background:#FAF5FF;font-weight:600;color:#7C3AED;">🔍 Review Gate #2 — Party Mode 联合评审 + 测试执行演示</td>
@@ -434,7 +434,7 @@
     <div class="cards-grid cards-grid-2" style="max-width:1000px;">
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-pm">PM</span><strong style="color:white;">/bmad-agent-pm → CP</strong>
+                <span class="role-badge badge-pm">PM</span><strong style="color:white;">/bmad-agent-pm → PRD</strong>
             </div>
             <div style="font-size:0.92rem;color:#ccc;line-height:1.6;">
                 自动加载 product-brief.md<br>
@@ -444,7 +444,7 @@
         </div>
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-arch">架构</span><strong style="color:white;">/bmad-agent-architect → CA / CI</strong>
+                <span class="role-badge badge-arch">架构</span><strong style="color:white;">/bmad-agent-architect → CA</strong>
             </div>
             <div style="font-size:0.92rem;color:#ccc;line-height:1.6;">
                 技术栈已锁定，不讨论选型<br>
@@ -454,7 +454,7 @@
         </div>
         <div class="card-dark">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span class="role-badge badge-dev">开发</span><strong style="color:white;">/bmad-agent-dev → DS / D2</strong>
+                <span class="role-badge badge-dev">开发</span><strong style="color:white;">/bmad-agent-dev → DS</strong>
             </div>
             <div style="font-size:0.92rem;color:#ccc;line-height:1.6;">
                 TDD 模式：先测试 → 再实现<br>
@@ -469,8 +469,8 @@
                 <span class="role-badge badge-tester">测试</span><strong style="color:white;">/bmad-tea → TA</strong>
             </div>
             <div style="font-size:0.92rem;color:#ccc;line-height:1.6;">
-                QA：策略 + 验收用例 · 测试工程师：E2E + 性能 + 安全（TA 命令）<br>
-                产出：<code>test-strategy.md</code> + <code>src/__tests__/</code> + <code>src/performance/</code><br>
+                QA：策略 + 验收用例 · 测试工程师：API/E2E 自动化（TA）+ NFR 证据审计（NR）<br>
+                产出：<code>test-strategy.md</code> + <code>src/__tests__/</code><br>
                 <span style="color:#FF9900;">⏱ Review Gate #2 需现场演示</span>
             </div>
         </div>
@@ -535,7 +535,7 @@
     <div style="margin-top:12px;display:flex;gap:12px;max-width:980px;width:100%;">
         <div style="flex:1;background:#232F3E;border-radius:8px;padding:12px;text-align:center;">
             <div style="font-size:0.92rem;color:#FF9900;font-weight:600;">Workshop 中的使用顺序</div>
-            <div style="font-size:1.1rem;color:#ccc;margin-top:4px;">/bmad-agent-pm → CP → <em>Review</em> → /bmad-agent-architect → CA → <em>Review</em> → /bmad-sprint-planning → /bmad-agent-dev → DS → <em>Review</em></div>
+            <div style="font-size:1.1rem;color:#ccc;margin-top:4px;">/bmad-agent-pm → PRD → <em>Review</em> → /bmad-agent-architect → CA → <em>Review</em> → /bmad-sprint-planning → /bmad-agent-dev → DS → <em>Review</em></div>
         </div>
     </div>
 </div>
@@ -682,7 +682,7 @@
         </div>
         <div class="card-dark" style="text-align:center;padding:16px;">
             <div style="font-size:1.8rem;margin-bottom:6px;">🧪</div>
-            <div style="font-size:1.1rem;">E2E + 性能测试</div>
+            <div style="font-size:1.1rem;">API/E2E 测试 + NFR 审计</div>
         </div>
         <div class="card-dark" style="text-align:center;padding:16px;">
             <div style="font-size:1.8rem;margin-bottom:6px;">📐</div>
