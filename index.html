@@ -134,7 +134,7 @@
         <div style="margin-bottom:24px;">
             <span class="tag tag-orange">AWS × Kiro</span>
             <span style="margin:0 8px;opacity:0.4;">·</span>
-            <span class="tag tag-purple">BMAD Method v6</span>
+            <span class="tag tag-purple">BMAD Method v6.9</span>
         </div>
         <h1>AI 驱动的全生命周期<br>开发实战 Workshop</h1>
         <p class="subtitle" style="margin:0 auto 32px;">
@@ -323,10 +323,12 @@
             <div class="code-block" style="font-size:0.88rem;margin-top:6px;">
                 node --version &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 必须 >= v20</span><br>
                 python3 --version &nbsp;&nbsp;&nbsp;<span style="color:#888;"># 必须 >= 3.10</span><br>
+                uv --version &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 推荐，6.9 起为 Python 脚本标准</span><br>
                 echo $GITHUB_TOKEN &nbsp;&nbsp;<span style="color:#888;"># 应输出 ghp_...</span>
             </div>
             <div style="margin-top:6px;background:#FEF2F2;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#991B1B;">
                 ❌ 版本不对？→ <code>nvm install 20</code> / <code>brew install python@3.12</code><br>
+                ❌ 无 uv？→ <code>curl -LsSf https://astral.sh/uv/install.sh | sh</code><br>
                 ❌ 无 Token？→ GitHub Settings → Tokens → 勾选 <code>public_repo</code>
             </div>
         </div>
@@ -376,7 +378,7 @@
 <!-- Slide 5b: Setup (Brownfield) -->
 <div class="slide slide-white" data-slide="6">
     <h2 style="text-align:center;">🛠️ 环境准备 — Brownfield（已有项目）</h2>
-    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:1rem;">⚠️ 不要动已有代码！只在项目根目录叠加 BMAD 配置，提示词驱动自动适配你的技术栈</p>
+    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:1rem;">⚠️ 不要动已有代码！只在项目根目录叠加 BMAD，用内置 workflow 理解项目并生成上下文与架构</p>
     <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
         <div class="card" style="padding:14px;border-left:4px solid #10B981;">
             <h3 style="font-size:1.1rem;">Step 1：验证现有代码健康</h3>
@@ -402,25 +404,24 @@
             </div>
         </div>
         <div class="card" style="padding:14px;border-left:4px solid #3B82F6;">
-            <h3 style="font-size:1.1rem;">Step 3：通过提示词生成 Workshop 配置 <span style="display:inline-block;background:#DC2626;color:white;font-size:0.75rem;padding:2px 8px;border-radius:9999px;vertical-align:middle;font-weight:700;">关键</span></h3>
+            <h3 style="font-size:1.1rem;">Step 3：用 BMAD 内置 skill 生成上下文与架构 <span style="display:inline-block;background:#DC2626;color:white;font-size:0.75rem;padding:2px 8px;border-radius:9999px;vertical-align:middle;font-weight:700;">关键</span></h3>
             <div style="font-size:1rem;color:#555;margin-top:6px;line-height:1.6;">
-                在 AI IDE 中输入<strong>内联提示词</strong>，AI 自动完成：<br>
-                • 扫描代码库（package.json / pom.xml / requirements.txt）<br>
-                • 推断架构模式（微服务 / Serverless / 单体）<br>
-                • 输出<strong>项目确认卡</strong>供你审核<br>
-                • 生成 <code>project-context.md</code> + <code>_bmad/custom/*.toml</code>
+                带自己的项目时<strong>不再用自定义提示词生成 *.toml</strong>，依次调用内置 workflow：<br>
+                • <code>bmad-document-project</code> — 扫描代码库，输出项目文档<br>
+                • <code>bmad-generate-project-context</code> — 生成 <code>project-context.md</code><br>
+                • <code>bmad-architecture</code> — 记录架构决策与扩展规则
             </div>
         </div>
         <div class="card" style="padding:14px;border-left:4px solid #8B5CF6;">
             <h3 style="font-size:1.1rem;">Step 4：讲师带领审核 + 补充</h3>
             <div style="font-size:1rem;color:#555;margin-top:6px;line-height:1.6;">
-                • 审核确认卡（技术栈 / 架构 / 规模）<br>
+                • 审核 skill 产出（技术栈 / 架构 / 规模检测是否准确）<br>
                 • 补充业务描述（项目做什么 / 本次加什么功能）<br>
-                • 配置受保护路径（不可修改的目录/文件）<br>
+                • 在 <code>project-context.md</code> 中标注受保护路径<br>
                 • <code>/bmad-help</code> + <code>/bmad-agent-pm</code> 确认可用
             </div>
             <div style="margin-top:6px;background:#F0FDF4;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#166534;">
-                ✅ 确认卡内容正确 + Agent 响应正常 → 开始 Workshop！
+                ✅ 上下文与架构文档已审核 + Agent 响应正常 → 开始 Workshop！
             </div>
         </div>
     </div>
@@ -510,7 +511,7 @@
             <h3 style="font-size:1.1rem;">③ 直接调用工作流</h3>
             <div class="code-block" style="font-size:1.1rem;margin-top:6px;">
                 /bmad-prd &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 创建 PRD</span><br>
-                /bmad-create-architecture <span style="color:#888;"># 创建架构文档</span><br>
+                /bmad-architecture <span style="color:#888;"># 创建/扩展架构（6.9 重写）</span><br>
                 /bmad-create-epics-and-stories <span style="color:#888;"># 拆分 Epic/Story</span><br>
                 /bmad-sprint-planning &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># Sprint 规划</span><br>
                 /bmad-dev-story &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 实现一个 Story</span>
@@ -523,7 +524,8 @@
             </div>
             <div style="margin-top:6px;font-size:1.1rem;color:#555;line-height:1.6;">
                 然后输入评审指令，如：<br>
-                <em>"Review PRD and Architecture for consistency"</em>
+                <em>"Review PRD and Architecture for consistency"</em><br>
+                <span style="color:#7C3AED;">6.9：可直接启用预置 "Code Review Crew"（5 个对抗式视角），会话带记忆可续审</span>
             </div>
             <div style="margin-top:6px;background:#FFF7ED;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#9A3412;">
                 ⚠️ 每个工作流结束后<strong>开新聊天</strong>！上下文残留会降低质量
@@ -541,7 +543,7 @@
 <!-- Slide 9: Brownfield Notes -->
 <div class="slide slide-white" data-slide="9">
     <h2 style="text-align:center;">🛡️ Brownfield 项目注意事项</h2>
-    <p style="text-align:center;color:#666;margin-bottom:20px;font-size:1.05rem;">Agent 定制配置（<code>_bmad/custom/*.toml</code>）已内置安全约束，以下是额外提醒</p>
+    <p style="text-align:center;color:#666;margin-bottom:20px;font-size:1.05rem;">内置 workflow 生成的 <code>project-context.md</code> 记录技术栈与受保护路径约束，以下是额外提醒</p>
     <div style="max-width:900px;width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
         <div class="card" style="padding:16px;border-top:3px solid #DC2626;">
             <h3 style="font-size:1.05rem;color:#DC2626;">🚫 AI 不可以做</h3>
@@ -566,16 +568,16 @@
         <div class="card" style="padding:16px;border-top:3px solid #3B82F6;">
             <h3 style="font-size:1.05rem;color:#3B82F6;">👤 你需要做</h3>
             <div style="font-size:0.92rem;color:#555;line-height:1.8;margin-top:8px;">
-                • 在 AI IDE 中输入提示词生成配置<br>
-                • 审核确认卡 + 补充业务描述<br>
-                • 追加受保护目录列表<br>
+                • 调用内置 skill 生成项目文档与上下文<br>
+                • 审核 skill 产出 + 补充业务描述<br>
+                • 在 project-context.md 标注受保护目录<br>
                 • 开始前跑通已有测试<br>
                 • Review Gate 更严格
             </div>
         </div>
     </div>
     <div style="margin-top:16px;background:#FEF3C7;border:1px solid #FCD34D;border-radius:8px;padding:12px 20px;max-width:700px;text-align:center;">
-        <span style="font-size:1.1rem;color:#92400E;">💡 通过提示词驱动，AI 扫描代码后自动将技术栈写入 <code>_bmad/custom/*.toml</code> 的 <code>persistent_facts</code> 中。<br>你只需审核确认卡、补充业务描述、追加受保护路径即可。</span>
+        <span style="font-size:1.1rem;color:#92400E;">💡 <code>bmad-document-project</code> + <code>bmad-generate-project-context</code> 扫描代码后把技术栈与约束写入 <code>project-context.md</code>，后续标准 Agent 自动加载。<br>你只需审核产出、补充业务描述、标注受保护路径即可。</span>
     </div>
 </div>
 
