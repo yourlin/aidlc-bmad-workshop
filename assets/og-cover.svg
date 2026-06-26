@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0E1119"/>
+      <stop offset="0.55" stop-color="#131A28"/>
+      <stop offset="1" stop-color="#0B0F17"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0.82" cy="0.08" r="0.55">
+      <stop offset="0" stop-color="#FF9900" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#FF9900" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.06" cy="0.95" r="0.5">
+      <stop offset="0" stop-color="#2EE6C8" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#2EE6C8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#FFC061"/>
+      <stop offset="1" stop-color="#FF9900"/>
+    </linearGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF9900"/>
+      <stop offset="1" stop-color="#2EE6C8"/>
+    </linearGradient>
+    <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M34 0H0V34" fill="none" stroke="#78AAD2" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- top tags -->
+  <g transform="translate(90,108)">
+    <rect x="0" y="-26" width="150" height="40" rx="20" fill="#FF9900" fill-opacity="0.12" stroke="#FF9900" stroke-opacity="0.4"/>
+    <text x="75" y="1" fill="#FFC061" font-size="20" font-weight="700" text-anchor="middle" font-family="'JetBrains Mono',monospace">AWS × Kiro</text>
+    <rect x="170" y="-26" width="230" height="40" rx="20" fill="#2EE6C8" fill-opacity="0.10" stroke="#2EE6C8" stroke-opacity="0.35"/>
+    <text x="285" y="1" fill="#2EE6C8" font-size="20" font-weight="700" text-anchor="middle" font-family="'JetBrains Mono',monospace">BMAD Method v6.9</text>
+  </g>
+
+  <!-- main title -->
+  <text x="90" y="290" fill="url(#title)" font-size="96" font-weight="900" letter-spacing="1">AI 驱动的全生命周期</text>
+  <text x="90" y="400" fill="url(#title)" font-size="96" font-weight="900" letter-spacing="1">开发实战 Workshop</text>
+
+  <!-- accent rule -->
+  <rect x="92" y="440" width="120" height="6" rx="3" fill="url(#rule)"/>
+
+  <!-- subtitle -->
+  <text x="90" y="500" fill="#AEB9C8" font-size="30" font-weight="400">使用 Kiro + BMAD Method 完成从需求到部署的端到端演练</text>
+
+  <!-- bottom stats -->
+  <g font-family="'JetBrains Mono',monospace">
+    <text x="90"  y="575" fill="#FF9900" font-size="40" font-weight="700">4h</text>
+    <text x="90"  y="600" fill="#7E8A9A" font-size="18">动手实操</text>
+    <text x="250" y="575" fill="#FF9900" font-size="40" font-weight="700">2h</text>
+    <text x="250" y="600" fill="#7E8A9A" font-size="18">成果分享</text>
+    <text x="410" y="575" fill="#FF9900" font-size="40" font-weight="700">4</text>
+    <text x="410" y="600" fill="#7E8A9A" font-size="18">参与角色</text>
+    <text x="540" y="575" fill="#FF9900" font-size="40" font-weight="700">E2E</text>
+    <text x="540" y="600" fill="#7E8A9A" font-size="18">全生命周期</text>
+  </g>
+
+  <!-- rocket motif -->
+  <text x="1080" y="540" font-size="180" text-anchor="middle" opacity="0.9">🚀</text>
+</svg>
