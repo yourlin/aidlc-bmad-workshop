@@ -44,7 +44,7 @@
             position: absolute; top: 0; left: 0;
             width: 100vw; height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 48px 64px 96px;
+            padding: 40px 64px 72px;
             opacity: 0; transform: translateX(60px) scale(0.99);
             transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1), transform 0.55s cubic-bezier(0.22,1,0.36,1);
             overflow-y: auto;
@@ -197,9 +197,9 @@
         .flow-legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
 
         /* Setup step cards (Greenfield / Brownfield) */
-        .steps-grid { max-width: 1000px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .steps-grid { max-width: 1000px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .step {
-            position: relative; padding: 18px 18px 16px; border-radius: 14px;
+            position: relative; padding: 13px 16px; border-radius: 14px;
             background: rgba(255,255,255,0.72); backdrop-filter: blur(6px);
             border: 1px solid rgba(40,60,90,0.10);
             box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 12px 32px -20px rgba(20,30,50,0.4);
@@ -208,7 +208,7 @@
         }
         .step::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--sc, #3B82F6); }
         .step:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--sc) 45%, transparent); box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 22px 44px -22px rgba(20,30,50,0.5); }
-        .step-head { display: flex; align-items: center; gap: 11px; margin-bottom: 12px; }
+        .step-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
         .step-num {
             flex-shrink: 0; width: 30px; height: 30px; border-radius: 9px;
             display: flex; align-items: center; justify-content: center;
@@ -219,11 +219,11 @@
         .step-head .key { margin-left: auto; flex-shrink: 0; font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; color: #fff; background: #DC2626; padding: 3px 9px; border-radius: 999px; }
         .step-head .doclink { margin-left: auto; flex-shrink: 0; font-size: 0.82rem; color: #2563EB; text-decoration: none; font-weight: 600; }
         .step-head .doclink:hover { text-decoration: underline; }
-        .step-body { font-size: 0.95rem; color: var(--paper-mute); line-height: 1.6; }
+        .step-body { font-size: 0.9rem; color: var(--paper-mute); line-height: 1.55; }
         .step-body strong { color: var(--paper-ink); }
-        .step .code-block { font-size: 0.84rem; margin: 4px 0 10px; }
+        .step .code-block { font-size: 0.82rem; margin: 2px 0 8px; padding: 22px 16px 12px; }
         /* semantic note boxes */
-        .note { border-radius: 8px; padding: 8px 11px; font-size: 0.9rem; line-height: 1.6; margin-top: 10px; border: 1px solid; }
+        .note { border-radius: 8px; padding: 7px 10px; font-size: 0.86rem; line-height: 1.55; margin-top: 8px; border: 1px solid; }
         .note code { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.08); }
         .note-info  { background: #EFF6FF; color: #1E40AF; border-color: #BFDBFE; }
         .note-warn  { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
@@ -686,59 +686,58 @@
 <!-- Slide 7: BMAD Usage Flow -->
 <div class="slide slide-light" data-slide="8">
     <h2 style="text-align:center;">🚀 BMAD 使用流程 — 安装完成后怎么用</h2>
-    <p style="text-align:center;color:#666;margin-bottom:16px;font-size:1rem;">在 AI IDE 中输入以下命令即可启动对应 Agent 和工作流</p>
-    <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div class="card" style="padding:14px;">
-            <h3 style="font-size:1.1rem;">① 获取帮助（任何时候都可以用）</h3>
-            <div class="code-block" style="font-size:1.1rem;margin-top:6px;">
-                /bmad-help <span style="color:#888;"># 查看当前可用命令</span><br>
+    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:0.95rem;">在 AI IDE 中输入以下命令即可启动对应 Agent 和工作流</p>
+    <div style="max-width:980px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="card" style="padding:12px 14px;">
+            <h3 style="font-size:1rem;margin-bottom:6px;">① 获取帮助（任何时候都可以用）</h3>
+            <div class="code-block" style="font-size:0.9rem;margin-top:4px;">
+                /bmad-help <span style="color:#6b7280;"># 查看当前可用命令</span><br>
                 /bmad-help I just finished the PRD, what next?
             </div>
-            <div style="margin-top:6px;font-size:1.1rem;color:#555;">
+            <div style="margin-top:6px;font-size:0.9rem;color:#555;">
                 💡 不确定下一步做什么？问 <code>/bmad-help</code> 就对了
             </div>
         </div>
-        <div class="card" style="padding:14px;">
-            <h3 style="font-size:1.1rem;">② 激活 Agent</h3>
-            <div class="code-block" style="font-size:1.1rem;margin-top:6px;">
-                /bmad-agent-pm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → John (PM)</span><br>
-                /bmad-agent-architect &nbsp;<span style="color:#888;"># → Winston (架构)</span><br>
-                /bmad-agent-dev &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → Amelia (开发)</span><br>
-                /bmad-tea &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># → Murat (TEA)</span>
+        <div class="card" style="padding:12px 14px;">
+            <h3 style="font-size:1rem;margin-bottom:6px;">② 激活 Agent</h3>
+            <div class="code-block" style="font-size:0.9rem;margin-top:4px;">
+                /bmad-agent-pm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># → John (PM)</span><br>
+                /bmad-agent-architect &nbsp;<span style="color:#6b7280;"># → Winston (架构)</span><br>
+                /bmad-agent-dev &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># → Amelia (开发)</span><br>
+                /bmad-tea &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># → Murat (TEA)</span>
             </div>
-            <div style="margin-top:6px;font-size:1.1rem;color:#555;">
+            <div style="margin-top:6px;font-size:0.9rem;color:#555;">
                 每个 Agent 会显示带编号的菜单，选择对应操作即可
             </div>
         </div>
-        <div class="card" style="padding:14px;">
-            <h3 style="font-size:1.1rem;">③ 直接调用工作流</h3>
-            <div class="code-block" style="font-size:1.1rem;margin-top:6px;">
-                /bmad-prd &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 创建 PRD</span><br>
-                /bmad-architecture <span style="color:#888;"># 创建/扩展架构（6.9 重写）</span><br>
-                /bmad-create-epics-and-stories <span style="color:#888;"># 拆分 Epic/Story</span><br>
-                /bmad-sprint-planning &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># Sprint 规划</span><br>
-                /bmad-dev-story &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#888;"># 实现一个 Story</span>
+        <div class="card" style="padding:12px 14px;">
+            <h3 style="font-size:1rem;margin-bottom:6px;">③ 直接调用工作流</h3>
+            <div class="code-block" style="font-size:0.9rem;margin-top:4px;">
+                /bmad-prd &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># 创建 PRD</span><br>
+                /bmad-architecture <span style="color:#6b7280;"># 创建/扩展架构（6.9 重写）</span><br>
+                /bmad-create-epics-and-stories <span style="color:#6b7280;"># 拆分 Epic/Story</span><br>
+                /bmad-sprint-planning &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># Sprint 规划</span><br>
+                /bmad-dev-story &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># 实现一个 Story</span>
             </div>
         </div>
-        <div class="card" style="padding:14px;">
-            <h3 style="font-size:1.1rem;">④ Party Mode（联合评审）</h3>
-            <div class="code-block" style="font-size:1.1rem;margin-top:6px;">
-                /bmad-party-mode <span style="color:#888;"># 启动多 Agent 协作</span>
+        <div class="card" style="padding:12px 14px;">
+            <h3 style="font-size:1rem;margin-bottom:6px;">④ Party Mode（联合评审）</h3>
+            <div class="code-block" style="font-size:0.9rem;margin-top:4px;">
+                /bmad-party-mode <span style="color:#6b7280;"># 启动多 Agent 协作</span>
             </div>
-            <div style="margin-top:6px;font-size:1.1rem;color:#555;line-height:1.6;">
-                然后输入评审指令，如：<br>
-                <em>"Review PRD and Architecture for consistency"</em><br>
-                <span style="color:#7C3AED;">6.9：可直接启用预置 "Code Review Crew"（5 个对抗式视角），会话带记忆可续审</span>
+            <div style="margin-top:6px;font-size:0.9rem;color:#555;line-height:1.5;">
+                然后输入评审指令，如：<em>"Review PRD and Architecture for consistency"</em><br>
+                <span style="color:#7C3AED;">6.9：可启用预置 "Code Review Crew"（5 个对抗式视角），会话带记忆可续审</span>
             </div>
-            <div style="margin-top:6px;background:#FFF7ED;border-radius:6px;padding:6px 8px;font-size:1.05rem;color:#9A3412;">
+            <div style="margin-top:6px;background:#FFF7ED;border-radius:6px;padding:5px 8px;font-size:0.88rem;color:#9A3412;">
                 ⚠️ 每个工作流结束后<strong>开新聊天</strong>！上下文残留会降低质量
             </div>
         </div>
     </div>
-    <div style="margin-top:12px;display:flex;gap:12px;max-width:980px;width:100%;">
-        <div style="flex:1;background:#232F3E;border-radius:8px;padding:12px;text-align:center;">
-            <div style="font-size:0.92rem;color:#FF9900;font-weight:600;">Workshop 中的使用顺序</div>
-            <div style="font-size:1.1rem;color:#ccc;margin-top:4px;">/bmad-agent-pm → PRD → <em>Review</em> → /bmad-agent-architect → CA → <em>Review</em> → /bmad-sprint-planning → /bmad-agent-dev → DS → <em>Review</em></div>
+    <div style="margin-top:10px;max-width:980px;width:100%;">
+        <div style="background:#232F3E;border-radius:8px;padding:10px 14px;text-align:center;">
+            <div style="font-size:0.88rem;color:#FF9900;font-weight:600;">Workshop 中的使用顺序</div>
+            <div style="font-size:0.95rem;color:#ccc;margin-top:3px;">/bmad-agent-pm → PRD → <em>Review</em> → /bmad-agent-architect → CA → <em>Review</em> → /bmad-sprint-planning → /bmad-agent-dev → DS → <em>Review</em></div>
         </div>
     </div>
 </div>
