@@ -135,13 +135,35 @@
         .tag-orange { background: rgba(255,153,0,0.12); color: var(--orange-soft); border-color: rgba(255,153,0,0.35); }
         .tag-purple { background: rgba(46,230,200,0.10); color: var(--cyan); border-color: rgba(46,230,200,0.30); }
 
-        /* Section heading accent — small mono kicker under h2 via underline rule */
-        h2 { position: relative; }
+        /* Section heading accent — centered underline rule under every h2 */
+        h2 { position: relative; padding-bottom: 18px; }
+        h2::after {
+            content: ""; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+            width: 64px; height: 4px; border-radius: 99px;
+            background: linear-gradient(90deg, var(--aws-orange), var(--cyan));
+            box-shadow: 0 0 14px rgba(255,153,0,0.5);
+        }
+        /* Gradient title on dark/accent slides */
+        .slide-dark h1, .slide-accent h1 {
+            background: linear-gradient(120deg, #FFFFFF 0%, var(--orange-soft) 55%, var(--aws-orange) 100%);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
 
         /* Top progress bar */
         .progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 200;
             background: linear-gradient(90deg, var(--aws-orange), var(--cyan)); box-shadow: 0 0 12px rgba(255,153,0,0.6);
             transition: width 0.55s cubic-bezier(0.22,1,0.36,1); }
+
+        /* Title-slide stats */
+        .stat-row { display: flex; justify-content: center; align-items: stretch; gap: 0; margin-top: 44px; }
+        .stat { text-align: center; padding: 0 36px; position: relative; }
+        .stat + .stat::before { content: ""; position: absolute; left: 0; top: 12%; height: 76%; width: 1px; background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.22), rgba(255,255,255,0)); }
+        .stat-num {
+            font-family: var(--font-mono); font-weight: 700; font-size: clamp(2.2rem, 3.4vw, 3.4rem); line-height: 1;
+            background: linear-gradient(120deg, var(--orange-soft), var(--aws-orange));
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .stat-label { font-size: 0.9rem; opacity: 0.6; margin-top: 10px; letter-spacing: 0.08em; }
 
         /* Agenda Table */
         .agenda-table { width: 100%; max-width: 1100px; border-collapse: collapse; font-size: clamp(0.85rem, 1.2vw, 1.15rem); }
@@ -250,11 +272,11 @@
             使用 <strong>Kiro</strong> + <strong>BMAD Method</strong> 完成从需求到部署的端到端演练<br>
             AI 执行 + Human-in-the-Loop 监督 — 4 小时动手实操 + 2 小时成果分享
         </p>
-        <div style="display:flex;justify-content:center;gap:40px;margin-top:40px;">
-            <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">4h</div><div style="font-size:0.92rem;opacity:0.6;">动手实操</div></div>
-            <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">2h</div><div style="font-size:0.92rem;opacity:0.6;">成果分享</div></div>
-            <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">4</div><div style="font-size:0.92rem;opacity:0.6;">参与角色</div></div>
-            <div style="text-align:center;"><div style="font-size:2rem;font-weight:800;color:#FF9900;">E2E</div><div style="font-size:0.92rem;opacity:0.6;">全生命周期</div></div>
+        <div class="stat-row">
+            <div class="stat"><div class="stat-num">4h</div><div class="stat-label">动手实操</div></div>
+            <div class="stat"><div class="stat-num">2h</div><div class="stat-label">成果分享</div></div>
+            <div class="stat"><div class="stat-num">4</div><div class="stat-label">参与角色</div></div>
+            <div class="stat"><div class="stat-num">E2E</div><div class="stat-label">全生命周期</div></div>
         </div>
     </div>
 </div>
