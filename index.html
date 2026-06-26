@@ -230,6 +230,26 @@
         .note-err   { background: #FEF2F2; color: #991B1B; border-color: #FECACA; }
         .note-ok    { background: #F0FDF4; color: #166534; border-color: #BBF7D0; }
 
+        /* Deep Q&A (Slide 11b) */
+        .deep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 1080px; width: 100%; }
+        .deep { border: 1px solid rgba(40,60,90,0.10); border-left: 4px solid var(--dc, #3B82F6); border-radius: 12px;
+            background: rgba(255,255,255,0.6); padding: 14px 16px; cursor: pointer;
+            transition: border-color 0.25s, box-shadow 0.25s, background 0.25s; }
+        .deep:hover { box-shadow: 0 12px 28px -18px rgba(20,30,50,0.45); background: rgba(255,255,255,0.8); }
+        .deep.open { box-shadow: 0 16px 34px -20px rgba(20,30,50,0.5); background: rgba(255,255,255,0.85); }
+        .deep-t { display: flex; align-items: center; gap: 9px; font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; color: var(--paper-ink); }
+        .deep-t .ico { width: 26px; height: 26px; flex-shrink: 0; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; background: color-mix(in srgb, var(--dc) 16%, transparent); }
+        .deep-t .arr { margin-left: auto; color: var(--dc); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); font-size: 0.85rem; }
+        .deep.open .deep-t .arr { transform: rotate(90deg); }
+        .deep-q { font-size: 0.84rem; color: var(--paper-mute); margin-top: 8px; padding-left: 10px; border-left: 2px solid rgba(40,60,90,0.15); line-height: 1.5; font-style: italic; }
+        .deep-a { font-size: 0.9rem; color: var(--paper-ink); margin-top: 9px; line-height: 1.55; }
+        .deep-a b { color: var(--dc); }
+        .deep-more { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, margin-top 0.4s ease; }
+        .deep.open .deep-more { max-height: 420px; margin-top: 10px; }
+        .deep-more ul { margin: 0; padding-left: 18px; }
+        .deep-more li { font-size: 0.85rem; color: var(--paper-mute); line-height: 1.7; }
+        .deep-more li b { color: var(--paper-ink); font-weight: 600; }
+
         /* Title-slide stats */
         .stat-row { display: flex; justify-content: center; align-items: stretch; gap: 0; margin-top: 44px; }
         .stat { text-align: center; padding: 0 36px; position: relative; }
@@ -846,8 +866,81 @@
     </div>
 </div>
 
+<!-- Slide 11b: Deep Q&A -->
+<div class="slide slide-white" data-slide="12">
+    <h2 style="text-align:center;">🎓 深度答疑 — 实战中的高频追问</h2>
+    <p style="text-align:center;color:#666;margin-bottom:18px;font-size:1rem;">点击展开查看要点 · 源自真实客户提问</p>
+    <div class="deep-grid">
+        <div class="deep" style="--dc:#3B82F6;" onclick="this.classList.toggle('open')">
+            <div class="deep-t"><span class="ico">⚖️</span>Vibe coding 还是 Spec driven？<span class="arr">▶</span></div>
+            <div class="deep-q">"BMAD 这种重流程是不是会拖慢我们？到底该轻装快速迭代还是先写 PRD/架构？"</div>
+            <div class="deep-a"><b>不是二选一，是一条连续谱。</b>Vibe 适合探索/原型/个人，Spec driven 适合生产/团队/长期维护——误用比选错更危险。</div>
+            <div class="deep-more"><ul>
+                <li><b>6 维度决策：</b>项目寿命 · 团队规模 · 风险等级 · 领域清晰度 · 维护要求 · 知识传承</li>
+                <li><b>5 个错配：</b>生产代码上 Vibe（最致命）· 原型上强 Spec · 不清晰领域强 Spec · Brownfield 用 Vibe · 全阶段同一风格</li>
+                <li><b>5 个梯位：</b>Pure Vibe → Vibe+决策记录 → Hybrid → Spec 主导(BMAD) → Pure Spec</li>
+                <li><b>迁移路径：</b>Bug 频增/第二个工程师加入/客户真用 → 用 <code>/bmad-document-project</code> 反向生成 PRD</li>
+            </ul></div>
+        </div>
+        <div class="deep" style="--dc:#10B981;" onclick="this.classList.toggle('open')">
+            <div class="deep-t"><span class="ico">🧪</span>BMAD 装好就能自动跑 TDD 吗？<span class="arr">▶</span></div>
+            <div class="deep-q">"自带 QA / Test Architect personas，是不是装好就能自动测试驱动开发？"</div>
+            <div class="deep-a">BMAD 提供 TDD 脚手架，但<b>跨 persona 的编排不会自动发生</b>——你要像导演一样按序调出 Test Architect → 写 AC → Dev 实施。</div>
+            <div class="deep-more"><ul>
+                <li><b>双层架构：</b>内层 <code>bmad-dev-story</code> 自动 red-green-refactor；外层 TEA + Murat + 9 个 testarch skill（需人工触发）</li>
+                <li><b>内层守门：</b>不许跳 RED · 不许跳 task · 3 次失败强制 HALT</li>
+                <li><b>7 阶段生命周期：</b>PRD → Story → 测试设计 → 框架 → ATDD → 实施(自动) → 验证追溯</li>
+                <li><b>三大教训：</b>过程很重要 · 不能放任 Agent · Driver's Seat（责任永远在你）</li>
+            </ul></div>
+        </div>
+        <div class="deep" style="--dc:#8B5CF6;" onclick="this.classList.toggle('open')">
+            <div class="deep-t"><span class="ico">🔗</span>BMAD vs Superpowers 选哪个？<span class="arr">▶</span></div>
+            <div class="deep-q">"两套功能看起来重叠不少（brainstorming/TDD/planning），到底选哪个，还是都装？"</div>
+            <div class="deep-a"><b>两个都装，各管一段。</b>BMAD 管"应该建什么"（前段：想法→dev-ready），Superpowers 管"应该怎么建"（后段：执行/TDD/调试/验证）。</div>
+            <div class="deep-more"><ul>
+                <li><b>本质区别：</b>BMAD = 方法论+Persona+项目本地；Superpowers = 单点 Skill 集合+全局</li>
+                <li><b>3 个冲突点：</b>写计划 · 头脑风暴 · TDD 强制（流程级 vs skill 级）</li>
+                <li><b>推荐组合：</b>启动(BMAD 主导) → 单 story 实施(Superpowers 主导) → 演化(BMAD 主导)</li>
+            </ul></div>
+        </div>
+        <div class="deep" style="--dc:#F59E0B;" onclick="this.classList.toggle('open')">
+            <div class="deep-t"><span class="ico">📋</span>PRD 在 Jira、代码在 Git 怎么协同？<span class="arr">▶</span></div>
+            <div class="deep-q">"PM 把 PRD 维护在 Jira，DEV/QA 在 BMAD 流程里根本看不到——Git 里没有 PRD。"</div>
+            <div class="deep-a">这是<b>真实的工具链断层</b>，不是配置疏忽。建议保留 Jira 作 PM 工作面，<b>自动镜像 PRD 到 Git</b> 作为 BMAD 输入。</div>
+            <div class="deep-more"><ul>
+                <li><b>为何是真问题：</b>BMAD 的 <code>persistent_facts</code> 期望 PRD.md 在文件系统，缺失会让 create-story/tea/dev-story/trace 全断</li>
+                <li><b>4 层方案：</b>PRD-as-Code → <b>Jira→Git 自动同步(推荐⭐)</b> → Jira MCP server → 手动导出</li>
+                <li><b>集成点：</b><code>activation_steps_prepend</code> 钩子，跑 skill 前自动 sync</li>
+                <li><b>角色分工：</b>PM 守 Jira 不变 · DEV 跑 BMAD 自动 sync 不必去 Jira</li>
+            </ul></div>
+        </div>
+        <div class="deep" style="--dc:#EC4899;" onclick="this.classList.toggle('open')">
+            <div class="deep-t"><span class="ico">🧩</span>支持跨 repo？PRD↔架构有版本关联？<span class="arr">▶</span></div>
+            <div class="deep-q">"项目涉及 2 个代码库，BMAD 支持跨 repo 吗？PRD 改了 Architecture 会自动失效吗？"</div>
+            <div class="deep-a">两问都是 <b>❌ 当前不直接支持，✅ 有 workaround</b>。BMAD 绑定单一 <code>{project-root}</code>，PRD↔架构只记路径不记版本快照。</div>
+            <div class="deep-more"><ul>
+                <li><b>跨 repo：</b>47 个 skill 对 monorepo/multi-repo 零命中 → workaround：父目录合一 / 双装机 / monorepo 工具</li>
+                <li><b>版本关联：</b>只存路径到 <code>inputDocuments[]</code>，不存 PRD 的 hash/timestamp/commit</li>
+                <li><b>官方 4 步兜底：</b>逐条 ADR 映射 → check-implementation-readiness → correct-course → git 兜底</li>
+                <li><b>底层：</b>event-sourcing（append-only log），非 Git snapshot+hash</li>
+            </ul></div>
+        </div>
+        <div class="deep" style="--dc:#0EA5E9;" onclick="this.classList.toggle('open')">
+            <div class="deep-t"><span class="ico">⚙️</span>流程和角色行为能定制吗？<span class="arr">▶</span></div>
+            <div class="deep-q">"开发流程能改成我们团队的样子吗？每个角色做什么、按什么规矩，能定制吗？"</div>
+            <div class="deep-a"><b>角色 = 完全可定制</b>（6 维度全开放），<b>流程 = 部分可定制</b>（挂自己 workflow/注入约束 ✅；改内置步骤序列 coming soon）。核心：per-agent override + 三层叠加，永不动源码。</div>
+            <div class="deep-more"><ul>
+                <li><b>角色 6 维度：</b>显示名 · persona · memories · menu · critical_actions · prompts</li>
+                <li><b>流程两层：</b>浅层（挂 workflow/注入约束/启动钩子）✅；深层（改内置步骤）⚠️ 用 BMad Builder 自造绕过</li>
+                <li><b>三层叠加：</b>Default → Team → Personal，升级覆盖源文件但保留 <code>.customize.yaml</code></li>
+                <li><b>铁律：</b>只写 override 文件，绝不直接改 BMAD 源码</li>
+            </ul></div>
+        </div>
+    </div>
+</div>
+
 <!-- Slide 12: Success Criteria -->
-<div class="slide slide-accent" data-slide="12">
+<div class="slide slide-accent" data-slide="13">
     <h2 style="text-align:center;">🏆 成功标准</h2>
     <p style="text-align:center;opacity:0.7;margin-bottom:32px;font-size:1.1rem;">Workshop 结束时，每组应完成以下产出物</p>
     <div class="cards-grid" style="grid-template-columns:repeat(4,1fr);max-width:900px;">
@@ -897,7 +990,7 @@
 
 <!-- Navigation Dots -->
 <div class="slide-nav" id="slideNav"></div>
-<div class="slide-counter" id="slideCounter"><b>1</b> / 13</div>
+<div class="slide-counter" id="slideCounter"><b>1</b> / 14</div>
 <div class="slide-hint">← → 键翻页 · 触屏滑动</div>
 
 <script>
