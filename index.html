@@ -207,12 +207,18 @@
         .code-block code { color: var(--orange-soft); }
 
         /* FAQ */
-        .faq-item { border-bottom: 1px solid #e5e7eb; padding: 14px 0; text-align: left; width: 100%; max-width: 900px; }
-        .faq-q { font-weight: 600; font-size: clamp(1rem, 1.3vw, 1.4rem); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .faq-a { font-size: clamp(0.9rem, 1.1vw, 1.2rem); color: #555; margin-top: 8px; display: none; line-height: 1.6; }
-        .faq-item.open .faq-a { display: block; }
+        .faq-item {
+            border: 1px solid rgba(40,60,90,0.10); border-radius: 12px; background: rgba(255,255,255,0.55);
+            padding: 16px 20px; margin-bottom: 10px; text-align: left; width: 100%; max-width: 860px;
+            transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+        }
+        .faq-item:hover { border-color: rgba(255,153,0,0.35); box-shadow: 0 10px 26px -18px rgba(20,30,50,0.4); }
+        .faq-item.open { border-color: rgba(255,153,0,0.5); background: rgba(255,255,255,0.78); }
+        .faq-q { font-weight: 700; font-family: var(--font-display); font-size: clamp(1rem, 1.3vw, 1.35rem); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+        .faq-a { font-size: clamp(0.9rem, 1.1vw, 1.15rem); color: var(--paper-mute); margin-top: 0; max-height: 0; overflow: hidden; line-height: 1.7; transition: max-height 0.35s ease, margin-top 0.35s ease; }
+        .faq-item.open .faq-a { max-height: 300px; margin-top: 12px; }
+        .faq-arrow { transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); color: var(--aws-orange); flex-shrink: 0; }
         .faq-item.open .faq-arrow { transform: rotate(90deg); }
-        .faq-arrow { transition: transform 0.2s; }
 
         /* Responsive — large screens */
         @media (min-width: 1200px) {
@@ -808,9 +814,12 @@
 
 </div><!-- end slides-wrapper -->
 
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
 <!-- Navigation Dots -->
 <div class="slide-nav" id="slideNav"></div>
-<div class="slide-counter" id="slideCounter">1 / 13</div>
+<div class="slide-counter" id="slideCounter"><b>1</b> / 13</div>
 <div class="slide-hint">← → 键翻页 · 触屏滑动</div>
 
 <script>
@@ -827,17 +836,26 @@ for (let i = 0; i < totalSlides; i++) {
     nav.appendChild(dot);
 }
 
+const progressBar = document.getElementById('progressBar');
+const counterEl = document.getElementById('slideCounter');
+
+function syncChrome() {
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+    counterEl.innerHTML = `<b>${currentSlide + 1}</b> / ${totalSlides}`;
+    progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+    // Light vs dark chrome based on active slide theme
+    const isLight = slides[currentSlide].classList.contains('slide-light') || slides[currentSlide].classList.contains('slide-white');
+    document.body.classList.toggle('on-light', isLight);
+}
+
 function goToSlide(n) {
     if (n < 0 || n >= totalSlides || n === currentSlide) return;
-    slides[currentSlide].className = slides[currentSlide].className.replace(' active', '') + (n > currentSlide ? ' prev' : '');
     slides[currentSlide].classList.remove('active');
     slides[currentSlide].classList.add('prev');
     currentSlide = n;
     slides[currentSlide].classList.remove('prev');
     slides[currentSlide].classList.add('active');
-    // Update dots
-    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
-    document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+    syncChrome();
 }
 
 function nextSlide() { goToSlide(currentSlide + 1); }
@@ -869,6 +887,9 @@ document.addEventListener('wheel', (e) => {
     wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 600);
     if (e.deltaY > 0) nextSlide(); else prevSlide();
 }, { passive: true });
+
+// Initialize chrome (progress bar, counter, light/dark nav) for the first slide
+syncChrome();
 </script>
 </body>
 </html>
