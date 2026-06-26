@@ -154,6 +154,48 @@
             background: linear-gradient(90deg, var(--aws-orange), var(--cyan)); box-shadow: 0 0 12px rgba(255,153,0,0.6);
             transition: width 0.55s cubic-bezier(0.22,1,0.36,1); }
 
+        /* Workflow swimlane table (Slide 4) */
+        .flow-wrap { max-width: 1080px; width: 100%; overflow-x: auto; border-radius: 16px;
+            border: 1px solid rgba(40,60,90,0.12); box-shadow: 0 24px 60px -32px rgba(20,30,50,0.4);
+            background: rgba(255,255,255,0.5); backdrop-filter: blur(6px); }
+        .flow { width: 100%; border-collapse: separate; border-spacing: 0; font-size: clamp(0.78rem, 1vw, 1rem); }
+        .flow th { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.02em;
+            padding: 14px 10px; color: #EAF0F7; background: linear-gradient(180deg, #1B2536, #131A28);
+            border-bottom: 2px solid rgba(255,153,0,0.35); position: sticky; top: 0; }
+        .flow th:first-child { border-top-left-radius: 16px; }
+        .flow th:last-child { border-top-right-radius: 16px; }
+        .flow td { padding: 12px 10px; vertical-align: top; border-bottom: 1px solid rgba(40,60,90,0.08); }
+        .flow tbody tr:last-child td { border-bottom: none; }
+        /* Phase label cell */
+        .flow .phase { font-family: var(--font-display); font-weight: 700; font-size: 1.05em; white-space: nowrap;
+            border-left: 4px solid currentColor; padding-left: 12px; }
+        .flow .phase small { display: block; font-family: var(--font-body); font-weight: 400; font-size: 0.7em; opacity: 0.6; margin-top: 2px; letter-spacing: 0.05em; }
+        .flow .when { font-family: var(--font-mono); font-weight: 600; color: #C77A00; white-space: nowrap; font-size: 0.92em; }
+        /* Task cell — card with left accent bar */
+        .flow .task { border-radius: 9px; padding: 9px 11px; line-height: 1.5; text-align: left;
+            border-left: 3px solid var(--c, #94a3b8); background: var(--bg, rgba(148,163,184,0.10));
+            transition: transform 0.2s, box-shadow 0.2s; }
+        .flow .task:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -14px rgba(20,30,50,0.5); }
+        .flow .task .cmd { font-family: var(--font-mono); font-weight: 700; font-size: 0.92em; color: #0E1119; display: inline-block; margin-bottom: 3px; }
+        .flow .task .out { display: block; margin-top: 4px; font-size: 0.82em; color: var(--paper-mute); font-family: var(--font-mono); }
+        .flow .empty { color: #9aa3b2; text-align: center; font-size: 0.85em; padding-top: 14px; }
+        .flow .empty small { display: block; opacity: 0.7; font-size: 0.85em; }
+        /* lane colors */
+        .lane-pm   { --c: #3B82F6; --bg: rgba(59,130,246,0.10); }
+        .lane-arch { --c: #F59E0B; --bg: rgba(245,158,11,0.12); }
+        .lane-dev  { --c: #10B981; --bg: rgba(16,185,129,0.10); }
+        .lane-tea  { --c: #EC4899; --bg: rgba(236,72,153,0.10); }
+        .flow .gate td { padding: 0; }
+        .flow .gate .bar { display: flex; align-items: center; gap: 10px; justify-content: center;
+            padding: 9px 14px; font-weight: 700; font-family: var(--font-display); color: #7C3AED;
+            background: repeating-linear-gradient(45deg, rgba(124,58,237,0.07), rgba(124,58,237,0.07) 10px, rgba(124,58,237,0.12) 10px, rgba(124,58,237,0.12) 20px);
+            border-top: 1px dashed rgba(124,58,237,0.4); border-bottom: 1px dashed rgba(124,58,237,0.4); }
+        .flow .finale td { background: linear-gradient(180deg, rgba(255,153,0,0.10), rgba(255,153,0,0.04)); text-align: center; padding: 14px; font-weight: 600; }
+        /* legend */
+        .flow-legend { margin-top: 16px; display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; font-size: 0.92rem; }
+        .flow-legend span { display: inline-flex; align-items: center; gap: 7px; color: var(--paper-mute); }
+        .flow-legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+
         /* Title-slide stats */
         .stat-row { display: flex; justify-content: center; align-items: stretch; gap: 0; margin-top: 44px; }
         .stat { text-align: center; padding: 0 36px; position: relative; }
@@ -346,55 +388,51 @@
 <div class="slide slide-light" data-slide="3">
     <h2 style="text-align:center;">🗺️ Workshop 工作流全景</h2>
     <p style="text-align:center;color:#666;margin-bottom:12px;font-size:1rem;">每个阶段的负责人、并行关系、使用的 Agent/命令一目了然</p>
-    <div style="max-width:1050px;width:100%;overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:1.1rem;text-align:center;">
+    <div class="flow-wrap">
+        <table class="flow">
             <thead>
-                <tr style="background:#232F3E;color:white;">
-                    <th style="padding:6px 8px;width:100px;">阶段</th>
-                    <th style="padding:6px 8px;width:90px;">时间</th>
-                    <th style="padding:6px 8px;">PM</th>
-                    <th style="padding:6px 8px;">架构师</th>
-                    <th style="padding:6px 8px;">开发</th>
-                    <th style="padding:6px 8px;">测试工程师 (TEA)</th>
+                <tr>
+                    <th style="width:120px;">阶段</th>
+                    <th style="width:96px;">时间</th>
+                    <th>PM</th>
+                    <th>架构师</th>
+                    <th>开发</th>
+                    <th>测试工程师 (TEA)</th>
                 </tr>
             </thead>
             <tbody>
-                <tr style="background:#EFF6FF;">
-                    <td style="padding:8px;font-weight:700;color:#1E40AF;" rowspan="1">Inception<br><span style="font-size:0.78rem;font-weight:400;">需求定义</span></td>
-                    <td style="padding:8px;font-family:monospace;color:#FF9900;">15:35-16:05</td>
-                    <td style="padding:8px;background:#DBEAFE;border-radius:6px;"><strong>/bmad-agent-pm → PRD</strong><br>创建 PRD<br><span style="color:#666;">产出: prd.md</span></td>
-                    <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/bmad-agent-architect → CA</strong><br>架构设计<br><span style="color:#666;">产出: architecture.md</span></td>
-                    <td style="padding:8px;color:#999;">—<br><span style="font-size:0.78rem;">等待 Sprint Planning</span></td>
-                    <td style="padding:8px;background:#FCE7F3;border-radius:6px;"><strong>/bmad-testarch-test-design</strong><br>测试策略（TD）<br><span style="color:#666;">产出: test-strategy.md</span></td>
-                </tr>
                 <tr>
-                    <td colspan="6" style="padding:4px;background:#FAF5FF;font-weight:600;color:#7C3AED;">🔍 Review Gate #1 — Party Mode 联合评审（PRD + 架构 + 测试策略一致性）</td>
+                    <td class="phase" style="color:#1E40AF;">Inception<small>需求定义</small></td>
+                    <td class="when">15:35<br>16:05</td>
+                    <td><div class="task lane-pm"><span class="cmd">pm → PRD</span><br>创建 PRD<span class="out">prd.md</span></div></td>
+                    <td><div class="task lane-arch"><span class="cmd">architect → CA</span><br>架构设计<span class="out">architecture.md</span></div></td>
+                    <td><div class="empty">—<small>等待 Sprint Planning</small></div></td>
+                    <td><div class="task lane-tea"><span class="cmd">testarch → TD</span><br>测试策略<span class="out">test-strategy.md</span></div></td>
                 </tr>
-                <tr style="background:#F0FDF4;">
-                    <td style="padding:8px;font-weight:700;color:#065F46;" rowspan="1">Construction<br><span style="font-size:0.78rem;font-weight:400;">并行构建</span></td>
-                    <td style="padding:8px;font-family:monospace;color:#FF9900;">16:40-17:30</td>
-                    <td style="padding:8px;color:#999;">—<br><span style="font-size:0.78rem;">支持 & 答疑</span></td>
-                    <td style="padding:8px;background:#FEF3C7;border-radius:6px;"><strong>/bmad-agent-architect → CA</strong><br>CDK IaC 代码<br><span style="color:#666;">产出: src/infra/</span></td>
-                    <td style="padding:8px;background:#D1FAE5;border-radius:6px;"><strong>/bmad-agent-dev → DS</strong><br>实现 Story #1 #2<br><span style="color:#666;">产出: src/handlers/</span></td>
-                    <td style="padding:8px;background:#FCE7F3;border-radius:6px;"><strong>/bmad-tea → TA, NR</strong><br>验收用例 + API/E2E 自动化 + NFR 审计<br><span style="color:#666;">产出: acceptance-tests.md · src/__tests__/</span></td>
-                </tr>
+                <tr class="gate"><td colspan="6"><div class="bar">🔍 Review Gate #1 · Party Mode 联合评审（PRD + 架构 + 测试策略一致性）</div></td></tr>
                 <tr>
-                    <td colspan="6" style="padding:4px;background:#FAF5FF;font-weight:600;color:#7C3AED;">🔍 Review Gate #2 — Party Mode 联合评审 + 测试执行演示</td>
+                    <td class="phase" style="color:#065F46;">Construction<small>并行构建</small></td>
+                    <td class="when">16:40<br>17:30</td>
+                    <td><div class="empty">—<small>支持 &amp; 答疑</small></div></td>
+                    <td><div class="task lane-arch"><span class="cmd">architect → CA</span><br>CDK IaC 代码<span class="out">src/infra/</span></div></td>
+                    <td><div class="task lane-dev"><span class="cmd">dev → DS</span><br>实现 Story #1 #2<span class="out">src/handlers/</span></div></td>
+                    <td><div class="task lane-tea"><span class="cmd">tea → TA, NR</span><br>验收用例 + API/E2E 自动化 + NFR 审计<span class="out">acceptance-tests.md · src/__tests__/</span></div></td>
                 </tr>
-                <tr style="background:#FFF7ED;">
-                    <td style="padding:8px;font-weight:700;color:#9A3412;">Day 2<br><span style="font-size:0.78rem;font-weight:400;">成果分享</span></td>
-                    <td style="padding:8px;font-family:monospace;color:#FF9900;">10:00-12:00</td>
-                    <td colspan="4" style="padding:8px;background:#FFF7ED;border-radius:6px;text-align:center;"><strong>全员参与</strong> — 每组 10 分钟演示产出物 + AI 协作心得 + 讲师点评</td>
+                <tr class="gate"><td colspan="6"><div class="bar">🔍 Review Gate #2 · Party Mode 联合评审 + 测试执行演示</div></td></tr>
+                <tr class="finale">
+                    <td class="phase" style="color:#9A3412;">Day 2<small>成果分享</small></td>
+                    <td class="when">10:00<br>12:00</td>
+                    <td colspan="4">🎬 <strong>全员参与</strong> — 每组 10 分钟演示产出物 + AI 协作心得 + 讲师点评</td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-        <span style="font-size:1.1rem;background:#DBEAFE;padding:2px 8px;border-radius:4px;">🔵 PM 工作</span>
-        <span style="font-size:1.1rem;background:#FEF3C7;padding:2px 8px;border-radius:4px;">🟡 架构工作</span>
-        <span style="font-size:1.1rem;background:#D1FAE5;padding:2px 8px;border-radius:4px;">🟢 开发工作</span>
-        <span style="font-size:1.1rem;background:#FCE7F3;padding:2px 8px;border-radius:4px;">🔴 测试工程师 (TEA)</span>
-        <span style="font-size:1.1rem;background:#FAF5FF;padding:2px 8px;border-radius:4px;">🟣 Review Gate</span>
+    <div class="flow-legend">
+        <span><i style="background:#3B82F6;"></i>PM 工作</span>
+        <span><i style="background:#F59E0B;"></i>架构工作</span>
+        <span><i style="background:#10B981;"></i>开发工作</span>
+        <span><i style="background:#EC4899;"></i>测试工程师 (TEA)</span>
+        <span><i style="background:#7C3AED;"></i>Review Gate</span>
     </div>
 </div>
 
