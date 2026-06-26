@@ -44,7 +44,7 @@
             position: absolute; top: 0; left: 0;
             width: 100vw; height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 48px 64px;
+            padding: 48px 64px 96px;
             opacity: 0; transform: translateX(60px) scale(0.99);
             transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1), transform 0.55s cubic-bezier(0.22,1,0.36,1);
             overflow-y: auto;
@@ -334,16 +334,16 @@
 
         /* Responsive — large screens */
         @media (min-width: 1200px) {
-            .slide { padding: 50px 80px; }
+            .slide { padding: 50px 80px 96px; }
             p, li, td, th, div { font-size: inherit; }
         }
         @media (min-width: 1600px) {
-            .slide { padding: 60px 100px; }
+            .slide { padding: 60px 100px 100px; }
         }
 
         /* Responsive — small screens */
         @media (max-width: 768px) {
-            .slide { padding: 20px 24px; }
+            .slide { padding: 20px 24px 84px; }
             h1 { font-size: 2rem; }
             h2 { font-size: 1.6rem; }
             .cards-grid-3, .cards-grid-2 { grid-template-columns: 1fr; }
