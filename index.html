@@ -656,9 +656,8 @@
         <div class="step" style="--sc:#8B5CF6;">
             <div class="step-head"><span class="step-num">4</span><h3>验证安装（必须全部 ✓）</h3></div>
             <div class="code-block">
-                ls _bmad/bmm/agents/ &nbsp;&nbsp;<span style="color:#6b7280;"># ✓ 有 agent 文件</span><br>
-                ls _bmad/custom/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># ✓ 有 4 个 .toml</span><br>
-                npx bmad-method status <span style="color:#6b7280;"># ✓ 显示模块</span>
+                ls .kiro/skills | grep bmad-agent <span style="color:#6b7280;"># ✓ 6.9 起 agent 装为 skill</span><br>
+                npx bmad-method status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># ✓ 显示模块</span>
             </div>
             <div class="step-body">在 AI IDE 中输入 <code>/bmad-help</code> 确认可以正常响应。</div>
             <div class="note note-err">❌ 失败？→ <code>rm -rf _bmad/</code> 重新运行 <code>npx bmad-method install</code></div>
@@ -685,12 +684,19 @@
             </div>
         </div>
         <div class="step" style="--sc:#F59E0B;">
-            <div class="step-head"><span class="step-num">2</span><h3>安装 BMAD</h3><a class="doclink" href="https://github.com/bmad-code-org/BMAD-METHOD" target="_blank">📖 文档</a></div>
+            <div class="step-head"><span class="step-num">2</span><h3>安装 BMAD（交互式）</h3><a class="doclink" href="https://github.com/bmad-code-org/BMAD-METHOD" target="_blank">📖 文档</a></div>
             <div class="code-block">
                 cd your-existing-project<br>
-                npx bmad-method install --yes --modules bmm,tea --tools kiro
+                npx bmad-method install
             </div>
-            <div class="note note-warn">⚠️ 只创建 <code>_bmad/</code> 目录，不会修改已有文件</div>
+            <div class="step-body">
+                按提示选择：<br>
+                • Modules → <strong>BMM</strong> + <strong>TEA</strong><br>
+                • AI IDE → <strong>kiro</strong>（推荐）<br>
+                • 语言 → Chinese · 项目名 → 你的项目名
+            </div>
+            <div class="note note-warn">⚠️ 只叠加 BMAD（agent 装为 skill 到 <code>.kiro/skills/</code>），不会修改已有代码</div>
+            <div class="note note-info">💡 别用 <code>--yes</code>：会默认英文文档、且漏填 project/user name（见避坑 2/3）</div>
         </div>
         <div class="step" style="--sc:#3B82F6;">
             <div class="step-head"><span class="step-num">3</span><h3>用内置 skill 生成上下文与架构</h3><span class="key">关键</span></div>
