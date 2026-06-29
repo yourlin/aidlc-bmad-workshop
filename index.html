@@ -389,38 +389,114 @@
     </div>
 </div>
 
-<!-- Slide 2: Agenda -->
+<!-- Slide 2: End-to-End Runbook -->
 <div class="slide slide-white" data-slide="1">
-    <h2 style="text-align:center;margin-bottom:12px;padding-bottom:12px;">📅 Workshop Agenda</h2>
-    <p style="text-align:center;color:#666;margin-bottom:10px;font-size:0.92rem;">Day 1 动手实操（4 小时）· Day 2 成果分享与总结（2 小时）</p>
-    <table class="agenda-table">
-        <thead>
-            <tr><th colspan="3" style="color:var(--aws-orange);font-size:1rem;">Day 1 — 下午（14:00 - 18:00）</th></tr>
-            <tr><th>时间</th><th>环节</th><th>角色</th></tr>
-        </thead>
-        <tbody>
-            <tr><td class="time-col">14:00 - 14:10</td><td>Opening</td><td>全员</td></tr>
-            <tr><td class="time-col">14:10 - 14:55</td><td>📢 讲师分享：AIDLC — Agentic AI 时代的软件工程</td><td>全员</td></tr>
-            <tr><td class="time-col">14:55 - 15:25</td><td>🛠️ Workshop 实操讲解：如何使用 BMAD</td><td>全员</td></tr>
-            <tr><td class="time-col">15:25 - 15:35</td><td>🚀 各组启动 Workshop</td><td>各组</td></tr>
-            <tr><td class="time-col">15:35 - 16:05</td><td>▶ PRD + 架构 + 测试策略（并行）</td><td>PM / 架构 / 测试</td></tr>
-            <tr class="agenda-review"><td class="time-col">16:05 - 16:20</td><td>🔍 Review Gate #1</td><td>全员</td></tr>
-            <tr class="agenda-break"><td class="time-col">16:20 - 16:30</td><td>☕ 休息</td><td>—</td></tr>
-            <tr><td class="time-col">16:30 - 16:40</td><td>Sprint Planning</td><td>全员</td></tr>
-            <tr><td class="time-col">16:40 - 17:30</td><td>⚡ 并行开发（PM / 架构 / 开发 / 测试）</td><td>各角色</td></tr>
-            <tr class="agenda-review"><td class="time-col">17:30 - 17:45</td><td>🔍 Review Gate #2 + 测试演示</td><td>全员</td></tr>
-            <tr><td class="time-col">17:45 - 18:00</td><td>Wrap-up + 明日预告</td><td>全员</td></tr>
-        </tbody>
-        <thead>
-            <tr class="agenda-day2"><th colspan="3" style="color:var(--aws-orange);font-size:1rem;padding-top:8px;">Day 2 — 上午（10:00 - 12:00）成果分享与总结</th></tr>
-            <tr><th>时间</th><th>环节</th><th>角色</th></tr>
-        </thead>
-        <tbody>
-            <tr><td class="time-col">10:00 - 11:20</td><td>🎬 小组演示 + 经验分享（每组 10 分钟）</td><td>各组轮流</td></tr>
-            <tr><td class="time-col">11:20 - 11:50</td><td>💡 讲师点评 + AIDLC 方法论回顾</td><td>全员</td></tr>
-            <tr><td class="time-col">11:50 - 12:00</td><td>📋 后续行动项 + 闭幕</td><td>全员</td></tr>
-        </tbody>
-    </table>
+    <h2 style="text-align:center;margin-bottom:8px;padding-bottom:10px;">🎬 端到端实操路径 Runbook</h2>
+    <p style="text-align:center;color:#666;margin-bottom:12px;font-size:0.92rem;">从安装到收尾的完整命令序列 · <strong>除 Phase 0 外，每个工作流结束都开新 session</strong></p>
+    <div class="flow-wrap" style="max-width:1160px;">
+        <table class="flow">
+            <thead>
+                <tr>
+                    <th style="width:188px;">阶段</th>
+                    <th>关键步骤与命令</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="phase" style="color:#64748B;">Phase 0<small>安装与初始化</small></td>
+                    <td><div class="task" style="--c:#64748B;--bg:rgba(100,116,139,0.08);">
+                        进入项目目录 → <span class="cmd">npx bmad-method install</span> → 进 kiro-cli
+                        <span class="out">/tools → trust-all · /effort xhigh</span>
+                    </div></td>
+                </tr>
+                <tr>
+                    <td class="phase" style="color:#1E40AF;">Phase 1<small>准备 · Brownfield必做</small></td>
+                    <td><div class="task lane-pm">
+                        <span class="cmd">/bmad-document-project</span> 扫描已有代码 → <span class="cmd">/bmad-generate-project-context</span> 生成项目宪法 → PRD 进 repo
+                        <span class="out">_bmad-output/planning-artifacts/prd.md</span>
+                    </div></td>
+                </tr>
+                <tr>
+                    <td class="phase" style="color:#1E40AF;">Phase 2<small>规划 PRD</small></td>
+                    <td><div class="task lane-pm">
+                        <span class="cmd">/bmad-prd</span> 选 validate 校验 → <span class="cmd">/bmad-check-implementation-readiness</span> 实现就绪检查
+                    </div></td>
+                </tr>
+                <tr>
+                    <td class="phase" style="color:#92400E;">Phase 3<small>架构与 Stories</small></td>
+                    <td><div class="task lane-arch">
+                        <span class="cmd">/bmad-create-architecture</span> → <span class="cmd">/bmad-spec</span>（可选·v6.8+）→ <span class="cmd">/bmad-party-mode</span> 架构评审（必做）→ <span class="cmd">/bmad-create-epics-and-stories</span> → 命名一致性人工检查 → <span class="cmd">/bmad-sprint-planning</span>
+                    </div></td>
+                </tr>
+                <tr>
+                    <td class="phase" style="color:#9D174D;">Phase 4<small>测试设计</small></td>
+                    <td><div class="task lane-tea">
+                        <span class="cmd">/bmad-testarch-test-design</span> 或 <span class="cmd">/bmad-agent-tea</span> 系统级测试设计
+                    </div></td>
+                </tr>
+                <tr>
+                    <td class="phase" style="color:#065F46;">Phase 5<small>Dev 循环</small></td>
+                    <td>
+                        <div class="task lane-dev" style="margin-bottom:6px;">
+                            <strong>内循环（每 story 一轮）：</strong><span class="cmd">/bmad-create-story</span>（先开新 session）→ <span class="cmd">/bmad-testarch-atdd</span> 红阶段 → <span class="cmd">/bmad-dev-story</span> 实施
+                        </div>
+                        <div class="task lane-arch">
+                            <strong>外循环（每 epic 一次）：</strong><span class="cmd">/bmad-code-review</span> 代码评审（必做·按 epic 批量）→ <span class="cmd">/bmad-party-mode</span> 一致性评审（可选）
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="phase" style="color:#9A3412;">Phase 6<small>收尾</small></td>
+                    <td><div class="task" style="--c:#F59E0B;--bg:rgba(255,153,0,0.10);">
+                        <span class="cmd">/bmad-sprint-status</span> 状态盘点 → <span class="cmd">/bmad-retrospective</span> 复盘 → 整理 handoff + memlog 复盘
+                    </div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Slide 2b: Run Mode + kiro-cli -->
+<div class="slide slide-dark" data-slide="2">
+    <h2 style="text-align:center;">🛠️ 现场运行模式 + kiro-cli 上手</h2>
+    <p style="text-align:center;opacity:0.7;margin-bottom:24px;font-size:1.05rem;">统一工具 · 独立审计 · 全程在档 — 三条建议让现场零环境差异、好兜底</p>
+    <div class="cards-grid cards-grid-3" style="max-width:1080px;">
+        <div class="card-dark" style="border-top:3px solid #7B61FF;">
+            <h3 style="color:white;">① kiro-cli 当统一工具</h3>
+            <p style="font-size:0.95rem;color:#ccc;line-height:1.6;margin-top:8px;">AWS 提供免费 Kiro 账号，全场用同一套 kiro-cli 跑 BMAD — <strong style="color:#FF9900;">零成本、零环境差异</strong>，讲师好兜底。</p>
+        </div>
+        <div class="card-dark" style="border-top:3px solid #2EE6C8;">
+            <h3 style="color:white;">② 常用 agent 当审计员</h3>
+            <p style="font-size:0.95rem;color:#ccc;line-height:1.6;margin-top:8px;">把过程与产出贴进 Claude Code / Codex / Cursor，<strong style="color:#FF9900;">独立 validate</strong> AI 产出 — 践行"AI 不可全信"。</p>
+        </div>
+        <div class="card-dark" style="border-top:3px solid #FF9900;">
+            <h3 style="color:white;">③ 过程产出当素材</h3>
+            <p style="font-size:0.95rem;color:#ccc;line-height:1.6;margin-top:8px;">会话 + 落盘产物 + memlog 全程在档，结束后<strong style="color:#FF9900;">易生成总结</strong>，用于第二天 team 分享。</p>
+        </div>
+    </div>
+    <div style="max-width:1080px;width:100%;margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
+        <div>
+            <h3 style="color:white;margin-bottom:8px;">⚡ kiro-cli 简明上手 5 步</h3>
+            <div class="code-block" style="font-size:0.9rem;">
+                <span style="color:#6b7280;"># 1. 按官方指南安装 kiro.dev/docs/cli/installation</span><br>
+                kiro-cli --version &nbsp;<span style="color:#6b7280;"># 2. 验证（输出版本号）</span><br>
+                kiro-cli login &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># 3. 登录（Identity Center）</span><br>
+                kiro-cli whoami &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># 4. 查登录状态</span><br>
+                kiro-cli &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#6b7280;"># 5. 进入会话</span>
+            </div>
+        </div>
+        <div>
+            <h3 style="color:white;margin-bottom:8px;">⌨️ 会话内常用命令</h3>
+            <div class="code-block" style="font-size:0.9rem;">
+                /chat &nbsp;&nbsp;<span style="color:#6b7280;"># + Tab 选 new 开新会话</span><br>
+                /tools &nbsp;<span style="color:#6b7280;"># + Tab 选 trust-all 免确认</span><br>
+                /model &nbsp;<span style="color:#6b7280;"># 切换模型</span><br>
+                /effort xhigh <span style="color:#6b7280;"># 拉满推理强度</span><br>
+                /quit &nbsp;&nbsp;<span style="color:#6b7280;"># 退出</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:0.9rem;color:#ccc;">⚠️ 每个工作流结束后 <code>/chat</code> 开<strong style="color:#FF9900;">新会话</strong> — 上下文残留是质量下降头号原因</div>
+        </div>
+    </div>
 </div>
 
 <!-- Slide 3: What is AIDLC -->
@@ -459,7 +535,6 @@
             <thead>
                 <tr>
                     <th style="width:120px;">阶段</th>
-                    <th style="width:96px;">时间</th>
                     <th>PM</th>
                     <th>架构师</th>
                     <th>开发</th>
@@ -469,25 +544,22 @@
             <tbody>
                 <tr>
                     <td class="phase" style="color:#1E40AF;">Inception<small>需求定义</small></td>
-                    <td class="when">15:35<br>16:05</td>
                     <td><div class="task lane-pm"><span class="cmd">pm → PRD</span><br>创建 PRD<span class="out">prd.md</span></div></td>
                     <td><div class="task lane-arch"><span class="cmd">architect → CA</span><br>架构设计<span class="out">architecture.md</span></div></td>
                     <td><div class="empty">—<small>等待 Sprint Planning</small></div></td>
                     <td><div class="task lane-tea"><span class="cmd">testarch → TD</span><br>测试策略<span class="out">test-strategy.md</span></div></td>
                 </tr>
-                <tr class="gate"><td colspan="6"><div class="bar">🔍 Review Gate #1 · Party Mode 联合评审（PRD + 架构 + 测试策略一致性）</div></td></tr>
+                <tr class="gate"><td colspan="5"><div class="bar">🔍 Review Gate #1 · Party Mode 联合评审（PRD + 架构 + 测试策略一致性）</div></td></tr>
                 <tr>
                     <td class="phase" style="color:#065F46;">Construction<small>并行构建</small></td>
-                    <td class="when">16:40<br>17:30</td>
                     <td><div class="empty">—<small>支持 &amp; 答疑</small></div></td>
                     <td><div class="task lane-arch"><span class="cmd">architect → CA</span><br>CDK IaC 代码<span class="out">src/infra/</span></div></td>
                     <td><div class="task lane-dev"><span class="cmd">dev → DS</span><br>实现 Story #1 #2<span class="out">src/handlers/</span></div></td>
                     <td><div class="task lane-tea"><span class="cmd">tea → TA, NR</span><br>验收用例 + API/E2E 自动化 + NFR 审计<span class="out">acceptance-tests.md · src/__tests__/</span></div></td>
                 </tr>
-                <tr class="gate"><td colspan="6"><div class="bar">🔍 Review Gate #2 · Party Mode 联合评审 + 测试执行演示</div></td></tr>
+                <tr class="gate"><td colspan="5"><div class="bar">🔍 Review Gate #2 · Party Mode 联合评审 + 测试执行演示</div></td></tr>
                 <tr class="finale">
                     <td class="phase" style="color:#9A3412;">Day 2<small>成果分享</small></td>
-                    <td class="when">10:00<br>12:00</td>
                     <td colspan="4">🎬 <strong>全员参与</strong> — 每组 10 分钟演示产出物 + AI 协作心得 + 讲师点评</td>
                 </tr>
             </tbody>
@@ -950,6 +1022,82 @@
     </div>
 </div>
 
+<!-- Slide: AI Review must be empirically verified -->
+<div class="slide slide-light" data-slide="13">
+    <h2 style="text-align:center;margin-bottom:8px;">⭐ AI Review 的 Finding 必须实证</h2>
+    <p style="text-align:center;color:#666;margin-bottom:20px;font-size:1.05rem;">全程最重要的一课 — <strong>自信的 Critical，实测却是误报</strong></p>
+    <div style="max-width:1000px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
+        <div class="card" style="border-top:3px solid #DC2626;padding:18px;">
+            <h3 style="font-size:1.1rem;color:#DC2626;">🚨 AI 报告：P1 Critical 越权绕过</h3>
+            <p style="font-size:0.92rem;color:#555;line-height:1.7;margin-top:8px;">code-review 自信地报出 <strong>P1 Critical「越权绕过」</strong>，声称：</p>
+            <div class="note note-err" style="margin-top:8px;">OPERATOR 可用 <code>GET /%75sers</code>（编码路径）绕过 ADMIN-only 鉴权</div>
+        </div>
+        <div class="card" style="border-top:3px solid #10B981;padding:18px;">
+            <h3 style="font-size:1.1rem;color:#10B981;">🧪 写探针实证：是误报</h3>
+            <div style="font-size:0.92rem;color:#555;line-height:1.8;margin-top:8px;">
+                自写 <code>EncodedPathBypassProbeTest</code> 后发现：<br>
+                • <code>requiredRole GET /%75sers = ADMIN</code> — 编码路径同样判 ADMIN-only<br>
+                • <code>bob(OPERATOR) GET /%75sers → 404</code> — 不是 200 绕过
+            </div>
+            <div class="note note-ok" style="margin-top:8px;">✅ Agent 自己把 Critical 改判为<strong>证伪</strong></div>
+        </div>
+    </div>
+    <div style="max-width:1000px;width:100%;margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
+        <div class="card" style="border-top:3px solid #8B5CF6;padding:16px;">
+            <h3 style="font-size:1.05rem;color:#8B5CF6;">💊 解药：中立指令</h3>
+            <p style="font-size:0.92rem;color:#555;line-height:1.7;margin-top:8px;">不要硬覆盖结论，而是给 agent 一段"<strong>必须先实证再定级</strong>"的中立指令 — 它会自写探针、自行证伪。</p>
+        </div>
+        <div class="card" style="border-top:3px solid #F59E0B;padding:16px;">
+            <h3 style="font-size:1.05rem;color:#F59E0B;">📌 核心教训</h3>
+            <p style="font-size:0.92rem;color:#555;line-height:1.7;margin-top:8px;">"多层收敛"给的"是真问题"错觉极强，但没有一层真去跑。高危 finding（尤其安全/越权）<strong>先写探针实证再行动</strong>；severity 是待验证假设，不是结论。</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide: Pitfall Checklist -->
+<div class="slide slide-white" data-slide="14">
+    <h2 style="text-align:center;margin-bottom:8px;">⚠️ 现场避坑清单</h2>
+    <p style="text-align:center;color:#666;margin-bottom:16px;font-size:1rem;">9 个实测踩过的坑 — 讲师兜底必备</p>
+    <div style="max-width:1120px;width:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div class="card" style="padding:12px 14px;border-top:3px solid #DC2626;">
+            <h3 style="font-size:0.95rem;">1 · 并发改同一文档会冲突</h3>
+            <p style="font-size:0.84rem;color:#555;line-height:1.55;margin-top:6px;">AI 整篇重写几乎必撞。靠流程约定（按 Epic 拆、各改各文件），不靠 git 硬合并。</p>
+        </div>
+        <div class="card" style="padding:12px 14px;border-top:3px solid #F59E0B;">
+            <h3 style="font-size:0.95rem;">2 · 非交互安装两坑</h3>
+            <p style="font-size:0.84rem;color:#555;line-height:1.55;margin-top:6px;">GITHUB_TOKEN 非安装前提；<code>--yes</code> 不带语言参数 → 文档默认英文。推荐交互式选 Chinese。</p>
+        </div>
+        <div class="card" style="padding:12px 14px;border-top:3px solid #F59E0B;">
+            <h3 style="font-size:0.95rem;">3 · --yes 漏写 project/user name</h3>
+            <p style="font-size:0.84rem;color:#555;line-height:1.55;margin-top:6px;">installer 无 <code>--project-name</code> 参数，<code>--yes</code> 会跳过提示。统一用 <code>npx bmad-method install</code> 不带参数。</p>
+        </div>
+        <div class="card" style="padding:12px 14px;border-top:3px solid #3B82F6;">
+            <h3 style="font-size:0.95rem;">4 · Java/Brownfield 需预装环境</h3>
+            <p style="font-size:0.84rem;color:#555;line-height:1.55;margin-top:6px;">需 JDK 21 + Maven。首次 <code>mvn test</code> 下大量依赖，客户内网/代理常卡。</p>
+        </div>
+        <div class="card" style="padding:12px 14px;border-top:3px solid #3B82F6;">
+            <h3 style="font-size:0.95rem;">5 · 扫描深度是决策点</h3>
+            <p style="font-size:0.84rem;color:#555;line-height:1.55;margin-top:6px;">document-project 选<strong>深度 2（甜点档）</strong>，扫关键文件但不读全部。实测 4.63 credits / 6m16s。</p>
+        </div>
+        <div class="card" style="padding:12px 14px;border-top:3px solid #DC2626;">
+            <h3 style="font-size:0.95rem;">6 · Agent 会跳过确认门</h3>
+            <p style="font-size:0.84rem;color:#555;line-height:1.55;margin-top:6px;">打印 <code>[y/n/edit]</code> 后不等回答自行续推。关键 gate 一律主动盯、随时打断纠正。</p>
+        </div>
+        <div class="card" style="padding:12px 14px;border-top:3px solid #DC2626;">
+            <h3 style="font-size:0.95rem;">7 · 架构步最贵 + 命名易混</h3>
+            <p style="font-size:0.84rem;color:#555;line-height:1.55;margin-top:6px;">23.37 credits / 13m49s（约 document-project 的 5 倍）。命名像 Spring Security 实为自写。</p>
+        </div>
+        <div class="card" style="padding:12px 14px;border-top:3px solid #F59E0B;">
+            <h3 style="font-size:0.95rem;">8 · 自动扫描捞进废弃文档</h3>
+            <p style="font-size:0.84rem;color:#555;line-height:1.55;margin-top:6px;">create-epics 的 glob 把 <code>requirements/</code> 整个扫进来，残缺文档也被列候选。拆 story 前清理 throwaway 文件。</p>
+        </div>
+        <div class="card" style="padding:12px 14px;border-top:3px solid #F59E0B;">
+            <h3 style="font-size:0.95rem;">9 · readiness 文档发现有缺陷</h3>
+            <p style="font-size:0.84rem;color:#555;line-height:1.55;margin-top:6px;">漏扫 <code>specs/SPEC.md</code>；把废弃 <code>-validate</code> 文件夹误推为"最新 PRD"。discovery 阶段人工核对。</p>
+        </div>
+    </div>
+</div>
+
 <!-- Slide 12: Success Criteria -->
 <div class="slide slide-accent" data-slide="13">
     <h2 style="text-align:center;">🏆 成功标准</h2>
@@ -1001,7 +1149,7 @@
 
 <!-- Navigation Dots -->
 <div class="slide-nav" id="slideNav"></div>
-<div class="slide-counter" id="slideCounter"><b>1</b> / 14</div>
+<div class="slide-counter" id="slideCounter"><b>1</b> / 17</div>
 <div class="slide-hint">← → 键翻页 · 触屏滑动</div>
 
 <script>
