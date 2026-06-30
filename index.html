@@ -208,6 +208,14 @@
         .flow-legend span { display: inline-flex; align-items: center; gap: 7px; color: var(--paper-mute); }
         .flow-legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
 
+        /* Runbook slide — compact so 7 phases fit without scroll */
+        .slide-runbook { padding-top: 24px; padding-bottom: 40px; }
+        .slide-runbook h2 { margin-bottom: 4px !important; padding-bottom: 6px !important; }
+        .slide-runbook .flow td { padding: 7px 10px; }
+        .slide-runbook .flow .phase { font-size: 0.98em; }
+        .slide-runbook .flow .task { padding: 7px 11px; line-height: 1.4; }
+        .slide-runbook .flow .task .out { margin-top: 2px; }
+
         /* Setup step cards (Greenfield / Brownfield) */
         .steps-grid { max-width: 1000px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .step {
@@ -390,7 +398,7 @@
 </div>
 
 <!-- Slide 2: End-to-End Runbook -->
-<div class="slide slide-white" data-slide="1">
+<div class="slide slide-white slide-runbook" data-slide="1">
     <h2 style="text-align:center;margin-bottom:8px;padding-bottom:10px;">🎬 端到端实操路径 Runbook</h2>
     <p style="text-align:center;color:#666;margin-bottom:12px;font-size:0.92rem;">从安装到收尾的完整命令序列 · <strong>除 Phase 0 外，每个工作流结束都开新 session</strong></p>
     <div class="flow-wrap" style="max-width:1160px;">
